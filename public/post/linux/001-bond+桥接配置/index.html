@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.55.6" />
+
+  <title>bond&#43;桥接配置 &middot; Allposs博客</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="http://blog.allposs.com/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="http://blog.allposs.com/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="http://blog.allposs.com/css/blackburn.css">
+
+  
+  
+  <link rel="stylesheet" href="http://blog.allposs.com/font-awesome-4.7.0/css/font-awesome.min.css">
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="http://blog.allposs.com/img/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="http://blog.allposs.com/">菜单</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/"><i class='fa fa-home fa-fw'></i>博客主页</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/post/"><i class='fa fa-list fa-fw'></i>文章列表</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/about/"><i class='fa fa-user fa-fw'></i>博客简介</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/contact/"><i class='fa fa-phone fa-fw'></i>友情链接</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/topics/"><i class='fa fa-folder fa-fw'></i>话题列表</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/tags/"><i class='fa fa-tags fa-fw'></i>标签列表</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/allposs" rel="me" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 鄂ICP备15010464号-1</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>bond&#43;桥接配置</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>17 May 2016, 14:20</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="http://blog.allposs.com/topics/linux">Linux</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-topic" href="http://blog.allposs.com/topics/bond">Bond</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-topic" href="http://blog.allposs.com/topics/team">Team</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="http://blog.allposs.com/tags/2016-05">2016-05</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <h2 id="简介">简介</h2>
+
+<p>&#160; &#160; &#160; &#160;Centos7版本下网卡的bond与team配置。</p>
+
+<h2 id="环境">环境</h2>
+
+<ul>
+<li>操作系统：CentOS7+，redhat7+,CentOS6+,redhat6+</li>
+<li>Yum源：163源</li>
+<li>IP地址：-</li>
+<li>DNS：-</li>
+<li>主机名：-</li>
+</ul>
+
+<h2 id="软件包">软件包</h2>
+
+<p>无</p>
+
+<h2 id="拓扑图">拓扑图</h2>
+
+<p>无</p>
+
+<h2 id="正文">正文</h2>
+
+<hr />
+
+<p>说明：</p>
+
+<p>&#160; &#160; &#160; &#160;本机有4个普通千兆网卡和2个光纤网卡，分别是em1-4和p6p1-2
+预想em1-2做bond1,em3-4做bond2,p6p1-2做bond3，bond1与bond2做桥接，桥接名为br0，bond3单独,bond模式为4，也就是802.3ad，动态链接聚合</p>
+
+<p>下面这是bond的7种模式：</p>
+
+<pre><code>=0： (balance-rr) Round-robin policy: （平衡抡循环策略）：传输数据包顺序是依次传输，直到最后一个传输完毕， 此模式提供负载平衡和容错能力。
+
+=1： (active-backup) Active-backup policy:（主-备份策略）：只有一个设备处于活动状态。 一个宕掉另一个马上由备份转换为主设备。mac地址是外部可见得。 此模式提供了容错能力。
+
+=2：(balance-xor) XOR policy:（广播策略）：将所有数据包传输给所有接口。 此模式提供了容错能力。
+
+=3：(balance-xor) XOR policy:（平衡策略）： 传输根据原地址布尔值选择传输设备。 此模式提供负载平衡和容错能力。
+
+=4：(802.3ad) IEEE 802.3ad Dynamic link aggregation.IEEE 802.3ad 动态链接聚合：创建共享相同的速度和双工设置的聚合组。
+
+=5：(balance-tlb) Adaptive transmit load balancing（适配器传输负载均衡）:没有特殊策略，第一个设备传不通就用另一个设备接管第一个设备正在处理的mac地址，帮助上一个传。
+
+=6：(balance-alb) Adaptive load balancing:（适配器传输负载均衡）：大致意思是包括mode5，bonding驱动程序截获 ARP 在本地系统发送出的请求，用其中之一的硬件地址覆盖从属设备的原地址。就像是在服务器上不同的人使用不同的硬件地址一样。
+</code></pre>
+
+<h3 id="1-centos6-或redhat6-配置">1. CentOS6+或redhat6+配置</h3>
+
+<h3 id="1-1-配置bond模块">1.1 配置bond模块</h3>
+
+<pre><code>[root@node1 ~]# cd /etc/sysconfig/network-scripts/
+[root@node1 network-scripts]# echo &quot;alias netdev-bond0 bonding&quot; &gt;/etc/modprobe.d/bonding.conf
+</code></pre>
+
+<h3 id="1-2-安装bridge支持">1.2 安装bridge支持</h3>
+
+<pre><code>[root@node1 ~]# yum install bridge-utils
+</code></pre>
+
+<h3 id="1-3-开始配置网卡配置文件">1.3 开始配置网卡配置文件</h3>
+
+<h3 id="1-3-1-em1配置">1.3.1 em1配置</h3>
+
+<pre><code>DEVICE=em1
+NAME=em1
+TYPE=Ethernet
+ONBOOT=yes
+NM_CONTROLLED=yes
+BOOTPROTO=none
+MASTER=bond1
+SLAVE=yes
+</code></pre>
+
+<h3 id="1-3-2-em2配置">1.3.2 em2配置</h3>
+
+<pre><code>DEVICE=em2
+NAME=em2
+TYPE=Ethernet
+ONBOOT=yes
+NM_CONTROLLED=yes
+BOOTPROTO=none
+MASTER=bond1
+SLAVE=yes
+</code></pre>
+
+<h3 id="1-3-3-em3配置">1.3.3 em3配置</h3>
+
+<pre><code>DEVICE=em3
+NAME=em3
+TYPE=Ethernet
+ONBOOT=yes
+NM_CONTROLLED=yes
+BOOTPROTO=none
+MASTER=bond2
+SLAVE=yes
+</code></pre>
+
+<h3 id="1-3-4-em4配置">1.3.4 em4配置</h3>
+
+<pre><code>DEVICE=em4
+NAME=em4
+TYPE=Ethernet
+ONBOOT=yes
+NM_CONTROLLED=yes
+BOOTPROTO=none
+MASTER=bond2
+SLAVE=yes       
+</code></pre>
+
+<h3 id="1-3-5-p6p1配置">1.3.5 p6p1配置</h3>
+
+<pre><code>DEVICE=p6p1
+NAME=p6p1
+TYPE=Ethernet
+ONBOOT=yes
+NM_CONTROLLED=yes
+BOOTPROTO=none
+MASTER=bond3
+SLAVE=yes
+</code></pre>
+
+<h3 id="1-3-6-p6p2配置">1.3.6 p6p2配置</h3>
+
+<pre><code>DEVICE=p6p2
+NAME=p6p2
+TYPE=Ethernet
+ONBOOT=yes
+NM_CONTROLLED=yes
+BOOTPROTO=none
+MASTER=bond3
+SLAVE=yes 
+</code></pre>
+
+<h3 id="1-3-7-bond1配置">1.3.7 bond1配置</h3>
+
+<pre><code>DEVICE=bond1
+TYPE=bond
+ONBOOT=yes
+BOOTPROTO=none
+BONDING_OPTS=&quot;miimon=80 mode=4&quot;
+BRIDGE=br0
+</code></pre>
+
+<h3 id="1-3-8-bond2配置">1.3.8 bond2配置</h3>
+
+<pre><code>DEVICE=bond1
+NAME=bond1
+TYPE=bond
+ONBOOT=yes
+BOOTPROTO=none
+BONDING_OPTS=&quot;miimon=80 mode=4&quot;
+BRIDGE=br0
+</code></pre>
+
+<h3 id="1-3-9-bond3配置">1.3.9 bond3配置</h3>
+
+<pre><code>DEVICE=bond2
+NAME=bond2
+TYPE=bond
+ONBOOT=yes
+BOOTPROTO=static
+USERCTL=no
+PEERDNS=yes
+IPADDR=10.199.10.202
+RPEFIX=24
+GATEWAY=10.199.10.1
+BONDING_OPTS=&quot;miimon=80 mode=6&quot;
+</code></pre>
+
+<h3 id="1-3-10-br0配置">1.3.10 br0配置</h3>
+
+<pre><code>NAME=br0
+DEVICE=br0
+TYPE=Bridge
+ONBOOT=yes
+BOOTPROTO=none
+IPADDR=10.199.200.30
+PREFIX=24
+GATEWAY=10.199.200.2
+DNS1=10.199.200.15
+</code></pre>
+
+<p><strong>注意</strong>：</p>
+
+<ol>
+<li><p>关闭NetworkManager，不然提示：</p>
+
+<p>eth0: Connection activation failed: Master connection not found or invalid
+br0:Conncetion activation failed: Failed to determine connection’s virtual interface name</p></li>
+
+<li><p>彻底移除bond模块的操作</p>
+
+<p>[root@node1 ~]# rmmod bonding</p></li>
+</ol>
+
+<hr />
+
+<h2 id="结束">结束</h2>
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="http://blog.allposs.com/post/virtualization/002-centos7.2%E5%AE%89%E8%A3%85kvm/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="http://blog.allposs.com/post/virtualization/002-centos7.2%E5%AE%89%E8%A3%85kvm/">CentOS7.2安装KVM</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="http://blog.allposs.com/post/linux/002-systemd%E8%AF%A6%E8%A7%A3/">Systemd 详解</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="http://blog.allposs.com/post/linux/002-systemd%E8%AF%A6%E8%A7%A3/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'blog-allposs-com';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="http://blog.allposs.com/js/ui.js"></script>
+<script src="http://blog.allposs.com/js/menus.js"></script>
+<script src="http://blog.allposs.com/js/mermaid.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

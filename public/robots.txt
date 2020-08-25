@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /theme/
+
+Sitemap: http://blog.allposs.com/index.xml

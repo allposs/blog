@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>2019-04 on Allposs博客</title>
+    <link>http://blog.allposs.com/tags/2019-04/</link>
+    <description>Recent content in 2019-04 on Allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>&amp;copy; 鄂ICP备15010464号-1</copyright>
+    <lastBuildDate>Fri, 12 Apr 2019 14:20:23 +0800</lastBuildDate>
+    
+	<atom:link href="http://blog.allposs.com/tags/2019-04/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>001-容器技术与Docker</title>
+      <link>http://blog.allposs.com/post/kubernetes/001-%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF%E4%B8%8Edocker/</link>
+      <pubDate>Fri, 12 Apr 2019 14:20:23 +0800</pubDate>
+      
+      <guid>http://blog.allposs.com/post/kubernetes/001-%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF%E4%B8%8Edocker/</guid>
+      <description>&lt;h2 id=&#34;简介&#34;&gt;简介&lt;/h2&gt;
+
+&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Docker是现今比较火热的一个开源软件，遵从了Apache2.0协议，使用Go语言开发,基于容器技术实现的一种系统层的虚拟化软件。&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;容器技术是管理使用容器的一种技术，而容器是将软件打包成标准化单元，以用于开发、交付和部署的一种标准单元。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

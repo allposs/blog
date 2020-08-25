@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.55.6" />
+
+  <title>003-GO语言基础结构 &middot; Allposs博客</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="http://blog.allposs.com/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="http://blog.allposs.com/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="http://blog.allposs.com/css/blackburn.css">
+
+  
+  
+  <link rel="stylesheet" href="http://blog.allposs.com/font-awesome-4.7.0/css/font-awesome.min.css">
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="http://blog.allposs.com/img/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="http://blog.allposs.com/">菜单</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/"><i class='fa fa-home fa-fw'></i>博客主页</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/post/"><i class='fa fa-list fa-fw'></i>文章列表</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/about/"><i class='fa fa-user fa-fw'></i>博客简介</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/contact/"><i class='fa fa-phone fa-fw'></i>友情链接</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/topics/"><i class='fa fa-folder fa-fw'></i>话题列表</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/tags/"><i class='fa fa-tags fa-fw'></i>标签列表</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/allposs" rel="me" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 鄂ICP备15010464号-1</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>003-GO语言基础结构</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>04 Jun 2019, 15:20</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="http://blog.allposs.com/topics/golang">Golang</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-topic" href="http://blog.allposs.com/topics/%E5%9F%BA%E7%A1%80%E7%BB%93%E6%9E%84">基础结构</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="http://blog.allposs.com/tags/2019-06">2019-06</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <h2 id="简介">简介</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;在学习GO语言的过程中,了解一下程序的实现结构是必要。而GO语言程序基本上由《程序包》+《引用包》组成的。而程序包又由多个包程序文件(源文件)实现,而程序文件则分为以下几个部分:</p>
+
+<ul>
+<li>包声明</li>
+<li>引入包</li>
+<li>函数</li>
+<li>变量</li>
+<li>注释</li>
+</ul>
+
+<h2 id="环境">环境</h2>
+
+<p>无</p>
+
+<h2 id="软件包">软件包</h2>
+
+<p>无</p>
+
+<h2 id="拓扑图">拓扑图</h2>
+
+<p>无</p>
+
+<h2 id="正文">正文</h2>
+
+<hr />
+
+<h3 id="实例代码">实例代码</h3>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;我们先来一部分程序文件的实例代码,注意man包是程序的唯一入口,所以一个程序只有一个main包:</p>
+
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+)
+
+var demo string
+
+//main 这是程序的唯一入口
+func main() {
+    demo := &quot;GO&quot;
+    fmt.Println(demo ,&quot;Hello World!&quot;)
+}
+</code></pre>
+
+<h3 id="包声明">包声明</h3>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;包声明是我们实例程序的package main字段,这行代码定义了包名,你必须在源文件中非注释的第一行指明这个文件属于哪个包,如：package main。package main表示一个可独立执行的程序，每个 Go 应用程序都包含一个名为 main 的包。</p>
+
+<h3 id="引入包">引入包</h3>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;引入包是我们实例程序的 import (&ldquo;fmt&rdquo;)字段,这行代码告诉GO语言解释器程序需要使用fmt包,我们一般引用基本包而第三方包都需要在这个声明引用,如果你导入了一个包却没有使用它，则会在构建程序时引发错误，如 imported and not used: os，这正是遵循了 Go 的格言：“没有不必要的代码！“。</p>
+
+<h3 id="函数">函数</h3>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;函数是func main(){到}结束的字段。main 函数是每一个可执行程序所必须包含的，一般来说都是在启动后第一个执行的函数,当然如果有init()函数则会优先执行该函数。如果你的 main 包的源代码没有包含 main 函数，则会引发构建错误 undefined: main.main。main 函数既没有参数，也没有返回类型（与 C 家族中的其它语言恰好相反）。如果你不小心为 main 函数添加了参数或者返回类型，将会引发构建错误.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;在程序开始执行并完成初始化后，第一个调用（程序的入口点）的函数是 main.main()（如：C 语言），该函数一旦返回就表示程序已成功执行并立即退出。函数里的代码（函数体）使用大括号 {} 括起来。左大括号 { 必须与方法的声明放在同一行，这是编译器的强制规定，否则你在使用 gofmt 时就会出现错误</p>
+
+<h3 id="变量">变量</h3>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;变量是字段var demo string ，demo := &ldquo;GO&rdquo; 与 fmt.Println(demo ,&ldquo;Hello World!&rdquo;),这三句代码分别表示申明变量,初始化变量和使用变量。</p>
+
+<h3 id="注释">注释</h3>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;注释是//main 这是程序的唯一入口 字段，这句代理表示了函数的作用是什么，注释是不会被编译的，但可以通过 godoc 来使用。
+&nbsp;&nbsp;&nbsp;&nbsp;单行注释是最常见的注释形式，你可以在任何地方使用以 // 开头的单行注释。多行注释也叫块注释，均已以 /* 开头，并以 */ 结尾，且不可以嵌套使用，多行注释一般用于包的文档描述或注释成块的代码片段。</p>
+
+<hr />
+
+<h2 id="结束">结束</h2>
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="http://blog.allposs.com/post/golang/002-go%E8%AF%AD%E8%A8%80%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="http://blog.allposs.com/post/golang/002-go%E8%AF%AD%E8%A8%80%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">002-GO语言环境搭建</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="http://blog.allposs.com/post/golang/004-go%E8%AF%AD%E8%A8%80%E7%BC%96%E7%A8%8B%E8%A7%84%E8%8C%83/">004-GO语言编程规范</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="http://blog.allposs.com/post/golang/004-go%E8%AF%AD%E8%A8%80%E7%BC%96%E7%A8%8B%E8%A7%84%E8%8C%83/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'blog-allposs-com';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="http://blog.allposs.com/js/ui.js"></script>
+<script src="http://blog.allposs.com/js/menus.js"></script>
+<script src="http://blog.allposs.com/js/mermaid.js"></script>
+
+
+
+
+
+
+</body>
+</html>
+

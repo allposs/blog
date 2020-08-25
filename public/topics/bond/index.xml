@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bond on Allposs博客</title>
+    <link>http://blog.allposs.com/topics/bond/</link>
+    <description>Recent content in Bond on Allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>&amp;copy; 鄂ICP备15010464号-1</copyright>
+    <lastBuildDate>Tue, 17 May 2016 14:20:23 +0800</lastBuildDate>
+    
+	<atom:link href="http://blog.allposs.com/topics/bond/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>bond&#43;桥接配置</title>
+      <link>http://blog.allposs.com/post/linux/001-bond&#43;%E6%A1%A5%E6%8E%A5%E9%85%8D%E7%BD%AE/</link>
+      <pubDate>Tue, 17 May 2016 14:20:23 +0800</pubDate>
+      
+      <guid>http://blog.allposs.com/post/linux/001-bond&#43;%E6%A1%A5%E6%8E%A5%E9%85%8D%E7%BD%AE/</guid>
+      <description>&lt;h2 id=&#34;简介&#34;&gt;简介&lt;/h2&gt;
+
+&lt;p&gt;&amp;#160; &amp;#160; &amp;#160; &amp;#160;Centos7版本下网卡的bond与team配置。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

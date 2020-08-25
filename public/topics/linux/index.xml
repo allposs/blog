@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on Allposs博客</title>
+    <link>http://blog.allposs.com/topics/linux/</link>
+    <description>Recent content in Linux on Allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>&amp;copy; 鄂ICP备15010464号-1</copyright>
+    <lastBuildDate>Tue, 16 Aug 2016 14:20:23 +0800</lastBuildDate>
+    
+	<atom:link href="http://blog.allposs.com/topics/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>kafka集群配置安装</title>
+      <link>http://blog.allposs.com/post/linux/003-kafka%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85/</link>
+      <pubDate>Tue, 16 Aug 2016 14:20:23 +0800</pubDate>
+      
+      <guid>http://blog.allposs.com/post/linux/003-kafka%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85/</guid>
+      <description>简介 &amp;#160; &amp;#160; &amp;#160; &amp;#160;Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者规模的网站中的所有动作流数据。 这种动作（网页浏览，搜索和其他用户的行动）是在现代网络上的许多社会功能的一个关键因素。 这些数据通常是由于吞吐量的要求而通过处理日志和日志聚合来解决。 对于像Hadoop的一样的日志数据和离线分析系统，但又要求实时处理的限制，这是一个可行的解决方案。Kafka的目的是通过Hadoop的并行加载机制来统一线上和离线的消息处理，也是为了通过集群机来提供实时的消费。
+环境  操作系统：CentOS 7.2 x64 Yum源：163源 IP地址： node1 10.199.200.101 node2 10.199.200.102 node3 10.</description>
+    </item>
+    
+    <item>
+      <title>Selinux 配置基础</title>
+      <link>http://blog.allposs.com/post/linux/004-selinux%E9%85%8D%E7%BD%AE%E5%9F%BA%E7%A1%80/</link>
+      <pubDate>Sat, 25 Jun 2016 14:20:23 +0800</pubDate>
+      
+      <guid>http://blog.allposs.com/post/linux/004-selinux%E9%85%8D%E7%BD%AE%E5%9F%BA%E7%A1%80/</guid>
+      <description>简介 &amp;#160; &amp;#160; &amp;#160; &amp;#160;SELinux(Security-Enhanced Linux) 是美国国家安全局（NAS）对于强制访问控 制的实现，在这种访问控制体系的限制下，进程只能访问那些在他的任务中所需要文件。大部分使用 SELinux 的人使用的都是SELinux就绪的发行版，例如 Fedora、Red Hat Enterprise Linux (RHEL)、Debian 或 Gentoo。它们都是在内核中启用SELinux 的，并且提供一个可定制的安全策略，还提供很多用户层的库和工具，它们都可以使用 SELinux 的功能。</description>
+    </item>
+    
+    <item>
+      <title>Systemd 详解</title>
+      <link>http://blog.allposs.com/post/linux/002-systemd%E8%AF%A6%E8%A7%A3/</link>
+      <pubDate>Tue, 24 May 2016 14:20:23 +0800</pubDate>
+      
+      <guid>http://blog.allposs.com/post/linux/002-systemd%E8%AF%A6%E8%A7%A3/</guid>
+      <description>&lt;h2 id=&#34;简介&#34;&gt;简介&lt;/h2&gt;
+
+&lt;p&gt;&amp;#160; &amp;#160; &amp;#160; &amp;#160;CentOS 与RedHat 的7.x系统都采用systemd替换了SysV。Systemd目的是要取代Unix时代以来一直在使用的init系统，兼容SysV和LSB的启动脚本，而且够在进程启动过程中更有效地引导加载服务。
+systemd的特性有：
+1. 支持并行化任务
+1. 同时采用socket式与D-Bus总线式激活服务；
+1. 按需启动守护进程（daemon）；
+1. 利用 Linux 的 cgroups 监视进程；
+1. 支持快照和系统恢复；
+1. 维护挂载点和自动挂载点；
+1. 各服务间基于依赖关系进行精密控制。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>bond&#43;桥接配置</title>
+      <link>http://blog.allposs.com/post/linux/001-bond&#43;%E6%A1%A5%E6%8E%A5%E9%85%8D%E7%BD%AE/</link>
+      <pubDate>Tue, 17 May 2016 14:20:23 +0800</pubDate>
+      
+      <guid>http://blog.allposs.com/post/linux/001-bond&#43;%E6%A1%A5%E6%8E%A5%E9%85%8D%E7%BD%AE/</guid>
+      <description>&lt;h2 id=&#34;简介&#34;&gt;简介&lt;/h2&gt;
+
+&lt;p&gt;&amp;#160; &amp;#160; &amp;#160; &amp;#160;Centos7版本下网卡的bond与team配置。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Selinux on Allposs博客</title>
+    <link>http://blog.allposs.com/topics/selinux/</link>
+    <description>Recent content in Selinux on Allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>&amp;copy; 鄂ICP备15010464号-1</copyright>
+    <lastBuildDate>Sat, 25 Jun 2016 14:20:23 +0800</lastBuildDate>
+    
+	<atom:link href="http://blog.allposs.com/topics/selinux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Selinux 配置基础</title>
+      <link>http://blog.allposs.com/post/linux/004-selinux%E9%85%8D%E7%BD%AE%E5%9F%BA%E7%A1%80/</link>
+      <pubDate>Sat, 25 Jun 2016 14:20:23 +0800</pubDate>
+      
+      <guid>http://blog.allposs.com/post/linux/004-selinux%E9%85%8D%E7%BD%AE%E5%9F%BA%E7%A1%80/</guid>
+      <description>简介 &amp;#160; &amp;#160; &amp;#160; &amp;#160;SELinux(Security-Enhanced Linux) 是美国国家安全局（NAS）对于强制访问控 制的实现，在这种访问控制体系的限制下，进程只能访问那些在他的任务中所需要文件。大部分使用 SELinux 的人使用的都是SELinux就绪的发行版，例如 Fedora、Red Hat Enterprise Linux (RHEL)、Debian 或 Gentoo。它们都是在内核中启用SELinux 的，并且提供一个可定制的安全策略，还提供很多用户层的库和工具，它们都可以使用 SELinux 的功能。</description>
+    </item>
+    
+  </channel>
+</rss>

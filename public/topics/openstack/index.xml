@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Openstack on Allposs博客</title>
+    <link>http://blog.allposs.com/topics/openstack/</link>
+    <description>Recent content in Openstack on Allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>&amp;copy; 鄂ICP备15010464号-1</copyright>
+    <lastBuildDate>Fri, 17 Jun 2016 14:20:23 +0800</lastBuildDate>
+    
+	<atom:link href="http://blog.allposs.com/topics/openstack/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Mitaka版openstack三节点安装</title>
+      <link>http://blog.allposs.com/post/virtualization/001-mitaka%E7%89%88openstack%E4%B8%89%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85/</link>
+      <pubDate>Fri, 17 Jun 2016 14:20:23 +0800</pubDate>
+      
+      <guid>http://blog.allposs.com/post/virtualization/001-mitaka%E7%89%88openstack%E4%B8%89%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85/</guid>
+      <description>&lt;h2 id=&#34;简介&#34;&gt;简介&lt;/h2&gt;
+
+&lt;p&gt;&amp;#160; &amp;#160; &amp;#160; &amp;#160;Mitaka版openstack三节点安装文档。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

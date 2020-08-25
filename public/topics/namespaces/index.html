@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.55.6" />
+
+  <title>Namespaces &middot; Allposs博客</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="http://blog.allposs.com/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="http://blog.allposs.com/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="http://blog.allposs.com/css/blackburn.css">
+
+  
+  
+  <link rel="stylesheet" href="http://blog.allposs.com/font-awesome-4.7.0/css/font-awesome.min.css">
+  
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+  <link rel="alternate" type="application/rss+xml" title="Allposs博客"
+    href='http://blog.allposs.com/topics/namespaces/index.xml' />
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="http://blog.allposs.com/img/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="http://blog.allposs.com/">菜单</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/"><i class='fa fa-home fa-fw'></i>博客主页</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/post/"><i class='fa fa-list fa-fw'></i>文章列表</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/about/"><i class='fa fa-user fa-fw'></i>博客简介</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/contact/"><i class='fa fa-phone fa-fw'></i>友情链接</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/topics/"><i class='fa fa-folder fa-fw'></i>话题列表</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="http://blog.allposs.com/tags/"><i class='fa fa-tags fa-fw'></i>标签列表</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href='http://blog.allposs.com/topics/namespaces/index.xml'><i
+          class="fa fa-rss fa-fw"></i>RSS</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/allposs" rel="me" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 鄂ICP备15010464号-1</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Namespaces</h1>
+</div>
+
+<div class="content">
+  
+    <article>
+  <header>
+    <h2><a href="http://blog.allposs.com/post/kubernetes/002-docker%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">002-Docker的核心原理</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>20 May 2019, 14:20</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="http://blog.allposs.com/topics/docker">Docker</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-topic" href="http://blog.allposs.com/topics/golang">Golang</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-topic" href="http://blog.allposs.com/topics/namespaces">Namespaces</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="http://blog.allposs.com/tags/2019-05">2019-05</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  <h2 id="简介">简介</h2>
+
+<p>Docker 核心技术主要从以下几个方面实现：</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;命名空间(namespace):通过进程命名空间，将docker进程和宿主进程进行隔离.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;网络:docker打通命名空间与外部通讯的方式，类型有：bridge模式网络，host模式网络，container模式网络，none模式网络。</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;文件隔离(cgroup):通过加载虚拟挂载点，重设 root 目录等等，将文件系统进行隔离物理资源的隔离，通过 CGroups（Control Groups），限制容器在 CPU，内存，磁盘IO、网络上的使用率，以此来隔离容器间的资源分配。</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;镜像:Dockerfile 中的每条命令会形成一个 diff 层，每个 diff 层都是只读的，只有最上面的层是可写的。这个操作通过 UnionFS 实现。通过AUFS，Btrfs，Device mapper，Overlayfs，ZFS，VFS，可以将未修改的镜像层进行联合挂载，从而提高读写效率。</p>
+  </p>
+
+  
+  <footer>
+    <a href="http://blog.allposs.com/post/kubernetes/002-docker%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+</div>
+
+</div>
+</div>
+<script src="http://blog.allposs.com/js/ui.js"></script>
+<script src="http://blog.allposs.com/js/menus.js"></script>
+<script src="http://blog.allposs.com/js/mermaid.js"></script>
+
+
+
+
+
+
+</body>
+</html>

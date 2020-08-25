@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>数据类型 on Allposs博客</title>
+    <link>http://blog.allposs.com/topics/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</link>
+    <description>Recent content in 数据类型 on Allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>&amp;copy; 鄂ICP备15010464号-1</copyright>
+    <lastBuildDate>Fri, 14 Jun 2019 14:20:23 +0800</lastBuildDate>
+    
+	<atom:link href="http://blog.allposs.com/topics/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>006-GO语言数据类型</title>
+      <link>http://blog.allposs.com/post/golang/006-go%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</link>
+      <pubDate>Fri, 14 Jun 2019 14:20:23 +0800</pubDate>
+      
+      <guid>http://blog.allposs.com/post/golang/006-go%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</guid>
+      <description>&lt;h2 id=&#34;简介&#34;&gt;简介&lt;/h2&gt;
+
+&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;本文接上一篇文章，主要介绍数组（array），切片（slice），字典/映射（map），结构体（struct）这类扩展类的数据类型.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>005-GO语言数据类型</title>
+      <link>http://blog.allposs.com/post/golang/005-go%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</link>
+      <pubDate>Sat, 08 Jun 2019 10:20:23 +0800</pubDate>
+      
+      <guid>http://blog.allposs.com/post/golang/005-go%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</guid>
+      <description>&lt;h2 id=&#34;简介&#34;&gt;简介&lt;/h2&gt;
+
+&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在Go编程语言中，数据类型用于声明函数和变量。数据类型的出现是为了把数据分成所需内存大小不同的数据，编程的时候需要用大数据的时候才需要申请大内存，就可以充分利用内存。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

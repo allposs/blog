@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>容器 on Allposs博客</title>
+    <link>http://blog.allposs.com/topics/%E5%AE%B9%E5%99%A8/</link>
+    <description>Recent content in 容器 on Allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>&amp;copy; 鄂ICP备15010464号-1</copyright>
+    <lastBuildDate>Thu, 23 May 2019 14:20:23 +0800</lastBuildDate>
+    
+	<atom:link href="http://blog.allposs.com/topics/%E5%AE%B9%E5%99%A8/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>102-容器技术之Cgroup(一)</title>
+      <link>http://blog.allposs.com/post/kubernetes/102-%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF%E4%B9%8Bcgroup/</link>
+      <pubDate>Thu, 23 May 2019 14:20:23 +0800</pubDate>
+      
+      <guid>http://blog.allposs.com/post/kubernetes/102-%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF%E4%B9%8Bcgroup/</guid>
+      <description>&lt;h2 id=&#34;简介&#34;&gt;简介&lt;/h2&gt;
+
+&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;cgroup和namespace类似，也是将进程进行分组，但它的目的和namespace不一样，namespace是为了隔离进程组之间的资源，而cgroup是为了对一组进程进行统一的资源监控和限制。&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;cgroup分v1和v2两个版本，v1实现较早，功能比较多，但是由于它里面的功能都是零零散散的实现的，所以规划的不是很好，导致了一些使用和维护上的不便，v2的出现就是为了解决v1中这方面的问题，在最新的4.5内核中，cgroup v2声称已经可以用于生产环境了，但它所支持的功能还很有限，随着v2一起引入内核的还有cgroup namespace。v1和v2可以混合使用，但是这样会更复杂，所以一般没人会这样用。&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;本系列只介绍v1，因为这是目前大家正在用的版本，包括systemd，docker等。如果对v1比较熟悉的话，适应v2也不是问题。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

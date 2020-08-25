@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Namespaces on Allposs博客</title>
+    <link>http://blog.allposs.com/topics/namespaces/</link>
+    <description>Recent content in Namespaces on Allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>&amp;copy; 鄂ICP备15010464号-1</copyright>
+    <lastBuildDate>Mon, 20 May 2019 14:20:23 +0800</lastBuildDate>
+    
+	<atom:link href="http://blog.allposs.com/topics/namespaces/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>002-Docker的核心原理</title>
+      <link>http://blog.allposs.com/post/kubernetes/002-docker%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/</link>
+      <pubDate>Mon, 20 May 2019 14:20:23 +0800</pubDate>
+      
+      <guid>http://blog.allposs.com/post/kubernetes/002-docker%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/</guid>
+      <description>&lt;h2 id=&#34;简介&#34;&gt;简介&lt;/h2&gt;
+
+&lt;p&gt;Docker 核心技术主要从以下几个方面实现：&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;命名空间(namespace):通过进程命名空间，将docker进程和宿主进程进行隔离.&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;网络:docker打通命名空间与外部通讯的方式，类型有：bridge模式网络，host模式网络，container模式网络，none模式网络。&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;文件隔离(cgroup):通过加载虚拟挂载点，重设 root 目录等等，将文件系统进行隔离物理资源的隔离，通过 CGroups（Control Groups），限制容器在 CPU，内存，磁盘IO、网络上的使用率，以此来隔离容器间的资源分配。&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;镜像:Dockerfile 中的每条命令会形成一个 diff 层，每个 diff 层都是只读的，只有最上面的层是可写的。这个操作通过 UnionFS 实现。通过AUFS，Btrfs，Device mapper，Overlayfs，ZFS，VFS，可以将未修改的镜像层进行联合挂载，从而提高读写效率。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

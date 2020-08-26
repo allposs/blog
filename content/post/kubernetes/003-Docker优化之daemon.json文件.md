@@ -68,7 +68,7 @@ topics:         [容器,Docker]
         "fixed-cidr-v6":"",                                 #固定IP的IPv6子网
         "data-root":"/var/lib/docker",                      #Docker运行时使用的根路径，默认/var/lib/docker
         "group": "",                                        #UNIX套接字的组（默认为"docker"）
-        "hosts": [],                                        #设置容器hosts
+        "hosts": ["unix:///var/run/docker.sock"， "0.0.0.0:3000"], #设置Docker的hosts配置，API接口等,注意不要与systemd冲突
         "icc": false,                                       #启用容器间通信（默认为true）
         "ip":"0.0.0.0",                                     #绑定容器端口时的默认IP（默认0.0.0.0）
         "iptables": false,                                  #启用iptables规则添加（默认为true）

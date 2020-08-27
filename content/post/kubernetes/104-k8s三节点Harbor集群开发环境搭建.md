@@ -13,23 +13,23 @@ topics:         [容器,kubernetes]
 <!--more-->
 ## 环境
         IP Address	    Role	CPU	Memory    Type
-        172.20.0.211	CNode1	2	  2G      master
-        172.20.0.212	CNode2	2	  2G      node
-        172.20.0.213	CNode3	2	  2G      node
-        172.20.0.214	CNode4	2	  2G      harbor
-        172.20.0.215	CNode5	2	  2G      harbor
+        172.20.0.211	KNode1	2	  2G      master
+        172.20.0.212	KNode2	2	  2G      node
+        172.20.0.213	KNode3	2	  2G      node
+        172.20.0.214	KNode4	2	  2G      harbor
+        172.20.0.215	KNode5	2	  2G      harbor
 
     Vagrant.configure("2") do |config|
 
     	(1..5).each do |i|
 
-    		config.vm.define "CNode#{i}" do |node|
+    		config.vm.define "KNode#{i}" do |node|
 
     		# 设置虚拟机的Box
     		node.vm.box = "bento/centos-7.6"
 
     		# 设置虚拟机的主机名
-    		node.vm.hostname="CNode#{i}"
+    		node.vm.hostname="KNode#{i}"
 
     		# 设置虚拟机的IP
     		node.vm.network "private_network", ip: "172.20.0.21#{i}"
@@ -41,7 +41,7 @@ topics:         [容器,kubernetes]
     		node.vm.provider "virtualbox" do |v|
 
     			# 设置虚拟机的名称
-    			v.name = "CNode#{i}"
+    			v.name = "KNode#{i}"
 
     			# 设置虚拟机的内存大小  
     			v.memory = 2048
@@ -101,11 +101,11 @@ topics:         [容器,kubernetes]
     bash /etc/sysconfig/modules/ipvs.modules && \
     lsmod | grep -E "ip_vs|nf_conntrack_ipv4" && sysctl -p /etc/sysctl.d/k8s.conf
     cat <<EOF >> /etc/hosts
-    172.20.0.211 CNode1 CNode1.example.com
-    172.20.0.212 CNode2 CNode2.example.com
-    172.20.0.213 CNode3 CNode3.example.com
-    172.20.0.214 CNode4 CNode4.example.com
-    172.20.0.215 CNode5 CNode5.example.com
+    172.20.0.211 KNode1 KNode1.example.com
+    172.20.0.212 KNode2 KNode2.example.com
+    172.20.0.213 KNode3 KNode3.example.com
+    172.20.0.214 KNode4 KNode4.example.com
+    172.20.0.215 KNode5 KNode5.example.com
     EOF
 
     #docker代理优化(可选)
@@ -224,7 +224,7 @@ topics:         [容器,kubernetes]
     {
         "CN": "etcd-server",
         "hosts": [
-            "127.0.0.1","172.20.0.211","172.20.0.212","172.20.0.213","CNode1.example.com","CNode2.example.com","CNode3.example.com","10.0.2.15"
+            "127.0.0.1","172.20.0.211","172.20.0.212","172.20.0.213","KNode1.example.com","KNode2.example.com","KNode3.example.com","10.0.2.15"
         ],
         "key": {
             "algo": "ecdsa",
@@ -278,7 +278,7 @@ topics:         [容器,kubernetes]
     {
         "CN": "etcd-peer",
         "hosts": [
-            "127.0.0.1","172.20.0.211","172.20.0.212","172.20.0.213","172.20.0.214","172.20.0.215","CNode1.example.com","CNode2.example.com","CNode3.example.com","CNode4.example.com","CNode5.example.com","10.0.2.15"
+            "127.0.0.1","172.20.0.211","172.20.0.212","172.20.0.213","172.20.0.214","172.20.0.215","KNode1.example.com","KNode2.example.com","KNode3.example.com","KNode4.example.com","KNode5.example.com","10.0.2.15"
         ],
         "key": {
             "algo": "ecdsa",
@@ -305,7 +305,7 @@ topics:         [容器,kubernetes]
     {
         "CN": "harbor-server",
         "hosts": [
-            "127.0.0.1","172.20.0.214","172.20.0.215","CNode4.example.com","CNode5.example.com","10.0.2.15"
+            "127.0.0.1","172.20.0.214","172.20.0.215","KNode4.example.com","KNode5.example.com","10.0.2.15"
         ],
         "key": {
             "algo": "ecdsa",
@@ -334,14 +334,14 @@ topics:         [容器,kubernetes]
 
 
 
-#### 3.1.1 CNode1节点配置
+#### 3.1.1 KNode1节点配置
 
     cd /vagrant && wget https://github.com/etcd-io/etcd/releases/download/v3.3.18/etcd-v3.3.18-linux-amd64.tar.gz
     tar xf /vagrant/etcd-v3.3.18-linux-amd64.tar.gz && mv etcd-v3.3.18-linux-amd64/etcd* /usr/bin/ && rm -rf etcd-v3.3.18-linux-amd64
-    mkdir /etc/etcd/ssl/ -p && cd /etc/etcd/ssl/ &&  cp /vagrant/etcd/ssl/{etcd-server.pem,etcd-server-key.pem,etcd-peer.pem,etcd-peer-key.pem,etcd-client-key.pem,etcd-client.pem,ca.pem} .
+    mkdir /etc/etcd/ssl/ -p && cd /etc/etcd/ssl/ &&  cp /vagrant/ssl/{etcd-server.pem,etcd-server-key.pem,etcd-peer.pem,etcd-peer-key.pem,etcd-client-key.pem,etcd-client.pem,ca.pem} .
     cat <<EOF >/etc/etcd/etcd.conf
     # [member]
-    ETCD_NAME=CNode1
+    ETCD_NAME=KNode1
     ETCD_DATA_DIR=/opt/etcd
     ETCD_LISTEN_PEER_URLS=https://0.0.0.0:2380
     ETCD_LISTEN_CLIENT_URLS=https://0.0.0.0:2379
@@ -349,7 +349,7 @@ topics:         [容器,kubernetes]
     # [cluster]
     ETCD_ADVERTISE_CLIENT_URLS=https://172.20.0.211:2379
     ETCD_INITIAL_ADVERTISE_PEER_URLS=https://172.20.0.211:2380
-    ETCD_INITIAL_CLUSTER="CNode1=https://172.20.0.211:2380,CNode2=https://172.20.0.212:2380,CNode3=https://172.20.0.213:2380"
+    ETCD_INITIAL_CLUSTER="KNode1=https://172.20.0.211:2380,KNode2=https://172.20.0.212:2380,KNode3=https://172.20.0.213:2380"
     ETCD_INITIAL_CLUSTER_STATE=new
     ETCD_INITIAL_CLUSTER_TOKEN=etcd-k8s-cluster
     # [security]
@@ -365,13 +365,13 @@ topics:         [容器,kubernetes]
     ETCD_PEER_AUTO_TLS="true"
     EOF
 
-#### 3.1.2 CNode2节点配置
+#### 3.1.2 KNode2节点配置
 
     mkdir /etc/etcd/ssl/ -p && cd /etc/etcd/ssl/ &&  cp /vagrant/ssl/{etcd-server.pem,etcd-server-key.pem,etcd-peer.pem,etcd-peer-key.pem,etcd-client-key.pem,etcd-client.pem,ca.pem} .
     tar xf /vagrant/etcd-v3.3.18-linux-amd64.tar.gz && mv etcd-v3.3.18-linux-amd64/etcd* /usr/bin/ && rm -rf etcd-v3.3.18-linux-amd64
     cat <<EOF >/etc/etcd/etcd.conf
     # [member]
-    ETCD_NAME=CNode2
+    ETCD_NAME=KNode2
     ETCD_DATA_DIR=/opt/etcd
     ETCD_LISTEN_PEER_URLS=https://0.0.0.0:2380
     ETCD_LISTEN_CLIENT_URLS=https://0.0.0.0:2379
@@ -379,7 +379,7 @@ topics:         [容器,kubernetes]
     # [cluster]
     ETCD_ADVERTISE_CLIENT_URLS=https://172.20.0.212:2379
     ETCD_INITIAL_ADVERTISE_PEER_URLS=https://172.20.0.212:2380
-    ETCD_INITIAL_CLUSTER="CNode1=https://172.20.0.211:2380,CNode2=https://172.20.0.212:2380,CNode3=https://172.20.0.213:2380"
+    ETCD_INITIAL_CLUSTER="KNode1=https://172.20.0.211:2380,KNode2=https://172.20.0.212:2380,KNode3=https://172.20.0.213:2380"
     ETCD_INITIAL_CLUSTER_STATE=new
     ETCD_INITIAL_CLUSTER_TOKEN=etcd-k8s-cluster
     # [security]
@@ -395,14 +395,14 @@ topics:         [容器,kubernetes]
     ETCD_PEER_AUTO_TLS="true"
     EOF
 
-#### 3.1.3 CNode3节点配置
+#### 3.1.3 KNode3节点配置
 
     mkdir /etc/etcd/ssl/ -p && cd /etc/etcd/ssl/ &&  cp /vagrant/ssl/{etcd-server.pem,etcd-server-key.pem,etcd-peer.pem,etcd-peer-key.pem,etcd-client-key.pem,etcd-client.pem,ca.pem} .
     tar xf /vagrant/etcd-v3.3.18-linux-amd64.tar.gz && mv etcd-v3.3.18-linux-amd64/etcd* /usr/bin/ && rm -rf etcd-v3.3.18-linux-amd64
 
     cat <<EOF >/etc/etcd/etcd.conf
     # [member]
-    ETCD_NAME=CNode3
+    ETCD_NAME=KNode3
     ETCD_DATA_DIR=/opt/etcd
     ETCD_LISTEN_PEER_URLS=https://0.0.0.0:2380
     ETCD_LISTEN_CLIENT_URLS=https://0.0.0.0:2379
@@ -410,7 +410,7 @@ topics:         [容器,kubernetes]
     # [cluster]
     ETCD_ADVERTISE_CLIENT_URLS=https://172.20.0.213:2379
     ETCD_INITIAL_ADVERTISE_PEER_URLS=https://172.20.0.213:2380
-    ETCD_INITIAL_CLUSTER="CNode1=https://172.20.0.211:2380,CNode2=https://172.20.0.212:2380,CNode3=https://172.20.0.213:2380"
+    ETCD_INITIAL_CLUSTER="KNode1=https://172.20.0.211:2380,KNode2=https://172.20.0.212:2380,KNode3=https://172.20.0.213:2380"
     ETCD_INITIAL_CLUSTER_STATE=new
     ETCD_INITIAL_CLUSTER_TOKEN=etcd-k8s-cluster
     # [security]
@@ -426,7 +426,7 @@ topics:         [容器,kubernetes]
     ETCD_PEER_AUTO_TLS="true"
     EOF
 
-#### 3.2 Systemd脚本配置(CNode1-CNode3)
+#### 3.2 Systemd脚本配置(KNode1-KNode3)
 
     cat <<EOF > /lib/systemd/system/etcd.service
     [Unit]
@@ -446,7 +446,7 @@ topics:         [容器,kubernetes]
     WantedBy=multi-user.target
     EOF
 
-#### 3.3 启动ETCD集群(CNode1-CNode3)
+#### 3.3 启动ETCD集群(KNode1-KNode3)
 
 
     groupadd etcd && useradd -c "Etcd user" -g etcd -s /sbin/nologin -r etcd && mkdir -p /opt/etcd && chown etcd:etcd -R /opt/etcd /etc/etcd
@@ -458,7 +458,7 @@ topics:         [容器,kubernetes]
     etcdctl --ca-file /etc/etcd/ssl/ca.pem --cert-file /etc/etcd/ssl/etcd-client.pem --key-file /etc/etcd/ssl/etcd-client-key.pem --endpoints=https://172.20.0.211:2379,https://172.20.0.212:2379,https://172.20.0.213:2379 member list
 
 
-### 4.kubernetes集群安装(CNode1)
+### 4.kubernetes集群安装(KNode1)
 
 #### 4.1 安装说明
 
@@ -686,7 +686,7 @@ ps:由于官网未开放同步方式, 可能会有索引gpg检查失败的情况
       bindPort: 6443
     nodeRegistration:
       criSocket: /var/run/dockershim.sock
-      name: CNode1
+      name: KNode1
       taints:
       - effect: NoSchedule
         key: node-role.kubernetes.io/master
@@ -759,14 +759,14 @@ ps:由于官网未开放同步方式, 可能会有索引gpg检查失败的情况
     sed -i 's@192.168.0.0/16@10.85.0.0/16@gi' calico.yaml
 
 
-#### 5.3 安装calico(CNode1)
+#### 5.3 安装calico(KNode1)
 
     kubectl create -f calico.yaml
 
 
 
 
-### 6. Node 节点配置(CNode2-3)
+### 6. Node 节点配置(KNode2-3)
 
 #### 6.1 安装说明
     安装Node节点相对Master节点来说少安装了kubectl RPM包，镜像方面也少了kube-apiserver、kube-controller-manager、kube-scheduler、coredns和calico的kube-controllers.
@@ -805,7 +805,7 @@ ps 注意路由情况，如果主机默认路由有异常，或者是我这种�
 
 
 
-#### 7 Harbor安装(CNode4-5)
+#### 7 Harbor安装(KNode4-5)
 #### 7.1 安装说明
 
 #### 7.2 安装配置docker-compose
@@ -820,27 +820,27 @@ ps 注意路由情况，如果主机默认路由有异常，或者是我这种�
 
     cd /vagrant/ && wget https://github.com/goharbor/harbor/releases/download/v1.10.1/harbor-offline-installer-v1.10.1.tgz
 
-#### 7.3.1 CNode4节点
+#### 7.3.1 KNode4节点
 
-    cd /vagrant/ && tar xf harbor-offline-installer-v1.10.1.tgz -C /usr/local/ && cd /usr/local/harbor/ && mkdir ssl && cp /vagrant/ssl/{harbor-server.pem,harbor-server-key.pem} .
+    cd /vagrant/ && tar xf harbor-offline-installer-v1.10.1.tgz -C /usr/local/ && cd /usr/local/harbor/ && mkdir ssl && cp /vagrant/ssl/{harbor-server.pem,harbor-server-key.pem} ssl/
     cd /usr/local/harbor/
-    sed -i 's@hostname: reg.mydomain.com@hostname: CNode4.example.com@gi' harbor.yml
+    sed -i 's@hostname: reg.mydomain.com@hostname: KNode4.example.com@gi' harbor.yml
     sed -i 's@certificate: /your/certificate/path@certificate: /usr/local/harbor/ssl/harbor-server.pem@gi' harbor.yml
     sed -i 's@private_key: /your/private/key/path@private_key: /usr/local/harbor/ssl/harbor-server-key.pem@gi' harbor.yml
 
     cd /usr/local/harbor/ && ./install.sh
 
-#### 7.3.2 CNode5节点
+#### 7.3.2 KNode5节点
 
-    cd /vagrant/ && tar xf harbor-offline-installer-v1.10.1.tgz -C /usr/local/ && cd /usr/local/harbor/ && mkdir ssl && cp /vagrant/ssl/{harbor-server.pem,harbor-server-key.pem} .
+    cd /vagrant/ && tar xf harbor-offline-installer-v1.10.1.tgz -C /usr/local/ && cd /usr/local/harbor/ && mkdir ssl && cp /vagrant/ssl/{harbor-server.pem,harbor-server-key.pem} ssl/
     cd /usr/local/harbor/
-    sed -i 's@hostname: reg.mydomain.com@hostname: CNode5.example.com@gi' harbor.yml
+    sed -i 's@hostname: reg.mydomain.com@hostname: KNode5.example.com@gi' harbor.yml
     sed -i 's@certificate: /your/certificate/path@certificate: /usr/local/harbor/ssl/harbor-server.pem@gi' harbor.yml
     sed -i 's@private_key: /your/private/key/path@private_key: /usr/local/harbor/ssl/harbor-server-key.pem@gi' harbor.yml
     cd /usr/local/harbor/ && ./install.sh
 
 
-### 8. k8s集群使用harbor(CNode1-3)
+### 8. k8s集群使用harbor(KNode1-3)
     说明: 如果想在k8s部署时自动拉取镜像，有两种方案，一种是docker认证，一种是k8s的secret，两种方式都需要在dockr目录创建登陆仓库的CA证书文件。
 
     mkdir /etc/docker/certs.d/harbor.example.com/ -p && cp /vagrant/etcd/ssl/ca.pem /etc/docker/certs.d/harbor.example.com/ca.crt

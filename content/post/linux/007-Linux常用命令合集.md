@@ -69,7 +69,7 @@ topics:         [linux,命令]
 
 #### 相关网站:
 
-*[man1](https://linux.die.net/man/1/pstree)
+* [man1](https://linux.die.net/man/1/pstree)
 
 
 ### 2. strace 
@@ -252,7 +252,7 @@ sar命令是Linux下系统运行状态统计工具，它将指定的操作系统
 
 #### 相关网站:
 
-[详细](https://linux.die.net/man/1/sar)
+* [详细](https://linux.die.net/man/1/sar)
 
 
 
@@ -267,3 +267,10 @@ sar命令是Linux下系统运行状态统计工具，它将指定的操作系统
 
 ---
 ## 结束
+
+PS: 
+
+推荐一些命令信息查询网址：
+
+*[linux.die.net](https://linux.die.net/man/)    -- 官网
+*[man.linuxde.net](https://man.linuxde.net/strace) -- 相关数据较为不全

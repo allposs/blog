@@ -798,8 +798,15 @@ ps:由于官网未开放同步方式, 可能会有索引gpg检查失败的情况
     kubectl get nodes
 
 
-ps 注意路由情况，如果主机默认路由有异常，或者是我这种使用双网卡的主机，都要调整路由到节点互通的网卡。
+ps 
 
+    注意路由情况，如果主机默认路由有异常，或者是我这种使用双网卡的主机，都要调整路由到节点互通的网卡。
+    本人在使用vagrant搭建集群时发现calico-node异常重启，容器日志报：
+
+    {"log":"2020-09-29 12:58:01.235 [ERROR][8] startup/startup.go 153: failed to query kubeadm's config map error=Get \"https://10.224.0.1:443/api/v1/namespaces/kube-system/configmaps/kubeadm-config?timeout=2s\": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)\n","stream":"stdout","time":"2020-09-29T12:58:01.236258451Z"}
+
+    解决办法：
+    给集群通讯地址添加路由指向。
     ip route add 10.224.0.0/16 dev eth1
 
 
@@ -926,4 +933,4 @@ ps 注意路由情况，如果主机默认路由有异常，或者是我这种�
 ## 结束
 
 ps:
-    镜像与RMP包 链接:https://pan.baidu.com/s/1DqLqlLO3PKQZ7NNvk73NnQ  密码:2nrz
+    镜像与RMP包 链接: https://pan.baidu.com/s/13N4kIzp9SBqQlY0eoONq7w 提取码: kvsp 

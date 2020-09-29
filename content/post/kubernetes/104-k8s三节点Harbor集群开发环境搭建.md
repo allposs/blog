@@ -808,7 +808,10 @@ ps
     解决办法：
     给集群通讯地址添加路由指向。
     ip route add 10.224.0.0/16 dev eth1
-
+    添加永久路由
+    cat <<EOF >> /etc/sysconfig/network-scripts/route-eth1
+    10.224.0.0/16 dev eth1
+    EOF
 
 
 

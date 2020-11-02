@@ -262,6 +262,12 @@ peer certificate:   双向证书，用于etcd集群成员间通信
 
 + hosts：表示哪些主机名(域名)或者IP可以使用此csr申请的证书，为空或者""表示所有的都可以使用(本例中没有hosts字段)
 
+ps
+
+`CN`字段 kube-apiserver 从证书中提取该字段作为请求的用户名 (User Name)；浏览器使用该字段验证网站是否合法
+
+`hosts`字段不为空则需要指定授权使用该证书的 IP 或域名列表，如果该证书后续被etcd集群和kubernetes集群使用，则需要分别指定etcd集群、kubernetes集群master的主机IP和kubernetes服务的服务IP（一般是 kue-apiserver 指定的service-cluster-ip-range网段的第一个IP，如 10.254.0.1。方法如：cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server -hostname=172.20.0.201,172.20.0.202,172.20.0.203 server-csr.json | cfssljson -bare server
+
 
 #### 3).生成服务端证书和私钥
 
@@ -271,7 +277,6 @@ peer certificate:   双向证书，用于etcd集群成员间通信
 
 + -config 引用的是模板中的默认配置文件;
 + -profiles是指定特定的使用场景，比如ca-config.json中的server区域;
-
 
 
 ### 6.签发Client Certificate

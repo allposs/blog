@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>容器 on allposs博客</title>
+    <link>https://localhost/tags/%E5%AE%B9%E5%99%A8/</link>
+    <description>Recent content in 容器 on allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 15 May 2023 15:28:47 +0800</lastBuildDate><atom:link href="https://localhost/tags/%E5%AE%B9%E5%99%A8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>K8S三节点集群搭建</title>
+      <link>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/001-k8s%E4%B8%89%E8%8A%82%E7%82%B9%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Mon, 15 May 2023 15:28:47 +0800</pubDate>
+      
+      <guid>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/001-k8s%E4%B8%89%E8%8A%82%E7%82%B9%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <description>简介 由于工作的原因，需要对k8s进行二次开发，所以需要一个能统一的开发环境，而minikube并不适合深度开发，所以只能以最小集群的方式搭建</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>NFS详解 - allposs博客</title>
+    <meta property="og:title" content="NFS详解 - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://localhost//css/style.css" />
+    <link rel="stylesheet" href="https://localhost//css/fonts.css" />
+    <link rel="stylesheet" href="https://localhost//css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../" aria-label="个人博客">
+                <img src="https://localhost/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../docs/" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs/" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>NFS详解</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2023-05-19
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                NFS
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<blockquote>
+<p>NFS 是 Network File System 的缩写，是Sun公司于1984开发的一种分布式文件系统协议。它的核心功能就是可以通过网络，让不同的客户端，可以彼此访问共同的文件系统 ，来实现文件的共享。像许多其他的协议，建立在开放的网络计算的远程过程调用（RPC）之上。NFS是在RFC中定义的开放标准，允许任何人实现该协议。</p>
+</blockquote>
+<h1 id="环境">环境</h1>
+<h1 id="正文">正文</h1>
+<h2 id="版本说明">版本说明</h2>
+<ul>
+<li>NFS V2</li>
+</ul>
+<blockquote>
+<p>V2版本是NFS最早实现的版本之一，基于UDP协议实现了一个无状态的服务器版本。仅仅支持32位的系统，且不大于2GB的文件。</p>
+</blockquote>
+<ul>
+<li>NFS V3</li>
+</ul>
+<blockquote>
+<p>V3版本在V2基础之上做了大量的改进。支持了大于2GB的文件读写，使用了TCP协议来进行数据交互，支持了客户端的异步读写来提高文件系统的性能（同时也会产生我们头疼的一致性问题）</p>
+</blockquote>
+<ul>
+<li>NFS V4</li>
+</ul>
+<blockquote>
+<p>V4版本提高了安全性，通过TCP协议实现了一个有状态的服务器版本，通过锁租约的机制来实现多客户端的读写同步。在4.1版本引入了pNFS，通过类似于一个HDFS架构来提供并行的一个分布式文件系统。</p>
+</blockquote>
+<h3 id="服务器安装">服务器安装</h3>
+<h3 id="客户端安装">客户端安装</h3>
+<h4 id="a-安装">a) 安装</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 安装依赖包</span>
+</span></span><span style="display:flex;"><span>yum install nfs-utils -y
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建挂载目录</span>
+</span></span><span style="display:flex;"><span>mkdir -p /data/share <span style="color:#f92672">&amp;&amp;</span> chmod <span style="color:#ae81ff">755</span> -R /data/share
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 手动挂载</span>
+</span></span><span style="display:flex;"><span>mount -t nfs 10.199.88.210:/volume1/data /data/share -o nolock,rsize<span style="color:#f92672">=</span>1048576,,wsize<span style="color:#f92672">=</span>1048576,hard,timeo<span style="color:#f92672">=</span>600,retrans<span style="color:#f92672">=</span>2,_netdev
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 写入fstab,开机启动</span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt;&gt; /etc/fstab
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">10.199.88.210:/volume1/data /data/share nfs nolock,rsize=1048576,,wsize=1048576,hard,timeo=600,retrans=2,_netdev 0 0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h4 id="b-参数详解">b) 参数详解</h4>
+<h1 id="结束">结束</h1>
+<p>cat &laquo;EOF &gt; etcd-csr.json
+{
+&ldquo;CN&rdquo;: &ldquo;etcd&rdquo;,
+&ldquo;hosts&rdquo;:[
+&ldquo;127.0.0.1&rdquo;,&ldquo;10.199.88.201&rdquo;,&ldquo;10.199.88.202&rdquo;,&ldquo;10.199.88.203&rdquo;,&quot;*.example.com&quot;
+],
+&ldquo;key&rdquo;: {
+&ldquo;algo&rdquo;: &ldquo;rsa&rdquo;,
+&ldquo;size&rdquo;: 2048
+},
+&ldquo;names&rdquo;: [
+{
+&ldquo;C&rdquo;: &ldquo;CN&rdquo;,
+&ldquo;L&rdquo;: &ldquo;ShangHai&rdquo;,
+&ldquo;O&rdquo;: &ldquo;example Personal&rdquo;,
+&ldquo;ST&rdquo;: &ldquo;SH&rdquo;,         <br>
+&ldquo;OU&rdquo;: &ldquo;admin&rdquo;,
+&ldquo;CN&rdquo;: &ldquo;admin Personal Tester CA&rdquo;,
+&ldquo;emailAddress&rdquo;: &ldquo;admin@example.com&rdquo;
+}
+]
+}
+EOF
+cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=peer etcd-csr.json | cfssljson -bare etcd</p>
+<p>cat &laquo;EOF &gt; client-csr.json
+{
+&ldquo;CN&rdquo;: &ldquo;client&rdquo;,
+&ldquo;hosts&rdquo;:[
+&ldquo;127.0.0.1&rdquo;,&ldquo;10.199.88.201&rdquo;,&ldquo;10.199.88.202&rdquo;,&ldquo;10.199.88.203&rdquo;,&quot;*.example.com&quot;
+],
+&ldquo;key&rdquo;: {
+&ldquo;algo&rdquo;: &ldquo;rsa&rdquo;,
+&ldquo;size&rdquo;: 2048
+},
+&ldquo;names&rdquo;: [
+{
+&ldquo;C&rdquo;: &ldquo;CN&rdquo;,
+&ldquo;L&rdquo;: &ldquo;ShangHai&rdquo;,
+&ldquo;O&rdquo;: &ldquo;example Personal&rdquo;,
+&ldquo;ST&rdquo;: &ldquo;SH&rdquo;,         <br>
+&ldquo;OU&rdquo;: &ldquo;admin&rdquo;,
+&ldquo;CN&rdquo;: &ldquo;admin Personal Tester CA&rdquo;,
+&ldquo;emailAddress&rdquo;: &ldquo;admin@example.com&rdquo;
+}
+]
+}
+EOF
+cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client client-csr.json | cfssljson -bare client</p>
+<p>VERSION=&ldquo;v3.5.7&rdquo;
+wget  <a href="https://github.com/etcd-io/etcd/releases/download/$%7BVERSION%7D/etcd-$%7BVERSION%7D-linux-amd64.tar.gz">https://github.com/etcd-io/etcd/releases/download/${VERSION}/etcd-${VERSION}-linux-amd64.tar.gz</a> -O /data/share/etcd.tar.gz</p>
+<p>mkdir /etc/etcd/ssl/ -p &amp;&amp; cd /etc/etcd/ssl/ &amp;&amp; cp -rf /data/share/k8s/ssl/{etcd.pem,etcd-key.pem,ca.pem} .</p>
+<p>mkdir /usr/bin/etcd &amp;&amp; tar xf /data/share/k8s/etcd.tar.gz -C /usr/bin/etcd &ndash;strip-components 1 &amp;&amp; chown -R root. /usr/bin/etcd</p>
+<p>cat &laquo;EOF &gt;/etc/etcd/etcd.conf</p>
+<h1 id="member">[member]</h1>
+<p>#etcd名称
+ETCD_NAME=KNode1
+#etcd数据存放目录
+ETCD_DATA_DIR=/opt/etcd
+#etcd集群通讯监听地址
+ETCD_LISTEN_PEER_URLS=https://0.0.0.0:2380
+#etcd客户端访问监听地址
+ETCD_LISTEN_CLIENT_URLS=https://0.0.0.0:2379
+#关闭代理
+ETCD_PROXY=off</p>
+<h1 id="cluster">[cluster]</h1>
+<p>ETCD_ADVERTISE_CLIENT_URLS=https://10.199.88.201:2379
+ETCD_INITIAL_ADVERTISE_PEER_URLS=https://10.199.88.201:2380
+ETCD_INITIAL_CLUSTER=&ldquo;KNode1=https://10.199.88.201:2380,KNode2=https://10.199.88.202:2380,KNode3=https://10.199.88.203:2380&rdquo;
+ETCD_INITIAL_CLUSTER_STATE=new
+ETCD_INITIAL_CLUSTER_TOKEN=etcd-k8s-cluster</p>
+<h1 id="security">[security]</h1>
+<p>ETCD_CERT_FILE=&quot;/etc/etcd/ssl/etcd.pem&quot;
+ETCD_KEY_FILE=&quot;/etc/etcd/ssl/etcd-key.pem&quot;
+ETCD_CLIENT_CERT_AUTH=&ldquo;true&rdquo;
+ETCD_TRUSTED_CA_FILE=&quot;/etc/etcd/ssl/ca.pem&quot;
+ETCD_AUTO_TLS=&ldquo;true&rdquo;
+ETCD_PEER_CERT_FILE=&quot;/etc/etcd/ssl/etcd.pem&quot;
+ETCD_PEER_KEY_FILE=&quot;/etc/etcd/ssl/etcd-key.pem&quot;
+ETCD_PEER_CLIENT_CERT_AUTH=&ldquo;true&rdquo;
+ETCD_PEER_TRUSTED_CA_FILE=&quot;/etc/etcd/ssl/ca.pem&quot;
+ETCD_PEER_AUTO_TLS=&ldquo;true&rdquo;
+EOF</p>
+<p>cat &laquo;EOF &gt;/etc/etcd/etcd.conf</p>
+<h1 id="member-1">[member]</h1>
+<p>#etcd名称
+ETCD_NAME=KNode2
+#etcd数据存放目录
+ETCD_DATA_DIR=/opt/etcd
+#etcd集群通讯监听地址
+ETCD_LISTEN_PEER_URLS=https://0.0.0.0:2380
+#etcd客户端访问监听地址
+ETCD_LISTEN_CLIENT_URLS=https://0.0.0.0:2379
+#关闭代理
+ETCD_PROXY=off</p>
+<h1 id="cluster-1">[cluster]</h1>
+<p>ETCD_ADVERTISE_CLIENT_URLS=https://10.199.88.202:2379
+ETCD_INITIAL_ADVERTISE_PEER_URLS=https://10.199.88.202:2380
+ETCD_INITIAL_CLUSTER=&ldquo;KNode1=https://10.199.88.201:2380,KNode2=https://10.199.88.202:2380,KNode3=https://10.199.88.203:2380&rdquo;
+ETCD_INITIAL_CLUSTER_STATE=new
+ETCD_INITIAL_CLUSTER_TOKEN=etcd-k8s-cluster</p>
+<h1 id="security-1">[security]</h1>
+<p>ETCD_CERT_FILE=&quot;/etc/etcd/ssl/etcd.pem&quot;
+ETCD_KEY_FILE=&quot;/etc/etcd/ssl/etcd-key.pem&quot;
+ETCD_CLIENT_CERT_AUTH=&ldquo;true&rdquo;
+ETCD_TRUSTED_CA_FILE=&quot;/etc/etcd/ssl/ca.pem&quot;
+ETCD_AUTO_TLS=&ldquo;true&rdquo;
+ETCD_PEER_CERT_FILE=&quot;/etc/etcd/ssl/etcd.pem&quot;
+ETCD_PEER_KEY_FILE=&quot;/etc/etcd/ssl/etcd-key.pem&quot;
+ETCD_PEER_CLIENT_CERT_AUTH=&ldquo;true&rdquo;
+ETCD_PEER_TRUSTED_CA_FILE=&quot;/etc/etcd/ssl/ca.pem&quot;
+ETCD_PEER_AUTO_TLS=&ldquo;true&rdquo;
+EOF</p>
+<p>cat &laquo;EOF &gt;/etc/etcd/etcd.conf</p>
+<h1 id="member-2">[member]</h1>
+<p>#etcd名称
+ETCD_NAME=KNode3
+#etcd数据存放目录
+ETCD_DATA_DIR=/opt/etcd
+#etcd集群通讯监听地址
+ETCD_LISTEN_PEER_URLS=https://0.0.0.0:2380
+#etcd客户端访问监听地址
+ETCD_LISTEN_CLIENT_URLS=https://0.0.0.0:2379
+#关闭代理
+ETCD_PROXY=off</p>
+<h1 id="cluster-2">[cluster]</h1>
+<p>ETCD_ADVERTISE_CLIENT_URLS=https://10.199.88.203:2379
+ETCD_INITIAL_ADVERTISE_PEER_URLS=https://10.199.88.203:2380
+ETCD_INITIAL_CLUSTER=&ldquo;KNode1=https://10.199.88.201:2380,KNode2=https://10.199.88.202:2380,KNode3=https://10.199.88.203:2380&rdquo;
+ETCD_INITIAL_CLUSTER_STATE=new
+ETCD_INITIAL_CLUSTER_TOKEN=etcd-k8s-cluster</p>
+<h1 id="security-2">[security]</h1>
+<p>ETCD_CERT_FILE=&quot;/etc/etcd/ssl/etcd.pem&quot;
+ETCD_KEY_FILE=&quot;/etc/etcd/ssl/etcd-key.pem&quot;
+ETCD_CLIENT_CERT_AUTH=&ldquo;true&rdquo;
+ETCD_TRUSTED_CA_FILE=&quot;/etc/etcd/ssl/ca.pem&quot;
+ETCD_AUTO_TLS=&ldquo;true&rdquo;
+ETCD_PEER_CERT_FILE=&quot;/etc/etcd/ssl/etcd.pem&quot;
+ETCD_PEER_KEY_FILE=&quot;/etc/etcd/ssl/etcd-key.pem&quot;
+ETCD_PEER_CLIENT_CERT_AUTH=&ldquo;true&rdquo;
+ETCD_PEER_TRUSTED_CA_FILE=&quot;/etc/etcd/ssl/ca.pem&quot;
+ETCD_PEER_AUTO_TLS=&ldquo;true&rdquo;
+EOF</p>
+<p>/usr/bin/etcd/etcdctl &ndash;cacert=/etc/etcd/ssl/ca.pem &ndash;cert=/etc/etcd/ssl/etcd.pem &ndash;key=/etc/etcd/ssl/etcd-key.pem &ndash;endpoints=https://10.199.88.201:2379,https://10.199.88.202:2379,https://10.199.88.203:2379 member list</p>
+<p>cp /data/share/k8s/ssl/client*.pem /etc/etcd/ssl/</p>
+<p>cat &laquo;EOF &gt; kubeadm.yaml
+apiVersion: kubeadm.k8s.io/v1beta3
+bootstrapTokens:</p>
+<ul>
+<li>groups:
+<ul>
+<li>system:bootstrappers:kubeadm:default-node-token</li>
+</ul>
+<h1 id="kubeadm-token-generate内容">kubeadm token generate内容</h1>
+token: abcdef.0123456789abcdef
+<h1 id="过期时间">过期时间</h1>
+ttl: 24h0m0s
+usages:
+<ul>
+<li>signing</li>
+<li>authentication
+kind: InitConfiguration
+localAPIEndpoint:</li>
+</ul>
+</li>
+</ul>
+<h1 id="api的连接地址如果是高可用集群这里换成vip地址">API的连接地址，如果是高可用集群这里换成VIP地址</h1>
+<h2 id="taints-null">advertiseAddress: 10.199.88.201
+bindPort: 6443
+nodeRegistration:
+criSocket: unix:///var/run/containerd/containerd.sock
+imagePullPolicy: IfNotPresent
+name: KNode1
+taints: null</h2>
+<p>apiServer:
+timeoutForControlPlane: 4m0s
+apiVersion: kubeadm.k8s.io/v1beta3
+certificatesDir: /etc/kubernetes/pki
+clusterName: kubernetes
+controllerManager: {}
+dns: {}</p>
+<h1 id="etcd连接信息这里会用到客户端证书当然也可以使用peer类型证书但是不安全">etcd连接信息，这里会用到客户端证书，当然也可以使用peer类型证书，但是不安全</h1>
+<p>etcd:
+external:
+endpoints:
+- https://10.199.88.201:2379
+- https://10.199.88.202:2379
+- https://10.199.88.203:2379
+caFile: /etc/etcd/ssl/ca.pem
+certFile: /etc/etcd/ssl/client.pem
+keyFile: /etc/etcd/ssl/client-key.pem</p>
+<h1 id="修改为阿里镜像">修改为阿里镜像</h1>
+<p>imageRepository: registry.aliyuncs.com/google_containers
+kind: ClusterConfiguration</p>
+<h1 id="集群版本">集群版本</h1>
+<p>kubernetesVersion: 1.22.0
+networking:</p>
+<h1 id="dns域名">dns域名</h1>
+<p>dnsDomain: example.local</p>
+<h1 id="service网段">Service网段</h1>
+<p>serviceSubnet: 10.96.0.0/16</p>
+<h1 id="pod网段">pod网段</h1>
+<h2 id="scheduler">podSubnet: &lsquo;10.244.0.0/16&rsquo;
+scheduler:</h2>
+<p>#kube Proxy配置
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration</p>
+<h1 id="对于-kubernetes-v110supportipvsproxymode默认设置为-true对于-kubernetes-v111及以后版本该选项已完全删除但是您需要在v110之前为kubernetes-明确启用---feature-gates--supportipvsproxymode--true">对于 Kubernetes v1.10“SupportIPVSProxyMode”默认设置为 “true”。对于 Kubernetes v1.11及以后版本，该选项已完全删除。但是，您需要在v1.10之前为Kubernetes 明确启用 &ndash;feature-gates = SupportIPVSProxyMode = true。</h1>
+<h1 id="如果已经初始化了则需要修改configmap删除以下字段">如果已经初始化了则需要修改configmap,删除以下字段</h1>
+<h1 id="featuregates">featureGates:</h1>
+<h1 id="supportipvsproxymode-true">SupportIPVSProxyMode: true</h1>
+<p>mode: ipvs
+ipvs:
+minSyncPeriod: 5s
+syncPeriod: 5s</p>
+<h1 id="ipvs-负载策略">ipvs 负载策略</h1>
+<h2 id="scheduler-wrr">scheduler: &lsquo;wrr&rsquo;</h2>
+<p>#kubelet配置
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+cgroupDriver: systemd
+serializeImagePulls: false
+evictionHard:
+memory.available: &lsquo;1000Mi&rsquo;
+EOF
+kubeadm init &ndash;config=kubeadm.yaml</p>
+<p>kubeadm join 10.199.88.201:6443 &ndash;token abcdef.0123456789abcdef <br>
+&ndash;discovery-token-ca-cert-hash sha256:22da57590a2c81f0cece9c5acf93ad256eaa01b193681d486df2f094b1e82f3f</p>
+<p>curl  <a href="https://raw.githubusercontent.com/projectcalico/calico/master/manifests/calico-etcd.yaml">https://raw.githubusercontent.com/projectcalico/calico/master/manifests/calico-etcd.yaml</a> -o calico.yaml
+cd /vagrant/</p>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#版本说明">版本说明</a>
+      <ul>
+        <li><a href="#服务器安装">服务器安装</a></li>
+        <li><a href="#客户端安装">客户端安装</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#taints-null">advertiseAddress: 10.199.88.201
+bindPort: 6443
+nodeRegistration:
+criSocket: unix:///var/run/containerd/containerd.sock
+imagePullPolicy: IfNotPresent
+name: KNode1
+taints: null</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#scheduler">podSubnet: &lsquo;10.244.0.0/16&rsquo;
+scheduler:</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#scheduler-wrr">scheduler: &lsquo;wrr&rsquo;</a></li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer>
+    <div class="copyright">
+        
+        
+    </div>
+
+</footer>
+
+
+<script async src="https://localhost//js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+</body>
+
+</html>

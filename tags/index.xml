@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>标签 on allposs博客</title>
+    <link>https://localhost/tags/</link>
+    <description>Recent content in 标签 on allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 22 May 2023 11:24:20 +0800</lastBuildDate><atom:link href="https://localhost/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>合集</title>
+      <link>https://localhost/tags/%E5%90%88%E9%9B%86/</link>
+      <pubDate>Fri, 19 May 2023 18:00:39 +0800</pubDate>
+      
+      <guid>https://localhost/tags/%E5%90%88%E9%9B%86/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>原理</title>
+      <link>https://localhost/tags/%E5%8E%9F%E7%90%86/</link>
+      <pubDate>Fri, 19 May 2023 18:00:39 +0800</pubDate>
+      
+      <guid>https://localhost/tags/%E5%8E%9F%E7%90%86/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NFS</title>
+      <link>https://localhost/tags/nfs/</link>
+      <pubDate>Fri, 19 May 2023 16:25:47 +0800</pubDate>
+      
+      <guid>https://localhost/tags/nfs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>endpoint</title>
+      <link>https://localhost/tags/endpoint/</link>
+      <pubDate>Thu, 18 May 2023 15:18:02 +0800</pubDate>
+      
+      <guid>https://localhost/tags/endpoint/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubernetes</title>
+      <link>https://localhost/tags/kubernetes/</link>
+      <pubDate>Thu, 18 May 2023 15:18:02 +0800</pubDate>
+      
+      <guid>https://localhost/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>service</title>
+      <link>https://localhost/tags/service/</link>
+      <pubDate>Thu, 18 May 2023 15:18:02 +0800</pubDate>
+      
+      <guid>https://localhost/tags/service/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>资源对象</title>
+      <link>https://localhost/tags/%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/</link>
+      <pubDate>Thu, 18 May 2023 15:18:02 +0800</pubDate>
+      
+      <guid>https://localhost/tags/%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kube-proxy</title>
+      <link>https://localhost/tags/kube-proxy/</link>
+      <pubDate>Thu, 18 May 2023 15:00:54 +0800</pubDate>
+      
+      <guid>https://localhost/tags/kube-proxy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Golang</title>
+      <link>https://localhost/tags/golang/</link>
+      <pubDate>Wed, 17 May 2023 10:33:37 +0800</pubDate>
+      
+      <guid>https://localhost/tags/golang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>代码片段</title>
+      <link>https://localhost/tags/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</link>
+      <pubDate>Wed, 17 May 2023 10:33:37 +0800</pubDate>
+      
+      <guid>https://localhost/tags/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>环境搭建</title>
+      <link>https://localhost/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Wed, 17 May 2023 10:33:37 +0800</pubDate>
+      
+      <guid>https://localhost/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mardown</title>
+      <link>https://localhost/tags/mardown/</link>
+      <pubDate>Wed, 17 May 2023 10:29:24 +0800</pubDate>
+      
+      <guid>https://localhost/tags/mardown/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>问题</title>
+      <link>https://localhost/tags/%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Wed, 17 May 2023 10:27:02 +0800</pubDate>
+      
+      <guid>https://localhost/tags/%E9%97%AE%E9%A2%98/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>优化</title>
+      <link>https://localhost/tags/%E4%BC%98%E5%8C%96/</link>
+      <pubDate>Wed, 17 May 2023 10:26:15 +0800</pubDate>
+      
+      <guid>https://localhost/tags/%E4%BC%98%E5%8C%96/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>命令</title>
+      <link>https://localhost/tags/%E5%91%BD%E4%BB%A4/</link>
+      <pubDate>Mon, 15 May 2023 18:35:44 +0800</pubDate>
+      
+      <guid>https://localhost/tags/%E5%91%BD%E4%BB%A4/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>容器</title>
+      <link>https://localhost/tags/%E5%AE%B9%E5%99%A8/</link>
+      <pubDate>Mon, 15 May 2023 15:28:47 +0800</pubDate>
+      
+      <guid>https://localhost/tags/%E5%AE%B9%E5%99%A8/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>2018-23</title>
+      <link>https://localhost/tags/2018-23/</link>
+      <pubDate>Mon, 15 May 2023 10:31:53 +0800</pubDate>
+      
+      <guid>https://localhost/tags/2018-23/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

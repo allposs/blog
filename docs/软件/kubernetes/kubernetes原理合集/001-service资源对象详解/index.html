@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>Service资源对象详解 - allposs博客</title>
+    <meta property="og:title" content="Service资源对象详解 - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://localhost//css/style.css" />
+    <link rel="stylesheet" href="https://localhost//css/fonts.css" />
+    <link rel="stylesheet" href="https://localhost//css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../../../" aria-label="个人博客">
+                <img src="https://localhost/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../../../docs/" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs/" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>Service资源对象详解</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2023-05-18
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                kubernetes
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                资源对象
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                service
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                endpoint
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<p>Service在<a href="https://kubernetes.io/zh-cn/docs/tutorials/kubernetes-basics/expose/expose-intro/">Kubernetes</a>官方主页是这样描述的：</p>
+<blockquote>
+<p>Kubernetes Pod 是转瞬即逝的。 Pod 实际上拥有 生命周期。 当一个工作 Node 挂掉后, 在 Node 上运行的 Pod 也会消亡。 ReplicaSet 会自动地通过创建新的 Pod 驱动集群回到目标状态，以保证应用程序正常运行。 换一个例子，考虑一个具有3个副本数的用作图像处理的后端程序。这些副本是可替换的; 前端系统不应该关心后端副本，即使 Pod 丢失或重新创建。也就是说，Kubernetes 集群中的每个 Pod (即使是在同一个 Node 上的 Pod )都有一个唯一的 IP 地址，因此需要一种方法自动协调 Pod 之间的变更，以便应用程序保持运行。</p>
+<p>Kubernetes 中的服务(Service)是一种抽象概念，它定义了 Pod 的逻辑集和访问 Pod 的协议。Service 使从属 Pod 之间的松耦合成为可能。来标记。</p>
+</blockquote>
+<p>而我所理解的是：Service是一个抽象概念，类型微服务下的服务，它统一了同组POD对外访问的方式，类型传统架构下使用VIP访问后端多应用的结构。本片文章会从Service信息提交给kube-apiserver组件开始到我们能通过ClusterIP访问POD为结尾，详细了解Service运作原理。我们先从Service创建的流程开始。</p>
+<h1 id="环境">环境</h1>
+<h1 id="正文">正文</h1>
+<h2 id="创建过程">创建过程</h2>
+<p>在我们提交Service对象给kube-apiserver组件后,kube-apiserver组件会把Service对象存储到etcd,并广播创建Service这条信息。这个时候kube-controller-manager组件与kube-proxy组件都监听到对象并做相应处理，注意这里是并发形式的。当kube-controller-manager组件监听到Service变更时(创建)会由endpoint-controller功能进行解析处理生成Endpoint资源对象并提交给kube-apiserver组件，而kube-apiserver组件会把Endpoint对象存储在etcd，并且广播创建Endpoint这条信息。同时kube-proxy组件也接收到了Service信息，kube-proxy组件监听到Service变更时(创建)会在iptables或ipvs(看具体kube-proxy采用的方式，后面具体会说明)创建有关ClusterIP的条目。具体如下图:</p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="../../../../../images/kubernetes/service%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<img src="../../../../../images/kubernetes/service%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="Service流程图"  />
+</a>
+</div>
+
+</p>
+<p>PS:</p>
+<ul>
+<li>
+<p>Service是工作在传输层（4层），所以也是4层负载</p>
+</li>
+<li>
+<p>Service实现负载均Node需要满足如下三个条件：</p>
+<ul>
+<li>容器之间能直接通信；</li>
+<li>容器与Node之间能直接通信；</li>
+<li>容器看到自身的IP和外面看到它的IP必须是一样的，即不存在IP转化的问题;</li>
+</ul>
+</li>
+</ul>
+<h2 id="使用类型">使用类型</h2>
+<ul>
+<li>clusterIP：只能在集群的节点和pod中访问，解决的就是集群内应用间的相互访问的问题；</li>
+<li>nodeport：通过节点的地址和端口把pod暴露到集群外，让集群外的应用能访问集群内的应用，设置服务类型为nodeport时，是在clusterIP的基础上再给节点开个端口转发（是特定节点还是每一个节点要看externalTrafficPolicy的值，Cluster是每一个节点都开，Local是只在pod运行的节点开），所以nodeport的服务也会有一个clusterIP</li>
+<li>loadBalancer：因为使用nodeport方式时，免不了要在应用的调用方写死一个集群节点的IP，这并非高可用的方式，所以又有了使用第三方负载均衡器的方式，转发到多个节点的nodeport，这种类型通常需要用户扩展个控制器与云平台或所属IDC机房的负载均衡器打通才能生效，普通安装的k8s集群一般类型为loadBalancer的服务都是pending状态；loadBalancer是在nodeport的基础之上再创建个lb，所以也是会先分配一个clusterIP，再创建节点的端口转发。</li>
+<li>headless：应用内多个副本彼此间互相访问，比如要部署到mysql的主从，从的副本想要找主的副本；</li>
+<li>externalName：其实只是相当于coredns里的cname记录</li>
+</ul>
+<h2 id="原理模拟">原理模拟</h2>
+<h1 id="结束">结束</h1>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#创建过程">创建过程</a></li>
+    <li><a href="#使用类型">使用类型</a></li>
+    <li><a href="#原理模拟">原理模拟</a></li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer>
+    <div class="copyright">
+        
+        
+    </div>
+
+</footer>
+
+
+<script async src="https://localhost//js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+</body>
+
+</html>

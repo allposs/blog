@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>资源对象 on allposs博客</title>
+    <link>https://localhost/tags/%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/</link>
+    <description>Recent content in 资源对象 on allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 18 May 2023 15:18:02 +0800</lastBuildDate><atom:link href="https://localhost/tags/%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Service资源对象详解</title>
+      <link>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-service%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</link>
+      <pubDate>Thu, 18 May 2023 15:18:02 +0800</pubDate>
+      
+      <guid>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-service%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</guid>
+      <description>简介 Service在Kubernetes官方主页是这样描述的： Kubernetes Pod 是转瞬即逝的。 Pod 实际上拥有 生命周期。 当一个工作 Node 挂掉后, 在 Node 上运行的 Pod 也会</description>
+    </item>
+    
+  </channel>
+</rss>

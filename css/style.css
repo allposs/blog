@@ -1,0 +1,429 @@
+/* Micro Reset */
+
+html {
+  font-family: 'Noto Serif', 'Noto Serif CJK SC', 'Noto Serif CJK', 'Source Han Serif SC', 'Source Han Serif CN',
+    'Source Han Serif', 'source-han-serif-sc', serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  box-sizing: border-box;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #111;
+  background-color: #fefefe;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+
+button,
+input,
+select,
+textarea,
+label {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* Typography */
+
+body {
+  line-height: 1.75;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding: 0;
+  margin: 20px 0 10px;
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: normal;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: 19px;
+  font-weight: bold;
+}
+
+p {
+  text-indent: 40px;
+}
+
+blockquote {
+  margin: 1em 0;
+  padding: 0 1em;
+  border-left: 3px solid #ddd;
+}
+
+/* Code */
+
+pre,
+code {
+  font-size: 0.9em;
+}
+
+pre code {
+  display: block;
+  border: 1px solid #ddd;
+  box-shadow: 5px 5px 5px #eee;
+  padding: 1em;
+  overflow-x: auto;
+  line-height: 1.75;
+}
+
+code {
+  background: #f9f9f9;
+}
+
+pre code {
+  background: none;
+}
+
+/* Lists */
+
+ul,
+ol {
+  padding: 0 0 0 20px;
+}
+
+li {
+  margin: 4px 0;
+  padding: 0;
+}
+
+/* Links */
+
+a {
+  color: black;
+  text-decoration: none;
+  padding-bottom: 2px;
+}
+
+a.fancya {
+  border-bottom: none;
+}
+
+sup a {
+  border-bottom: none;
+}
+
+/* Miscellanea */
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid;
+  margin: 10px auto;
+  padding: 0;
+}
+
+/* Layout */
+
+.body {
+  width: calc(100% - 250px);
+  margin-left: 250px;
+  padding: 30px 0;
+}
+
+.content {
+  width: calc(100%);
+  padding: 10px;
+  min-height: calc(100vh - 60px);
+}
+
+/* Menu */
+
+.intro-and-nav .intro .library-desc {
+  text-indent: 0;
+}
+
+.intro-and-nav .ext .button {
+  list-style: none;
+  font-size: 1.2rem;
+  text-align: left;
+  text-decoration: none;
+}
+
+.intro-and-nav .ext .text {
+  display: flex;
+  list-style: none;
+}
+.intro-and-nav .ext span {
+  margin-left: 5px;
+  font-weight: 500;
+}
+
+/* Content */
+
+.content .title h1 {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.content .title .tags {
+  float: right;
+  padding-bottom: 5px;
+}
+
+.content .title .subtitle {
+  text-indent: 40px;
+}
+
+.content .title hr {
+  width: 100%;
+}
+
+.content .title span {
+  padding-right: 10px;
+  font-weight: normal;
+}
+
+.content .docs {
+  width: 100%;
+  display: flex;
+}
+.content .docs .article {
+  width: 80%;
+}
+.content .docs .aside {
+  font-size: 1rem;
+  border: 1px solid;
+  position: fixed;
+  left: calc(100% - 300px);
+}
+#TableOfContents {
+  min-width: 250px;
+  padding: 0 10px 0 10px;
+}
+
+.content .docs .aside h2 {
+  text-align: center;
+}
+
+.content .docs .article h1 {
+  font-size: 29px;
+}
+
+.content .docs .article h2 {
+  font-size: 25px;
+  font-weight: normal;
+}
+
+.content .docs .article h3 {
+  font-size: 21px;
+  font-weight: normal;
+}
+
+.content .docs .article h4 {
+  font-size: 17px;
+  font-weight: normal;
+}
+
+.content .article .terms {
+  padding: 20px;
+}
+
+.content .article .terms li {
+  float: left;
+  list-style: none;
+  display: block;
+  white-space: nowrap;
+  padding-right: 10px;
+}
+.content .article .title {
+  display: flex;
+}
+
+.content .article .list {
+  padding: 20px;
+}
+
+.content .article .list .group {
+  margin-bottom: 20px;
+}
+
+.content .article .title h2 {
+  margin: 10px 0;
+  line-height: 0.5;
+}
+
+.content .article .title h4 {
+  list-style: none;
+  padding: 0.5rem;
+  font-weight: normal;
+  font-size: inherit;
+  margin: 10px 0;
+  line-height: 0.5;
+}
+
+/* Tables */
+
+table {
+  border: 1px solid #666;
+  min-width: 50%;
+  max-width: 100%;
+}
+
+table thead th {
+  border-bottom: 1px solid #666;
+}
+
+th,
+td {
+  padding: 5px;
+}
+
+thead,
+tfoot,
+tr:nth-child(even) {
+  background: #f8f8f8;
+}
+
+/* Disqus Comments */
+.comments {
+  margin-top: 20px;
+}
+
+#disqus-container {
+  text-align: center;
+}
+
+#disqus-button {
+  width: 100%;
+  padding: 0.25em 0.75em;
+}
+
+#disqus-comments {
+  display: none;
+}
+
+/**
+   * Utility Styles
+**/
+
+.unselectable {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/**
+   * -------------------------------------------------------------------------
+   *  Media Queries
+   * -------------------------------------------------------------------------
+   *
+   * The @viewport tag does the same thing as
+   *
+   *   <meta name="viewport" content="width=device-width">
+   *
+   * but in the future W3C standard way. The -ms- prefix is required for
+   * IE10+ to render responsive styling in Windows 8 "snapped" views;
+   * IE10+ does not honour the meta tag.
+   */
+
+@-ms-viewport {
+  width: device-width;
+}
+
+@viewport {
+  width: device-width;
+}
+
+/* Tablet screens and smaller */
+
+@media screen and (max-width: 960px) {
+  body {
+    width: auto;
+  }
+
+  .content {
+    width: auto;
+    padding: 40px 10px;
+    margin-left: 0;
+    border-left: none;
+    min-height: auto;
+  }
+}
+
+/* Landscape phone screens and smaller */
+
+@media screen and (max-width: 720px) {
+}
+
+/* Portrait phone screens */
+
+@media screen and (max-width: 480px) {
+  body {
+    font-size: 13px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 14px;
+  }
+
+  pre,
+  code {
+    font-size: 11px;
+  }
+  .body {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .content {
+    width: 100%;
+  }
+  .content .docs .article {
+    width: 100%;
+  }
+  .content .docs .aside {
+    display: none;
+  }
+  .content .article .terms li {
+    float: left;
+    list-style: none;
+    display: block;
+    white-space: nowrap;
+  }
+}

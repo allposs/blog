@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>K8S三节点集群搭建 - allposs博客</title>
+    <meta property="og:title" content="K8S三节点集群搭建 - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://localhost//css/style.css" />
+    <link rel="stylesheet" href="https://localhost//css/fonts.css" />
+    <link rel="stylesheet" href="https://localhost//css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../../../" aria-label="个人博客">
+                <img src="https://localhost/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../../../docs/" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs/" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>K8S三节点集群搭建</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2023-05-15
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                容器
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                kubernetes
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<p>由于工作的原因，需要对k8s进行二次开发，所以需要一个能统一的开发环境，而minikube并不适合深度开发，所以只能以最小集群的方式搭建开发环境。主要是宿主机使用vagrant+virtualbox通过Vagrantfile文件快速产生半成品虚拟主机集群，然后通过简单配置即可产生k8s三节点开发环境。</p>
+<p>注:</p>
+<ul>
+<li>文档中<strong>初始化环境[<code>*</code>]<strong>表示</strong>所有主机</strong>都需要，而<strong>初始化环境[<code>KNode1</code>]<strong>表示</strong>只有KNode1主机</strong>执行</li>
+<li>文档中<strong>vagrant</strong>目录为共享目录，如果没有可以使用nfs服务器进行</li>
+</ul>
+<h1 id="环境">环境</h1>
+<p>虚拟机配置:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">IP</th>
+<th style="text-align:left">HostName</th>
+<th style="text-align:left">CPU</th>
+<th style="text-align:left">Memory</th>
+<th style="text-align:left">NodeType</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">10.199.88.201</td>
+<td style="text-align:left">KNode1</td>
+<td style="text-align:left">4</td>
+<td style="text-align:left">8G</td>
+<td style="text-align:left">master</td>
+</tr>
+<tr>
+<td style="text-align:left">10.199.88.202</td>
+<td style="text-align:left">KNode2</td>
+<td style="text-align:left">4</td>
+<td style="text-align:left">8G</td>
+<td style="text-align:left">node</td>
+</tr>
+<tr>
+<td style="text-align:left">10.199.88.203</td>
+<td style="text-align:left">KNode3</td>
+<td style="text-align:left">4</td>
+<td style="text-align:left">8G</td>
+<td style="text-align:left">node</td>
+</tr>
+</tbody>
+</table>
+<p>vagrantfile：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ruby" data-lang="ruby"><span style="display:flex;"><span><span style="color:#75715e"># -*- mode: ruby -*-</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># vi: set ft=ruby :</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Vagrant</span><span style="color:#f92672">.</span>configure(<span style="color:#e6db74">&#34;2&#34;</span>) <span style="color:#66d9ef">do</span> <span style="color:#f92672">|</span>config<span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>	(<span style="color:#ae81ff">1</span><span style="color:#f92672">..</span><span style="color:#ae81ff">3</span>)<span style="color:#f92672">.</span>each <span style="color:#66d9ef">do</span> <span style="color:#f92672">|</span>i<span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>		    config<span style="color:#f92672">.</span>vm<span style="color:#f92672">.</span>define <span style="color:#e6db74">&#34;KNode</span><span style="color:#e6db74">#{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#66d9ef">do</span> <span style="color:#f92672">|</span>node<span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># 判断是否安装vagrant-proxyconf,是否使用代理,注意这里的10.0.2.3是虚拟机网关地址。</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">Vagrant</span><span style="color:#f92672">.</span>has_plugin?(<span style="color:#e6db74">&#34;vagrant-proxyconf&#34;</span>)
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e"># node.proxy.http     = &#34;http://10.0.2.3:7890/&#34;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e"># node.proxy.https    = &#34;http://10.0.2.3:7890/&#34;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e"># node.proxy.no_proxy = &#34;localhost,127.0.0.1,.example.com&#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>		        <span style="color:#75715e"># 设置虚拟机的Box,这里使用的是rockylinux</span>
+</span></span><span style="display:flex;"><span>                config<span style="color:#f92672">.</span>vm<span style="color:#f92672">.</span>box <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;rockylinux/9&#34;</span>
+</span></span><span style="display:flex;"><span>                 <span style="color:#75715e"># 设置虚拟机的Box版本,这里使用的是rockylinux9.1</span>
+</span></span><span style="display:flex;"><span>                config<span style="color:#f92672">.</span>vm<span style="color:#f92672">.</span>box_version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;1.0.0&#34;</span>
+</span></span><span style="display:flex;"><span>		        <span style="color:#75715e"># 设置虚拟机的主机名</span>
+</span></span><span style="display:flex;"><span>		        node<span style="color:#f92672">.</span>vm<span style="color:#f92672">.</span>hostname<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;KNode</span><span style="color:#e6db74">#{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>		        <span style="color:#75715e"># 设置虚拟机的IP</span>
+</span></span><span style="display:flex;"><span>		        node<span style="color:#f92672">.</span>vm<span style="color:#f92672">.</span>network <span style="color:#e6db74">&#34;private_network&#34;</span>, <span style="color:#e6db74">ip</span>: <span style="color:#e6db74">&#34;10.199.88.20</span><span style="color:#e6db74">#{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>		        <span style="color:#75715e"># VirtaulBox相关配置</span>
+</span></span><span style="display:flex;"><span>		        node<span style="color:#f92672">.</span>vm<span style="color:#f92672">.</span>provider <span style="color:#e6db74">&#34;virtualbox&#34;</span> <span style="color:#66d9ef">do</span> <span style="color:#f92672">|</span>v<span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>			        <span style="color:#75715e"># 设置虚拟机的名称</span>
+</span></span><span style="display:flex;"><span>			        v<span style="color:#f92672">.</span>name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;KNode</span><span style="color:#e6db74">#{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>			        <span style="color:#75715e"># 设置虚拟机的内存大小</span>
+</span></span><span style="display:flex;"><span>			        v<span style="color:#f92672">.</span>memory <span style="color:#f92672">=</span> <span style="color:#ae81ff">8192</span>
+</span></span><span style="display:flex;"><span>			        <span style="color:#75715e"># 设置虚拟机的CPU个数</span>
+</span></span><span style="display:flex;"><span>			        v<span style="color:#f92672">.</span>cpus <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>		        <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>                node<span style="color:#f92672">.</span>vm<span style="color:#f92672">.</span>provision <span style="color:#e6db74">&#34;shell&#34;</span>, <span style="color:#e6db74">inline</span>: <span style="color:#e6db74">&lt;&lt;-SHELL 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">SHELL</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>	    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><h1 id="正文">正文</h1>
+<h2 id="1-环境初始化">1. 环境初始化[<code>*</code>]</h2>
+<h3 id="a-系统更新与工具安装">a). 系统更新与工具安装</h3>
+<p>更新操作系统到最新、并安装常用软件包</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 修改软件源为阿里云</span>
+</span></span><span style="display:flex;"><span>sed -e <span style="color:#e6db74">&#39;s|^mirrorlist=|#mirrorlist=|g&#39;</span> -e <span style="color:#e6db74">&#39;s|^#baseurl=http://dl.rockylinux.org/$contentdir|baseurl=https://mirrors.aliyun.com/rockylinux|g&#39;</span> -i.bak /etc/yum.repos.d/rocky*.repo
+</span></span><span style="display:flex;"><span>dnf makecache
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 更新软件软件包，排除内核包</span>
+</span></span><span style="display:flex;"><span>yum --exclude<span style="color:#f92672">=</span>kernel* update -y
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 安装常用软件</span>
+</span></span><span style="display:flex;"><span>yum install bash-com* net-tools sysstat vim wget telnet strace psmisc yum-utils traceroute tar -y
+</span></span><span style="display:flex;"><span>cat &gt;&gt; /etc/hosts <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">10.199.88.201 knode1 KNode1 KNode1.example.com knode1.example.com 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">10.199.88.202 knode2 KNode2 KNode2.example.com knode2.example.com 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">10.199.88.203 knode3 KNode3 KNode3.example.com knode3.example.com 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h3 id="b-配置时间同步">b). 配置时间同步</h3>
+<p>只要是分布式系统,时间同步是必不可少的，这里使用的是chrony，也可以使用ntpdate</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yum install chrony -y
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#配置chrony时间同步</span>
+</span></span><span style="display:flex;"><span>IP<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>ip addr | grep <span style="color:#e6db74">&#39;state UP&#39;</span> -A3 | grep <span style="color:#e6db74">&#34;inet 172.20&#34;</span> | awk <span style="color:#e6db74">&#39;{print $2}&#39;</span> | tr -d <span style="color:#e6db74">&#34;addr:&#34;</span> | head -n <span style="color:#ae81ff">1</span> | cut -d / -f1<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;3,6s/^/#/g&#39;</span> /etc/chrony.conf
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#34;7s|^|server </span>$IP<span style="color:#e6db74"> iburst|g&#34;</span> /etc/chrony.conf
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;allow all&#34;</span> &gt;&gt; /etc/chrony.conf
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;local stratum 10&#34;</span> &gt;&gt; /etc/chrony.conf
+</span></span><span style="display:flex;"><span>systemctl restart chronyd <span style="color:#f92672">&amp;&amp;</span> systemctl enable chronyd <span style="color:#f92672">&amp;&amp;</span> timedatectl set-ntp true <span style="color:#f92672">&amp;&amp;</span> sleep <span style="color:#ae81ff">5</span> <span style="color:#f92672">&amp;&amp;</span> systemctl restart chronyd <span style="color:#f92672">&amp;&amp;</span> chronyc sources
+</span></span></code></pre></div><h3 id="b-kubernetes系统调整">b). kubernetes系统调整</h3>
+<p>主要是针对kubernetes系统级的调整</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 关闭swap、selinux和防火墙</span>
+</span></span><span style="display:flex;"><span>swapoff -a <span style="color:#f92672">&amp;&amp;</span> sysctl -w vm.swappiness<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> setenforce <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> sed -i <span style="color:#e6db74">&#39;s/SELINUX=permissive/SELINUX=disabled/&#39;</span> /etc/selinux/config <span style="color:#f92672">&amp;&amp;</span> sed -i <span style="color:#e6db74">&#39;/swap/s/^/#/&#39;</span> /etc/fstab  <span style="color:#f92672">&amp;&amp;</span> systemctl stop firewalld.service <span style="color:#f92672">&amp;&amp;</span> systemctl disable firewalld.service
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 添加内核模块,br_netfilter模块可以使iptables规则在Linux Bridges的上层工作，用于将桥接的流量转发至iptables链,可以使用lsmod查看当前内核模块</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 开机加载模块</span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; /etc/modules-load.d/k8s.conf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">br_netfilter
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 立即加载模块</span>
+</span></span><span style="display:flex;"><span>modprobe br_netfilter
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 设置所需的sysctl参数</span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; /etc/sysctl.d/k8s.conf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">net.ipv4.ip_forward = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">net.bridge.bridge-nf-call-ip6tables = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">net.bridge.bridge-nf-call-iptables = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#立即应用sysctl参数</span>
+</span></span><span style="display:flex;"><span>sysctl --system
+</span></span></code></pre></div><h2 id="2-创建证书knode1">2. 创建证书[<code>KNode1</code>]</h2>
+<h3 id="a-安装cfssl工具">a). 安装cfssl工具</h3>
+<p>这里主要是安装cfssl工具并配置环境</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>VERSION<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.6.4&#34;</span>
+</span></span><span style="display:flex;"><span>wget https://github.com/cloudflare/cfssl/releases/download/v<span style="color:#e6db74">${</span>VERSION<span style="color:#e6db74">}</span>/cfssl_<span style="color:#e6db74">${</span>VERSION<span style="color:#e6db74">}</span>_linux_amd64 -O /usr/bin/cfssl
+</span></span><span style="display:flex;"><span>wget https://github.com/cloudflare/cfssl/releases/download/v<span style="color:#e6db74">${</span>VERSION<span style="color:#e6db74">}</span>/cfssl-certinfo_<span style="color:#e6db74">${</span>VERSION<span style="color:#e6db74">}</span>_linux_amd64 -O /usr/bin/cfssl-certinfo
+</span></span><span style="display:flex;"><span>wget https://github.com/cloudflare/cfssl/releases/download/v<span style="color:#e6db74">${</span>VERSION<span style="color:#e6db74">}</span>/cfssljson_<span style="color:#e6db74">${</span>VERSION<span style="color:#e6db74">}</span>_linux_amd64 -O /usr/bin/cfssljson
+</span></span><span style="display:flex;"><span>chmod +x /usr/bin/cfssl /usr/bin/cfssljson /usr/bin/cfssl-certinfo <span style="color:#f92672">&amp;&amp;</span> mkdir -p /vagrant/ssl <span style="color:#f92672">&amp;&amp;</span> cd /vagrant/ssl
+</span></span></code></pre></div><h3 id="b-创建ca证书">b). 创建CA证书</h3>
+<p>这里把证书的验证类型分为server、client、peer三类，其中peer是支持全部验证类型。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; ca-config.json
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;signing&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;default&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;expiry&#34;: &#34;43800h&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        },
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;profiles&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;server&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &#34;expiry&#34;: &#34;43800h&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &#34;usages&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;signing&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;key encipherment&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;server auth&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                ]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            },
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;client&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &#34;expiry&#34;: &#34;43800h&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &#34;usages&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;signing&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;key encipherment&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;client auth&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                ]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            },
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;peer&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &#34;expiry&#34;: &#34;43800h&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &#34;usages&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;signing&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;key encipherment&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;server auth&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;client auth&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                ]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; ca-csr.json
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;CN&#34;: &#34;Self Signed CA&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;key&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;algo&#34;: &#34;rsa&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;size&#34;: 2048
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    },
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;names&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;C&#34;: &#34;CN&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;L&#34;: &#34;ShangHai&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;O&#34;: &#34;example Personal&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;ST&#34;: &#34;SH&#34;,            
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;OU&#34;: &#34;admin&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;CN&#34;: &#34;admin Personal Tester CA&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;emailAddress&#34;: &#34;admin@example.com&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        }    ]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
+</span></span></code></pre></div><h3 id="c-创建etcd集群证书">c). 创建etcd集群证书</h3>
+<p>这里为了方便，使用peer类型证书。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; etcd-csr.json
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;CN&#34;: &#34;etcd&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;hosts&#34;:[
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;127.0.0.1&#34;,&#34;10.199.88.201&#34;,&#34;10.199.88.202&#34;,&#34;10.199.88.203&#34;,&#34;*.example.com&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ],
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;key&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;algo&#34;: &#34;rsa&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;size&#34;: 2048
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    },
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;names&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;C&#34;: &#34;CN&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;L&#34;: &#34;ShangHai&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;O&#34;: &#34;example Personal&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;ST&#34;: &#34;SH&#34;,            
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;OU&#34;: &#34;admin&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;CN&#34;: &#34;admin Personal Tester CA&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;emailAddress&#34;: &#34;admin@example.com&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>cfssl gencert -ca<span style="color:#f92672">=</span>ca.pem -ca-key<span style="color:#f92672">=</span>ca-key.pem -config<span style="color:#f92672">=</span>ca-config.json -profile<span style="color:#f92672">=</span>peer etcd-csr.json | cfssljson -bare etcd
+</span></span></code></pre></div><h3 id="d-创建etcd客户端证书">d). 创建etcd客户端证书</h3>
+<p>使用client类型证书。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; client-csr.json
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;CN&#34;: &#34;client&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;hosts&#34;:[
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;127.0.0.1&#34;,&#34;10.199.88.201&#34;,&#34;10.199.88.202&#34;,&#34;10.199.88.203&#34;,&#34;*.example.com&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ],
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;key&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;algo&#34;: &#34;rsa&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;size&#34;: 2048
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    },
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;names&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;C&#34;: &#34;CN&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;L&#34;: &#34;ShangHai&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;O&#34;: &#34;example Personal&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;ST&#34;: &#34;SH&#34;,            
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;OU&#34;: &#34;admin&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;CN&#34;: &#34;admin Personal Tester CA&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;emailAddress&#34;: &#34;admin@example.com&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>cfssl gencert -ca<span style="color:#f92672">=</span>ca.pem -ca-key<span style="color:#f92672">=</span>ca-key.pem -config<span style="color:#f92672">=</span>ca-config.json -profile<span style="color:#f92672">=</span>client client-csr.json | cfssljson -bare client
+</span></span></code></pre></div><h2 id="3-etcd集群配置">3. etcd集群配置</h2>
+<h3 id="a-准备工作knode1">a). 准备工作[<code>KNode1</code>]</h3>
+<p>这里主要下载etcd安装包,这里使用的是3.5.7版本</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>VERSION<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;v3.5.7&#34;</span>
+</span></span><span style="display:flex;"><span>wget  https://github.com/etcd-io/etcd/releases/download/<span style="color:#e6db74">${</span>VERSION<span style="color:#e6db74">}</span>/etcd-<span style="color:#e6db74">${</span>VERSION<span style="color:#e6db74">}</span>-linux-amd64.tar.gz -O /vagrant/etcd.tar.gz
+</span></span></code></pre></div><h3 id="b-knode1节点配置etcdknode1">b). KNode1节点配置etcd[<code>KNode1</code>]</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir /etc/etcd/ssl/ -p <span style="color:#f92672">&amp;&amp;</span> cd /etc/etcd/ssl/ <span style="color:#f92672">&amp;&amp;</span> cp -rf /vagrant/ssl/<span style="color:#f92672">{</span>etcd.pem,etcd-key.pem,ca.pem<span style="color:#f92672">}</span> .
+</span></span><span style="display:flex;"><span>mkdir /usr/bin/etcd <span style="color:#f92672">&amp;&amp;</span> tar xf /vagrant/etcd.tar.gz -C /usr/bin/etcd --strip-components <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> chown -R root. /usr/bin/etcd
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt;/etc/etcd/etcd.conf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># [member]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#etcd名称
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_NAME=KNode1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#etcd数据存放目录
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_DATA_DIR=/opt/etcd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#etcd集群通讯监听地址
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_LISTEN_PEER_URLS=https://0.0.0.0:2380
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#etcd客户端访问监听地址
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_LISTEN_CLIENT_URLS=https://0.0.0.0:2379
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#关闭代理
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PROXY=off
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># [cluster]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_ADVERTISE_CLIENT_URLS=https://10.199.88.201:2379
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_INITIAL_ADVERTISE_PEER_URLS=https://10.199.88.201:2380
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_INITIAL_CLUSTER=&#34;KNode1=https://10.199.88.201:2380,KNode2=https://10.199.88.202:2380,KNode3=https://10.199.88.203:2380&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_INITIAL_CLUSTER_STATE=new
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_INITIAL_CLUSTER_TOKEN=etcd-k8s-cluster
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># [security]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_CERT_FILE=&#34;/etc/etcd/ssl/etcd.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_KEY_FILE=&#34;/etc/etcd/ssl/etcd-key.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_CLIENT_CERT_AUTH=&#34;true&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_TRUSTED_CA_FILE=&#34;/etc/etcd/ssl/ca.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_AUTO_TLS=&#34;true&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PEER_CERT_FILE=&#34;/etc/etcd/ssl/etcd.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PEER_KEY_FILE=&#34;/etc/etcd/ssl/etcd-key.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PEER_CLIENT_CERT_AUTH=&#34;true&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PEER_TRUSTED_CA_FILE=&#34;/etc/etcd/ssl/ca.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PEER_AUTO_TLS=&#34;true&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; /lib/systemd/system/etcd.service
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[Unit]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Description=Etcd Service
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">After=network.target
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[Service]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Environment=ETCD_DATA_DIR=/var/lib/etcd/default
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EnvironmentFile=-/etc/etcd/etcd.conf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Type=notify
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">User=etcd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">PermissionsStartOnly=true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ExecStart=/usr/bin/etcd/etcd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Restart=on-failure
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">RestartSec=10
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">LimitNOFILE=65536
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[Install]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">WantedBy=multi-user.target
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>groupadd etcd <span style="color:#f92672">&amp;&amp;</span> useradd -c <span style="color:#e6db74">&#34;Etcd user&#34;</span> -g etcd -s /sbin/nologin -r etcd <span style="color:#f92672">&amp;&amp;</span> mkdir -p /opt/etcd <span style="color:#f92672">&amp;&amp;</span> chown etcd:etcd -R /opt/etcd /etc/etcd
+</span></span></code></pre></div><h3 id="c-knode2节点配置etcdknode2">c). KNode2节点配置etcd[<code>KNode2</code>]</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir /etc/etcd/ssl/ -p <span style="color:#f92672">&amp;&amp;</span> cd /etc/etcd/ssl/ <span style="color:#f92672">&amp;&amp;</span> cp -rf /vagrant/ssl/<span style="color:#f92672">{</span>etcd.pem,etcd-key.pem,ca.pem<span style="color:#f92672">}</span> .
+</span></span><span style="display:flex;"><span>mkdir /usr/bin/etcd <span style="color:#f92672">&amp;&amp;</span> tar xf /vagrant/etcd.tar.gz -C /usr/bin/etcd --strip-components <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> chown -R root. /usr/bin/etcd
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt;/etc/etcd/etcd.conf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># [member]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#etcd名称
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_NAME=KNode2
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#etcd数据存放目录
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_DATA_DIR=/opt/etcd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#etcd集群通讯监听地址
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_LISTEN_PEER_URLS=https://0.0.0.0:2380
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#etcd客户端访问监听地址
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_LISTEN_CLIENT_URLS=https://0.0.0.0:2379
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#关闭代理
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PROXY=off
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># [cluster]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_ADVERTISE_CLIENT_URLS=https://10.199.88.202:2379
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_INITIAL_ADVERTISE_PEER_URLS=https://10.199.88.202:2380
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_INITIAL_CLUSTER=&#34;KNode1=https://10.199.88.201:2380,KNode2=https://10.199.88.202:2380,KNode3=https://10.199.88.203:2380&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_INITIAL_CLUSTER_STATE=new
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_INITIAL_CLUSTER_TOKEN=etcd-k8s-cluster
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># [security]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_CERT_FILE=&#34;/etc/etcd/ssl/etcd.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_KEY_FILE=&#34;/etc/etcd/ssl/etcd-key.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_CLIENT_CERT_AUTH=&#34;true&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_TRUSTED_CA_FILE=&#34;/etc/etcd/ssl/ca.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_AUTO_TLS=&#34;true&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PEER_CERT_FILE=&#34;/etc/etcd/ssl/etcd.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PEER_KEY_FILE=&#34;/etc/etcd/ssl/etcd-key.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PEER_CLIENT_CERT_AUTH=&#34;true&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PEER_TRUSTED_CA_FILE=&#34;/etc/etcd/ssl/ca.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PEER_AUTO_TLS=&#34;true&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; /lib/systemd/system/etcd.service
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[Unit]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Description=Etcd Service
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">After=network.target
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[Service]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Environment=ETCD_DATA_DIR=/var/lib/etcd/default
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EnvironmentFile=-/etc/etcd/etcd.conf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Type=notify
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">User=etcd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">PermissionsStartOnly=true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ExecStart=/usr/bin/etcd/etcd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Restart=on-failure
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">RestartSec=10
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">LimitNOFILE=65536
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[Install]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">WantedBy=multi-user.target
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>groupadd etcd <span style="color:#f92672">&amp;&amp;</span> useradd -c <span style="color:#e6db74">&#34;Etcd user&#34;</span> -g etcd -s /sbin/nologin -r etcd <span style="color:#f92672">&amp;&amp;</span> mkdir -p /opt/etcd <span style="color:#f92672">&amp;&amp;</span> chown etcd:etcd -R /opt/etcd /etc/etcd
+</span></span></code></pre></div><h3 id="d-knode3节点配置etcdknode3">d). KNode3节点配置etcd[<code>KNode3</code>]</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir /etc/etcd/ssl/ -p <span style="color:#f92672">&amp;&amp;</span> cd /etc/etcd/ssl/ <span style="color:#f92672">&amp;&amp;</span> cp -rf /vagrant/ssl/<span style="color:#f92672">{</span>etcd.pem,etcd-key.pem,ca.pem<span style="color:#f92672">}</span> .
+</span></span><span style="display:flex;"><span>mkdir /usr/bin/etcd <span style="color:#f92672">&amp;&amp;</span> tar xf /vagrant/etcd.tar.gz -C /usr/bin/etcd --strip-components <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> chown -R root. /usr/bin/etcd
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt;/etc/etcd/etcd.conf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># [member]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#etcd名称
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_NAME=KNode3
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#etcd数据存放目录
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_DATA_DIR=/opt/etcd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#etcd集群通讯监听地址
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_LISTEN_PEER_URLS=https://0.0.0.0:2380
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#etcd客户端访问监听地址
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_LISTEN_CLIENT_URLS=https://0.0.0.0:2379
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#关闭代理
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PROXY=off
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># [cluster]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_ADVERTISE_CLIENT_URLS=https://10.199.88.203:2379
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_INITIAL_ADVERTISE_PEER_URLS=https://10.199.88.203:2380
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_INITIAL_CLUSTER=&#34;KNode1=https://10.199.88.201:2380,KNode2=https://10.199.88.202:2380,KNode3=https://10.199.88.203:2380&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_INITIAL_CLUSTER_STATE=new
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_INITIAL_CLUSTER_TOKEN=etcd-k8s-cluster
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># [security]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_CERT_FILE=&#34;/etc/etcd/ssl/etcd.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_KEY_FILE=&#34;/etc/etcd/ssl/etcd-key.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_CLIENT_CERT_AUTH=&#34;true&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_TRUSTED_CA_FILE=&#34;/etc/etcd/ssl/ca.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_AUTO_TLS=&#34;true&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PEER_CERT_FILE=&#34;/etc/etcd/ssl/etcd.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PEER_KEY_FILE=&#34;/etc/etcd/ssl/etcd-key.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PEER_CLIENT_CERT_AUTH=&#34;true&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PEER_TRUSTED_CA_FILE=&#34;/etc/etcd/ssl/ca.pem&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ETCD_PEER_AUTO_TLS=&#34;true&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; /lib/systemd/system/etcd.service
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[Unit]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Description=Etcd Service
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">After=network.target
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[Service]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Environment=ETCD_DATA_DIR=/var/lib/etcd/default
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EnvironmentFile=-/etc/etcd/etcd.conf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Type=notify
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">User=etcd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">PermissionsStartOnly=true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ExecStart=/usr/bin/etcd/etcd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Restart=on-failure
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">RestartSec=10
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">LimitNOFILE=65536
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[Install]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">WantedBy=multi-user.target
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>groupadd etcd <span style="color:#f92672">&amp;&amp;</span> useradd -c <span style="color:#e6db74">&#34;Etcd user&#34;</span> -g etcd -s /sbin/nologin -r etcd <span style="color:#f92672">&amp;&amp;</span> mkdir -p /opt/etcd <span style="color:#f92672">&amp;&amp;</span> chown etcd:etcd -R /opt/etcd /etc/etcd
+</span></span></code></pre></div><h3 id="f-启动集群">f). 启动集群[<code>*</code>]</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>systemctl enable etcd.service <span style="color:#f92672">&amp;&amp;</span> systemctl start etcd.service
+</span></span><span style="display:flex;"><span>/usr/bin/etcd/etcdctl --cacert<span style="color:#f92672">=</span>/etc/etcd/ssl/ca.pem --cert<span style="color:#f92672">=</span>/etc/etcd/ssl/etcd.pem --key<span style="color:#f92672">=</span>/etc/etcd/ssl/etcd-key.pem --endpoints<span style="color:#f92672">=</span>https://10.199.88.201:2379,https://10.199.88.202:2379,https://10.199.88.203:2379 member list
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#显示结果</span>
+</span></span><span style="display:flex;"><span>6528649c209dba, started, KNode1, https://10.199.88.201:2380, https://10.199.88.201:2379, false
+</span></span><span style="display:flex;"><span>cc6d41f5efc11a77, started, KNode2, https://10.199.88.202:2380, https://10.199.88.202:2379, false
+</span></span><span style="display:flex;"><span>d0b257bed2b3d54c, started, KNode3, https://10.199.88.203:2380, https://10.199.88.203:2379, false
+</span></span></code></pre></div><h2 id="4-containerd">4. containerd[<code>*</code>]</h2>
+<h3 id="a-安装containerd">a). 安装containerd</h3>
+<p>添加软件源，这里docker没有rockylinux的软件源，所以使用centos的。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yum-config-manager --add-repo  https://download.docker.com/linux/centos/docker-ce.repo
+</span></span><span style="display:flex;"><span>yum install containerd -y
+</span></span></code></pre></div><h3 id="b-配置并启动containerd">b). 配置并启动containerd</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>containerd config default | tee /etc/containerd/config.toml
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改容器运行时使用Systemd管理Cgroup</span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;s/            SystemdCgroup = false/            SystemdCgroup = true/&#39;</span> /etc/containerd/config.toml
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改sandbox_image为阿里云源</span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;s/sandbox_image\ =.*/sandbox_image\ =\ &#34;registry.aliyuncs.com\/google_containers\/pause:3.8&#34;/g&#39;</span> /etc/containerd/config.toml <span style="color:#f92672">&amp;&amp;</span> grep sandbox_image /etc/containerd/config.toml
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 配置加速器</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 参考：https://github.com/containerd/containerd/blob/main/docs/cri/config.md#registry-configuration</span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;s/      config_path = &#34;&#34;/      config_path = &#34;\/etc\/containerd\/registry&#34;/g&#39;</span> /etc/containerd/config.toml
+</span></span><span style="display:flex;"><span>mkdir -p /etc/containerd/registry/docker.io/
+</span></span><span style="display:flex;"><span>cat &gt; /etc/containerd/registry/docker.io/hosts.toml <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">server = &#34;https://docker.io&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[host.&#34;https://registry-1.docker.io&#34;]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  capabilities = [&#34;pull&#34;, &#34;resolve&#34;]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>systemctl daemon-reload <span style="color:#f92672">&amp;&amp;</span> systemctl start containerd.service <span style="color:#f92672">&amp;&amp;</span> systemctl enable containerd.service
+</span></span></code></pre></div><p>PS:</p>
+<p>在 Linux 上，控制组（CGroup）用于限制分配给进程的资源。kubelet 和底层容器运行时都需要对接控制组 为 Pod 和容器管理资源 ，如 CPU、内存这类资源设置请求和限制。
+若要对接控制组（CGroup），kubelet 和容器运行时需要使用一个 cgroup 驱动。 关键的一点是 kubelet 和容器运行时需使用相同的 cgroup 驱动并且采用相同的配置。</p>
+<h3 id="c-安装crictl">c). 安装crictl</h3>
+<p><a href="https://github.com/kubernetes-sigs/cri-tools">crictl</a> 是CRI兼容的容器运行时命令行接口。可以使用它来检查和调试Kubernetes节点上的容器运行时和应用程序。这里主要是替换docker的相关命令。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#crictl版本</span>
+</span></span><span style="display:flex;"><span>VERSION<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;v1.26.0&#34;</span>
+</span></span><span style="display:flex;"><span>wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$VERSION/crictl-$VERSION-linux-amd64.tar.gz  -O /vagrant/crictl.tar.gz
+</span></span><span style="display:flex;"><span>tar xf  /vagrant/crictl.tar.gz -C /usr/local/bin
+</span></span><span style="display:flex;"><span>cat &gt;&gt;  /etc/crictl.yaml <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">runtime-endpoint: unix:///var/run/containerd/containerd.sock
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">image-endpoint: unix:///var/run/containerd/containerd.sock
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">timeout: 10
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">debug: true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h2 id="5-初始化集群">5. 初始化集群</h2>
+<h3 id="a-初始化环境">a). 初始化环境[<code>*</code>]</h3>
+<p>添加kubernetes软件源，安装 kubeadm、 kubectl、kubelet并启动kubelet</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 添加软件源</span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[kubernetes]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">name=Kubernetes
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">enabled=1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">gpgcheck=1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">repo_gpgcheck=1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>yum install -y kubelet-1.22.16 kubectl-1.22.16 kubeadm-1.22.16
+</span></span><span style="display:flex;"><span>systemctl enable kubelet <span style="color:#f92672">&amp;&amp;</span> systemctl start kubelet
+</span></span></code></pre></div><h3 id="b-安装ipvsadm">b). 安装ipvsadm[<code>*</code>]</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 安装ipset和ipvsadm</span>
+</span></span><span style="display:flex;"><span>yum install ipset ipvsadm -y
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 由于ipvs已经加入到了内核的主干，所以为kube-proxy开启ipvs的前提需要加载以下的内核模块</span>
+</span></span><span style="display:flex;"><span>cat &gt; /etc/modules-load.d/ipvs.modules <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">modprobe -- ip_vs
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">modprobe -- ip_vs_rr
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">modprobe -- ip_vs_wrr
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">modprobe -- ip_vs_sh
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 执行加载模块脚本</span>
+</span></span><span style="display:flex;"><span>modprobe -- ip_vs
+</span></span><span style="display:flex;"><span>modprobe -- ip_vs_rr
+</span></span><span style="display:flex;"><span>modprobe -- ip_vs_wrr
+</span></span><span style="display:flex;"><span>modprobe -- ip_vs_sh
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看对应的模块是否加载成功</span>
+</span></span><span style="display:flex;"><span>lsmod | grep -e ip_vs
+</span></span></code></pre></div><h3 id="c-配置master节点knode1">c). 配置Master节点[<code>KNode1</code>]</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 拷贝etcd客户端证书,主要是k8s和calico会是用客户端证书调用etcd.</span>
+</span></span><span style="display:flex;"><span>cp /vagrant/ssl/client*.pem /etc/etcd/ssl/
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使用官方默认值创建kubeadm.yaml文件</span>
+</span></span><span style="display:flex;"><span>kubeadm config print init-defaults &gt; /vagrant/kubeadm.yaml
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建初始化token</span>
+</span></span><span style="display:flex;"><span>kubeadm token generate
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 显示内容</span>
+</span></span><span style="display:flex;"><span>    abcdef.0123456789abcdef
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; /vagrant/kubeadm.yaml
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">apiVersion: kubeadm.k8s.io/v1beta3
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">bootstrapTokens:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  - groups:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - system:bootstrappers:kubeadm:default-node-token
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    # kubeadm token generate内容
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    token: abcdef.0123456789abcdef
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    # 过期时间
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ttl: 24h0m0s
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    usages:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - signing
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - authentication
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">kind: InitConfiguration
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">localAPIEndpoint:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  # API的连接地址，如果是高可用集群这里换成VIP地址
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  advertiseAddress: 10.199.88.201
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  bindPort: 6443
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">nodeRegistration:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  criSocket: unix:///var/run/containerd/containerd.sock
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  imagePullPolicy: IfNotPresent
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  name: KNode1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  taints: null
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">---
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">apiServer:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  timeoutForControlPlane: 4m0s
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">apiVersion: kubeadm.k8s.io/v1beta3
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">certificatesDir: /etc/kubernetes/pki
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">clusterName: kubernetes
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">controllerManager: {}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">dns: {}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># etcd连接信息，这里会用到客户端证书，当然也可以使用peer类型证书，但是不安全
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">etcd:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  external:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    endpoints:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - https://10.199.88.201:2379
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - https://10.199.88.202:2379
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - https://10.199.88.203:2379
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    caFile: /etc/etcd/ssl/ca.pem
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    certFile: /etc/etcd/ssl/client.pem
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    keyFile: /etc/etcd/ssl/client-key.pem
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 修改为阿里镜像
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">imageRepository: registry.aliyuncs.com/google_containers
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">kind: ClusterConfiguration
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 集群版本
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">kubernetesVersion: 1.22.0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">networking:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  # dns域名
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  dnsDomain: example.local
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  # Service网段
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  serviceSubnet: 10.96.0.0/16
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  # pod网段
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  podSubnet: &#39;10.244.0.0/16&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">scheduler: {}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">---
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#kube Proxy配置
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">apiVersion: kubeproxy.config.k8s.io/v1alpha1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">kind: KubeProxyConfiguration
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 对于 Kubernetes v1.10“SupportIPVSProxyMode”默认设置为 “true”。对于 Kubernetes v1.11及以后版本，该选项已完全删除。但是，您需要在v1.10之前为Kubernetes 明确启用 --feature-gates = SupportIPVSProxyMode = true。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 如果已经初始化了则需要修改configmap,删除以下字段
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#featureGates:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#  SupportIPVSProxyMode: true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">mode: ipvs
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ipvs:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  minSyncPeriod: 5s
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  syncPeriod: 5s
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  # ipvs 负载策略
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  scheduler: &#39;wrr&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">---
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#kubelet配置
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">apiVersion: kubelet.config.k8s.io/v1beta1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">kind: KubeletConfiguration
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">cgroupDriver: systemd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">serializeImagePulls: false
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">evictionHard:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  memory.available: &#39;1000Mi&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>cd  /vagrant/ <span style="color:#f92672">&amp;&amp;</span> kubeadm init --config<span style="color:#f92672">=</span>kubeadm.yaml
+</span></span><span style="display:flex;"><span>mkdir -p $HOME/.kube
+</span></span><span style="display:flex;"><span>sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+</span></span><span style="display:flex;"><span>sudo chown <span style="color:#66d9ef">$(</span>id -u<span style="color:#66d9ef">)</span>:<span style="color:#66d9ef">$(</span>id -g<span style="color:#66d9ef">)</span> $HOME/.kube/config
+</span></span></code></pre></div><p>PS:</p>
+<ul>
+<li>kubeadm init 输出内容如下，请记录kubeadm join相关内容，后面用于节点加入。如果没有记住也可以使用kubeadm join &ndash;discovery-file kubeconfig文件方式加入</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>init<span style="color:#f92672">]</span> Using Kubernetes version: v1.22.0
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>preflight<span style="color:#f92672">]</span> Running pre-flight checks
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>preflight<span style="color:#f92672">]</span> Pulling images required <span style="color:#66d9ef">for</span> setting up a Kubernetes cluster
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>preflight<span style="color:#f92672">]</span> This might take a minute or two, depending on the speed of your internet connection
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>preflight<span style="color:#f92672">]</span> You can also perform this action in beforehand using <span style="color:#e6db74">&#39;kubeadm config images pull&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>certs<span style="color:#f92672">]</span> Using certificateDir folder <span style="color:#e6db74">&#34;/etc/kubernetes/pki&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>certs<span style="color:#f92672">]</span> Generating <span style="color:#e6db74">&#34;ca&#34;</span> certificate and key
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>certs<span style="color:#f92672">]</span> Generating <span style="color:#e6db74">&#34;apiserver&#34;</span> certificate and key
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>certs<span style="color:#f92672">]</span> apiserver serving cert is signed <span style="color:#66d9ef">for</span> DNS names <span style="color:#f92672">[</span>knode1 kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.example.local<span style="color:#f92672">]</span> and IPs <span style="color:#f92672">[</span>10.96.0.1 10.199.88.201<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>certs<span style="color:#f92672">]</span> Generating <span style="color:#e6db74">&#34;apiserver-kubelet-client&#34;</span> certificate and key
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>certs<span style="color:#f92672">]</span> Generating <span style="color:#e6db74">&#34;front-proxy-ca&#34;</span> certificate and key
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>certs<span style="color:#f92672">]</span> Generating <span style="color:#e6db74">&#34;front-proxy-client&#34;</span> certificate and key
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>certs<span style="color:#f92672">]</span> External etcd mode: Skipping etcd/ca certificate authority generation
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>certs<span style="color:#f92672">]</span> External etcd mode: Skipping etcd/server certificate generation
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>certs<span style="color:#f92672">]</span> External etcd mode: Skipping etcd/peer certificate generation
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>certs<span style="color:#f92672">]</span> External etcd mode: Skipping etcd/healthcheck-client certificate generation
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>certs<span style="color:#f92672">]</span> External etcd mode: Skipping apiserver-etcd-client certificate generation
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>certs<span style="color:#f92672">]</span> Generating <span style="color:#e6db74">&#34;sa&#34;</span> key and public key
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>kubeconfig<span style="color:#f92672">]</span> Using kubeconfig folder <span style="color:#e6db74">&#34;/etc/kubernetes&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>kubeconfig<span style="color:#f92672">]</span> Writing <span style="color:#e6db74">&#34;admin.conf&#34;</span> kubeconfig file
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>kubeconfig<span style="color:#f92672">]</span> Writing <span style="color:#e6db74">&#34;kubelet.conf&#34;</span> kubeconfig file
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>kubeconfig<span style="color:#f92672">]</span> Writing <span style="color:#e6db74">&#34;controller-manager.conf&#34;</span> kubeconfig file
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>kubeconfig<span style="color:#f92672">]</span> Writing <span style="color:#e6db74">&#34;scheduler.conf&#34;</span> kubeconfig file
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>kubelet-start<span style="color:#f92672">]</span> Writing kubelet environment file with flags to file <span style="color:#e6db74">&#34;/var/lib/kubelet/kubeadm-flags.env&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>kubelet-start<span style="color:#f92672">]</span> Writing kubelet configuration to file <span style="color:#e6db74">&#34;/var/lib/kubelet/config.yaml&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>kubelet-start<span style="color:#f92672">]</span> Starting the kubelet
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>control-plane<span style="color:#f92672">]</span> Using manifest folder <span style="color:#e6db74">&#34;/etc/kubernetes/manifests&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>control-plane<span style="color:#f92672">]</span> Creating static Pod manifest <span style="color:#66d9ef">for</span> <span style="color:#e6db74">&#34;kube-apiserver&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>control-plane<span style="color:#f92672">]</span> Creating static Pod manifest <span style="color:#66d9ef">for</span> <span style="color:#e6db74">&#34;kube-controller-manager&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>control-plane<span style="color:#f92672">]</span> Creating static Pod manifest <span style="color:#66d9ef">for</span> <span style="color:#e6db74">&#34;kube-scheduler&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>wait-control-plane<span style="color:#f92672">]</span> Waiting <span style="color:#66d9ef">for</span> the kubelet to boot up the control plane as static Pods from directory <span style="color:#e6db74">&#34;/etc/kubernetes/manifests&#34;</span>. This can take up to 4m0s
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>apiclient<span style="color:#f92672">]</span> All control plane components are healthy after 17.017765 seconds
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>upload-config<span style="color:#f92672">]</span> Storing the configuration used in ConfigMap <span style="color:#e6db74">&#34;kubeadm-config&#34;</span> in the <span style="color:#e6db74">&#34;kube-system&#34;</span> Namespace
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>kubelet<span style="color:#f92672">]</span> Creating a ConfigMap <span style="color:#e6db74">&#34;kubelet-config-1.22&#34;</span> in namespace kube-system with the configuration <span style="color:#66d9ef">for</span> the kubelets in the cluster
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>upload-certs<span style="color:#f92672">]</span> Skipping phase. Please see --upload-certs
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>mark-control-plane<span style="color:#f92672">]</span> Marking the node knode1 as control-plane by adding the labels: <span style="color:#f92672">[</span>node-role.kubernetes.io/master<span style="color:#f92672">(</span>deprecated<span style="color:#f92672">)</span> node-role.kubernetes.io/control-plane node.kubernetes.io/exclude-from-external-load-balancers<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>mark-control-plane<span style="color:#f92672">]</span> Marking the node knode1 as control-plane by adding the taints <span style="color:#f92672">[</span>node-role.kubernetes.io/master:NoSchedule<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>bootstrap-token<span style="color:#f92672">]</span> Using token: abcdef.0123456789abcdef
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>bootstrap-token<span style="color:#f92672">]</span> Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>bootstrap-token<span style="color:#f92672">]</span> configured RBAC rules to allow Node Bootstrap tokens to get nodes
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>bootstrap-token<span style="color:#f92672">]</span> configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order <span style="color:#66d9ef">for</span> nodes to get long term certificate credentials
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>bootstrap-token<span style="color:#f92672">]</span> configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>bootstrap-token<span style="color:#f92672">]</span> configured RBAC rules to allow certificate rotation <span style="color:#66d9ef">for</span> all node client certificates in the cluster
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>bootstrap-token<span style="color:#f92672">]</span> Creating the <span style="color:#e6db74">&#34;cluster-info&#34;</span> ConfigMap in the <span style="color:#e6db74">&#34;kube-public&#34;</span> namespace
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>kubelet-finalize<span style="color:#f92672">]</span> Updating <span style="color:#e6db74">&#34;/etc/kubernetes/kubelet.conf&#34;</span> to point to a rotatable kubelet client certificate and key
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>addons<span style="color:#f92672">]</span> Applied essential addon: CoreDNS
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>addons<span style="color:#f92672">]</span> Applied essential addon: kube-proxy
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Your Kubernetes control-plane has initialized successfully!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>To start using your cluster, you need to run the following as a regular user:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  mkdir -p $HOME/.kube
+</span></span><span style="display:flex;"><span>  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+</span></span><span style="display:flex;"><span>  sudo chown <span style="color:#66d9ef">$(</span>id -u<span style="color:#66d9ef">)</span>:<span style="color:#66d9ef">$(</span>id -g<span style="color:#66d9ef">)</span> $HOME/.kube/config
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Alternatively, <span style="color:#66d9ef">if</span> you are the root user, you can run:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  export KUBECONFIG<span style="color:#f92672">=</span>/etc/kubernetes/admin.conf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>You should now deploy a pod network to the cluster.
+</span></span><span style="display:flex;"><span>Run <span style="color:#e6db74">&#34;kubectl apply -f [podnetwork].yaml&#34;</span> with one of the options listed at:
+</span></span><span style="display:flex;"><span>  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Then you can join any number of worker nodes by running the following on each as root:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>kubeadm join 10.199.88.201:6443 --token abcdef.0123456789abcdef <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>        --discovery-token-ca-cert-hash sha256:b96420a18f8277e2d481481bcbd0db781da59cc2d3d236b32fa2a552a4a4c37c 
+</span></span></code></pre></div><h3 id="d-配置node节点knode2-knode3">d). 配置Node节点[<code>KNode2 KNode3</code>]</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubeadm join 10.199.88.201:6443 --token abcdef.0123456789abcdef --discovery-token-ca-cert-hash sha256:aade6417da5a7857db47b63d9ccb064846054d1660a6c8186485e6e24f63f566
+</span></span></code></pre></div><h2 id="6-安装calicoknode1节点">6. 安装calico[<code>KNode1节点</code>]</h2>
+<p>这里使用的是calico网络插件。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl  https://raw.githubusercontent.com/projectcalico/calico/master/manifests/calico-etcd.yaml -o /vagrant/calico.yaml
+</span></span><span style="display:flex;"><span>cd /vagrant/
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改etcd集群地址</span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;s@.*etcd_endpoints:.*@\ \ etcd_endpoints:\ \&#34;https://10.199.88.201:2379,https://10.199.88.202:2379,https://10.199.88.203:2379\&#34;@gi&#39;</span> calico.yaml
+</span></span><span style="display:flex;"><span>export ETCD_CERT<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /etc/etcd/ssl/client.pem | base64 | tr -d <span style="color:#e6db74">&#39;\n&#39;</span><span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>export ETCD_KEY<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /etc/etcd/ssl/client-key.pem | base64 | tr -d <span style="color:#e6db74">&#39;\n&#39;</span><span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>export ETCD_CA<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /etc/etcd/ssl/ca.pem | base64 | tr -d <span style="color:#e6db74">&#39;\n&#39;</span><span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#34;s@.*etcd-cert:.*@\ \ etcd-cert:\ </span><span style="color:#e6db74">${</span>ETCD_CERT<span style="color:#e6db74">}</span><span style="color:#e6db74">@gi&#34;</span> calico.yaml
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#34;s@.*etcd-key:.*@\ \ etcd-key:\ </span><span style="color:#e6db74">${</span>ETCD_KEY<span style="color:#e6db74">}</span><span style="color:#e6db74">@gi&#34;</span> calico.yaml
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#34;s@.*etcd-ca:.*@\ \ etcd-ca:\ </span><span style="color:#e6db74">${</span>ETCD_CA<span style="color:#e6db74">}</span><span style="color:#e6db74">@gi&#34;</span> calico.yaml
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;s@.*etcd_ca:.*@\ \ etcd_ca:\ &#34;/calico-secrets/etcd-ca&#34;@gi&#39;</span> calico.yaml
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;s@.*etcd_cert:.*@\ \ etcd_cert:\ &#34;/calico-secrets/etcd-cert&#34;@gi&#39;</span> calico.yaml
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;s@.*etcd_key:.*@\ \ etcd_key:\ &#34;/calico-secrets/etcd-key&#34;@gi&#39;</span> calico.yaml
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># CALICO_IPV4POOL_CIDR 设置与pod-network-cidr相同,如果kubeadm init的时候指定了，此处保持默认即可 </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># sed -i &#39;s@192.168.0.0/16@10.224.0.0/16@gi&#39; calico.yaml</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># calico有两种模式，第一种就是IPIP,第二种就是BGP,其实它应用最多就是BGP，将CALICO_IPV4POOL_IPIP里的这个Always改成Never，就会让calico自动启动BGP模式</span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;/- name: CALICO_IPV4POOL_IPIP/{n;s/Always/Never/;}&#39;</span> calico.yaml
+</span></span><span style="display:flex;"><span>kubectl create -f calico.yaml
+</span></span></code></pre></div><p>PS</p>
+<ul>
+<li>如果calico node容器报restarting failed container=mount-bpffs则需要删除calico.yaml文件里的&quot;-best-effort&quot;参数,官方配置文件生成导致,详情<a href="https://github.com/projectcalico/calico/issues/6255">6255</a></li>
+</ul>
+<h2 id="7-验证knode1">7. 验证[<code>KNode1</code>]</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl get node
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>kubectl get pod --all-namdespaces
+</span></span></code></pre></div><h1 id="结束">结束</h1>
+<p>至此3节点kubernetes集群安装完成。</p>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-环境初始化">1. 环境初始化[<code>*</code>]</a>
+      <ul>
+        <li><a href="#a-系统更新与工具安装">a). 系统更新与工具安装</a></li>
+        <li><a href="#b-配置时间同步">b). 配置时间同步</a></li>
+        <li><a href="#b-kubernetes系统调整">b). kubernetes系统调整</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-创建证书knode1">2. 创建证书[<code>KNode1</code>]</a>
+      <ul>
+        <li><a href="#a-安装cfssl工具">a). 安装cfssl工具</a></li>
+        <li><a href="#b-创建ca证书">b). 创建CA证书</a></li>
+        <li><a href="#c-创建etcd集群证书">c). 创建etcd集群证书</a></li>
+        <li><a href="#d-创建etcd客户端证书">d). 创建etcd客户端证书</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-etcd集群配置">3. etcd集群配置</a>
+      <ul>
+        <li><a href="#a-准备工作knode1">a). 准备工作[<code>KNode1</code>]</a></li>
+        <li><a href="#b-knode1节点配置etcdknode1">b). KNode1节点配置etcd[<code>KNode1</code>]</a></li>
+        <li><a href="#c-knode2节点配置etcdknode2">c). KNode2节点配置etcd[<code>KNode2</code>]</a></li>
+        <li><a href="#d-knode3节点配置etcdknode3">d). KNode3节点配置etcd[<code>KNode3</code>]</a></li>
+        <li><a href="#f-启动集群">f). 启动集群[<code>*</code>]</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-containerd">4. containerd[<code>*</code>]</a>
+      <ul>
+        <li><a href="#a-安装containerd">a). 安装containerd</a></li>
+        <li><a href="#b-配置并启动containerd">b). 配置并启动containerd</a></li>
+        <li><a href="#c-安装crictl">c). 安装crictl</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-初始化集群">5. 初始化集群</a>
+      <ul>
+        <li><a href="#a-初始化环境">a). 初始化环境[<code>*</code>]</a></li>
+        <li><a href="#b-安装ipvsadm">b). 安装ipvsadm[<code>*</code>]</a></li>
+        <li><a href="#c-配置master节点knode1">c). 配置Master节点[<code>KNode1</code>]</a></li>
+        <li><a href="#d-配置node节点knode2-knode3">d). 配置Node节点[<code>KNode2 KNode3</code>]</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-安装calicoknode1节点">6. 安装calico[<code>KNode1节点</code>]</a></li>
+    <li><a href="#7-验证knode1">7. 验证[<code>KNode1</code>]</a></li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer>
+    <div class="copyright">
+        
+        
+    </div>
+
+</footer>
+
+
+<script async src="https://localhost//js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+</body>
+
+</html>

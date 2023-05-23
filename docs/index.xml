@@ -2,125 +2,125 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>文档 on allposs博客</title>
-    <link>https://localhost/docs/</link>
+    <link>https://blog.allposs.com/docs/</link>
     <description>Recent content in 文档 on allposs博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 01 Nov 2019 16:10:12 +0800</lastBuildDate><atom:link href="https://localhost/docs/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 01 Nov 2019 16:10:12 +0800</lastBuildDate><atom:link href="https://blog.allposs.com/docs/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>kubernetes原理合集</title>
-      <link>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/005-kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/</link>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/005-kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/</link>
       <pubDate>Fri, 19 May 2023 18:00:39 +0800</pubDate>
       
-      <guid>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/005-kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/</guid>
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/005-kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/</guid>
       <description>简介 主要是对kubernetes集群安装方式的一个汇总文档，方便自己归纳总结知识。 正文 Kubernetes对象 001-service资源对象</description>
     </item>
     
     <item>
       <title>NFS详解</title>
-      <link>https://localhost/docs/%E8%BD%AF%E4%BB%B6/001-nfs%E8%AF%A6%E8%A7%A3/</link>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/001-nfs%E8%AF%A6%E8%A7%A3/</link>
       <pubDate>Fri, 19 May 2023 16:25:47 +0800</pubDate>
       
-      <guid>https://localhost/docs/%E8%BD%AF%E4%BB%B6/001-nfs%E8%AF%A6%E8%A7%A3/</guid>
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/001-nfs%E8%AF%A6%E8%A7%A3/</guid>
       <description>简介 NFS 是 Network File System 的缩写，是Sun公司于1984开发的一种分布式文件系统协议。它的核心功能就是可以通过网络，让不同的客户端，可以彼此访问共同的文</description>
     </item>
     
     <item>
       <title>Service资源对象详解</title>
-      <link>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-service%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</link>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-service%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</link>
       <pubDate>Thu, 18 May 2023 15:18:02 +0800</pubDate>
       
-      <guid>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-service%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</guid>
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-service%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</guid>
       <description>简介 Service在Kubernetes官方主页是这样描述的： Kubernetes Pod 是转瞬即逝的。 Pod 实际上拥有 生命周期。 当一个工作 Node 挂掉后, 在 Node 上运行的 Pod 也会</description>
     </item>
     
     <item>
       <title>kube-proxy组件详解</title>
-      <link>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/002-kube-proxy%E7%BB%84%E4%BB%B6%E8%AF%A6%E8%A7%A3/</link>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/002-kube-proxy%E7%BB%84%E4%BB%B6%E8%AF%A6%E8%A7%A3/</link>
       <pubDate>Thu, 18 May 2023 15:00:54 +0800</pubDate>
       
-      <guid>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/002-kube-proxy%E7%BB%84%E4%BB%B6%E8%AF%A6%E8%A7%A3/</guid>
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/002-kube-proxy%E7%BB%84%E4%BB%B6%E8%AF%A6%E8%A7%A3/</guid>
       <description>简介 环境 正文 kube-proxy kube-proxy是Kubernetes的核心组件，部署在每台kubernetes节点上，他是Service对象具体实现者，</description>
     </item>
     
     <item>
       <title>Golang代码片段</title>
-      <link>https://localhost/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</link>
+      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</link>
       <pubDate>Wed, 17 May 2023 10:33:37 +0800</pubDate>
       
-      <guid>https://localhost/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</guid>
+      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</guid>
       <description>简介 环境 正文 结束</description>
     </item>
     
     <item>
       <title>Golang开发环境搭建</title>
-      <link>https://localhost/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
       <pubDate>Wed, 17 May 2023 10:33:37 +0800</pubDate>
       
-      <guid>https://localhost/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
       <description>简介 环境 正文 结束</description>
     </item>
     
     <item>
       <title>mardown代码片段</title>
-      <link>https://localhost/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/markdown/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</link>
+      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/markdown/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</link>
       <pubDate>Wed, 17 May 2023 10:29:24 +0800</pubDate>
       
-      <guid>https://localhost/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/markdown/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</guid>
+      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/markdown/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</guid>
       <description>简介 正文 vscode { &amp;#34;实践文档&amp;#34;: { &amp;#34;prefix&amp;#34;: &amp;#34;PK&amp;#34;, &amp;#34;body&amp;#34;: [ &amp;#34;---&amp;#34;, &amp;#34;title: &amp;#34;, &amp;#34;date: &amp;#34;, &amp;#34;type: docs&amp;#34;, &amp;#34;tags: []&amp;#34;, &amp;#34;---&amp;#34;, &amp;#34;# 简介&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;# 环境&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;# 正文&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;# 结束&amp;</description>
     </item>
     
     <item>
       <title>开发环境搭建合集</title>
-      <link>https://localhost/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/001-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%90%88%E9%9B%86/</link>
+      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/001-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%90%88%E9%9B%86/</link>
       <pubDate>Wed, 17 May 2023 10:28:31 +0800</pubDate>
       
-      <guid>https://localhost/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/001-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%90%88%E9%9B%86/</guid>
+      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/001-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%90%88%E9%9B%86/</guid>
       <description>简介 正文 代码片段 IDE工具 vscode 配置文件 { &amp;#34;window.openFoldersInNewWindow&amp;#34;: &amp;#34;on&amp;#34;, &amp;#34;editor.fontSize&amp;#34;: 14, &amp;#34;editor.fontLigatures&amp;#34;: false, &amp;#34;editor.fontWeight&amp;#34;: &amp;#34;normal&amp;#34;, &amp;#34;editor.minimap.enabled&amp;#34;: true, &amp;#34;editor.detectIndentation&amp;#34;: false, &amp;#34;editor.wordWrap&amp;#34;: &amp;#34;on&amp;#34;, &amp;#34;editor.renderWhitespace&amp;#34;: &amp;#34;none&amp;#34;, &amp;#34;editor.snippetSuggestions&amp;#34;: &amp;#34;top&amp;#34;, &amp;#34;editor.suggestSelection&amp;#34;: &amp;#34;first&amp;#34;, &amp;#34;editor.renderLineHighlight&amp;#34;: &amp;#34;all&amp;#34;, &amp;#34;editor.quickSuggestions&amp;#34;: { &amp;#34;other&amp;#34;: true, &amp;#34;comments&amp;#34;: true, &amp;#34;strings&amp;#34;: true }, &amp;#34;editor.formatOnSave&amp;#34;: true, &amp;#34;editor.codeActionsOnSave&amp;#34;: { // 开启自动保存修复 &amp;#34;source.fixAll.eslint&amp;#34;: true, //&amp;#34;source.fixAll.markdownlint&amp;#34;: true }, // 默</description>
     </item>
     
     <item>
       <title>Kubernetes问题合集</title>
-      <link>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/003-kubernetes%E9%97%AE%E9%A2%98%E5%90%88%E9%9B%86/</link>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/003-kubernetes%E9%97%AE%E9%A2%98%E5%90%88%E9%9B%86/</link>
       <pubDate>Wed, 17 May 2023 10:27:02 +0800</pubDate>
       
-      <guid>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/003-kubernetes%E9%97%AE%E9%A2%98%E5%90%88%E9%9B%86/</guid>
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/003-kubernetes%E9%97%AE%E9%A2%98%E5%90%88%E9%9B%86/</guid>
       <description>简介 正文 替换容器entrypoint执行命令 说明: 在生产上处理问题时，经常需要对异常容器进行排查，而往往异常容器会自动重启而无法进入容器，所</description>
     </item>
     
     <item>
       <title>Kubernetes优化合集</title>
-      <link>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/004-kubernetes%E4%BC%98%E5%8C%96%E5%90%88%E9%9B%86/</link>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/004-kubernetes%E4%BC%98%E5%8C%96%E5%90%88%E9%9B%86/</link>
       <pubDate>Wed, 17 May 2023 10:26:15 +0800</pubDate>
       
-      <guid>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/004-kubernetes%E4%BC%98%E5%8C%96%E5%90%88%E9%9B%86/</guid>
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/004-kubernetes%E4%BC%98%E5%8C%96%E5%90%88%E9%9B%86/</guid>
       <description>简介 正文 1. 标题 说明: 处理: 结束</description>
     </item>
     
     <item>
       <title>kubernetes命令详解</title>
-      <link>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
       <pubDate>Mon, 15 May 2023 18:35:44 +0800</pubDate>
       
-      <guid>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
       <description>简介 正文 1. 进入Pod网络命名空间 说明: 处理: docker inspect pause|grep Pid &amp;quot;Pid&amp;quot;: 3083138, nsenter &amp;ndash;net=/proc/3083138/ns/net 结束</description>
     </item>
     
     <item>
       <title>kubernetes集群搭建合集</title>
-      <link>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/001-kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</link>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/001-kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</link>
       <pubDate>Mon, 15 May 2023 17:58:50 +0800</pubDate>
       
-      <guid>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/001-kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</guid>
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/001-kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</guid>
       <description>简介 主要是对kubernetes集群安装方式的一个汇总文档，方便自己归纳总结知识。 正文 伪集群安装 主要用于学习与开发 001-k8s三节点开发环</description>
     </item>
     
     <item>
       <title>K8S三节点集群搭建</title>
-      <link>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/001-k8s%E4%B8%89%E8%8A%82%E7%82%B9%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/001-k8s%E4%B8%89%E8%8A%82%E7%82%B9%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
       <pubDate>Mon, 15 May 2023 15:28:47 +0800</pubDate>
       
-      <guid>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/001-k8s%E4%B8%89%E8%8A%82%E7%82%B9%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/001-k8s%E4%B8%89%E8%8A%82%E7%82%B9%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
       <description>简介 由于工作的原因，需要对k8s进行二次开发，所以需要一个能统一的开发环境，而minikube并不适合深度开发，所以只能以最小集群的方式搭建</description>
     </item>
     

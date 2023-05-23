@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>命令 on allposs博客</title>
-    <link>https://localhost/tags/%E5%91%BD%E4%BB%A4/</link>
+    <link>https://blog.allposs.com/tags/%E5%91%BD%E4%BB%A4/</link>
     <description>Recent content in 命令 on allposs博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 15 May 2023 18:35:44 +0800</lastBuildDate><atom:link href="https://localhost/tags/%E5%91%BD%E4%BB%A4/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 15 May 2023 18:35:44 +0800</lastBuildDate><atom:link href="https://blog.allposs.com/tags/%E5%91%BD%E4%BB%A4/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>kubernetes命令详解</title>
-      <link>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
       <pubDate>Mon, 15 May 2023 18:35:44 +0800</pubDate>
       
-      <guid>https://localhost/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
       <description>简介 正文 1. 进入Pod网络命名空间 说明: 处理: docker inspect pause|grep Pid &amp;quot;Pid&amp;quot;: 3083138, nsenter &amp;ndash;net=/proc/3083138/ns/net 结束</description>
     </item>
     

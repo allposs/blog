@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://blog.allposs.com/img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>CentOS7.2安装KVM - allposs博客</title>
+    <meta property="og:title" content="CentOS7.2安装KVM - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://blog.allposs.com/css/style.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/fonts.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../" aria-label="个人博客">
+                <img src="https://blog.allposs.com/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../docs/" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        <a href="../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs/" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>CentOS7.2安装KVM</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2016-05-04
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                虚拟化
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                KVM
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<p>Kernel-based Virtual Machine的简称，是一个开源的系统虚拟化模块，自Linux 2.6.20之后集成在Linux的各个主要发行版本中。它使用Linux自身的调度器进行管理，所以相对于Xen，其核心源码很少。KVM目前已成为学术界的主流VMM之一。</p>
+<p>KVM的虚拟化需要硬件支持（如Intel VT技术或者AMD V技术)。是基于硬件的完全虚拟化。而Xen早期则是基于软件模拟的Para-Virtualization，新版本则是基于硬件支持的完全虚拟化。但Xen本身有自己的进程调度器，存储管理模块等，所以代码较为庞大。广为流传的商业系统虚拟化软件VMware ESX系列是基于软件模拟的Full-Virtualization。</p>
+<h1 id="环境">环境</h1>
+<ul>
+<li>操作系统：CentOS7.1 X86_64</li>
+<li>Yum源：163源</li>
+</ul>
+<h1 id="正文">正文</h1>
+<h2 id="准备工作">准备工作</h2>
+<h3 id="1-确定机器有vt">1. 确定机器有VT</h3>
+<p>终端输入命令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>grep vmx /proc/cpuinfo
+</span></span></code></pre></div><p>如果flags: 里有vmx 或者svm就说明支持VT；如果没有任何的输出，说明你的cpu不支持，将无法使用KVM虚拟机。</p>
+<h3 id="2-确保bios里开启vt使用如下命令">2. 确保BIOS里开启VT,使用如下命令</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>lsmod | grep kvm 
+</span></span></code></pre></div><h3 id="3-安装依赖包">3. 安装依赖包</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>yum groupinstall <span style="color:#e6db74">&#34;X Window System&#34;</span> -y <span style="color:#f92672">&amp;&amp;</span>  yum groupinstall gnome-desktop -y <span style="color:#f92672">&amp;&amp;</span> yum -y install libcanberra-gtk2 qemu-kvm.x86_64 qemu-kvm-tools.x86_64    libvirt.x86_64 libvirt-cim.x86_64 libvirt-client.x86_64 libvirt-java.noarch  libvirt-python.x86_64 libiscsi* dbus-devel  virt-clone tunctl virt-manager libvirt libvirt-python python-virtinst
+</span></span></code></pre></div><h2 id="桥接网络">桥接网络</h2>
+<p>使用桥接网络，虚拟机即可与其他机器互相访问。</p>
+<h3 id="1-复制ifcfg-eno16777736为ifcfg-br0并更改ifcfg-eno16777736配置">1. 复制ifcfg-eno16777736为ifcfg-br0，并更改ifcfg-eno16777736配置。</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cd /etc/sysconfig/network-scripts/
+</span></span><span style="display:flex;"><span>cp ifcfg-eno16777736 ifcfg-br0 
+</span></span><span style="display:flex;"><span>vim ifcfg-br0
+</span></span><span style="display:flex;"><span>修改如下：
+</span></span><span style="display:flex;"><span>	TYPE<span style="color:#f92672">=</span>Bridge
+</span></span><span style="display:flex;"><span>	BOOTPROTO<span style="color:#f92672">=</span>none
+</span></span><span style="display:flex;"><span>	DEFROUTE<span style="color:#f92672">=</span>yes
+</span></span><span style="display:flex;"><span>	NAME<span style="color:#f92672">=</span>br0
+</span></span><span style="display:flex;"><span>	DEVICE<span style="color:#f92672">=</span>br0
+</span></span><span style="display:flex;"><span>	ONBOOT<span style="color:#f92672">=</span>yes
+</span></span><span style="display:flex;"><span>	IPADDR0<span style="color:#f92672">=</span>10.199.200.22
+</span></span><span style="display:flex;"><span>	PREFIX0<span style="color:#f92672">=</span><span style="color:#ae81ff">24</span>
+</span></span><span style="display:flex;"><span>	GATEWAYO<span style="color:#f92672">=</span>10.199.200.2
+</span></span></code></pre></div><h3 id="2-修改ifcfg-eno16777736">2. 修改ifcfg-eno16777736</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>vi ifcfg-eno16777736 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>修改为：
+</span></span><span style="display:flex;"><span>	TYPE<span style="color:#f92672">=</span>Ethernet
+</span></span><span style="display:flex;"><span>	DEFROUTE<span style="color:#f92672">=</span>yes
+</span></span><span style="display:flex;"><span>	NAME<span style="color:#f92672">=</span>eno16777736
+</span></span><span style="display:flex;"><span>	DEVICE<span style="color:#f92672">=</span>eno16777736
+</span></span><span style="display:flex;"><span>	ONBOOT<span style="color:#f92672">=</span>yes
+</span></span><span style="display:flex;"><span>	BRIDGE<span style="color:#f92672">=</span>br0
+</span></span></code></pre></div><h3 id="3-重启网路">3. 重启网路</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>systemctl restart NetworkManager
+</span></span><span style="display:flex;"><span>systemctl restart network
+</span></span></code></pre></div><h2 id="安装">安装</h2>
+<h3 id="1-安装kvm">1. 安装KVM</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>yum -y install libcanberra-gtk2 qemu-kvm.x86_64 qemu-kvm-tools.x86_64 libvirt.x86_64 libvirt-cim.x86_64 libvirt-client.x86_64 libvirt-java.noarch  libvirt-python.x86_64 libiscsi* dbus-devel  virt-clone virt-manager libvirt libvirt-python python-virtinst
+</span></span></code></pre></div><h3 id="2-安装桌面非必需">2. 安装桌面[非必需]</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>yum groupinstall <span style="color:#e6db74">&#34;X Window System&#34;</span> -y
+</span></span><span style="display:flex;"><span>yum install gnome-classic-session gnome-terminal dejavu-sans-mono-fonts nautilus-open-terminal -y
+</span></span></code></pre></div><p>如果需要中文字体的话，需要安装下面软件包</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>yum install cjkuni-uming-fonts -y
+</span></span></code></pre></div><p>设置开机启动</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>systemctl set-default graphical.target
+</span></span></code></pre></div><hr>
+<h1 id="结束">结束</h1>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#准备工作">准备工作</a>
+      <ul>
+        <li><a href="#1-确定机器有vt">1. 确定机器有VT</a></li>
+        <li><a href="#2-确保bios里开启vt使用如下命令">2. 确保BIOS里开启VT,使用如下命令</a></li>
+        <li><a href="#3-安装依赖包">3. 安装依赖包</a></li>
+      </ul>
+    </li>
+    <li><a href="#桥接网络">桥接网络</a>
+      <ul>
+        <li><a href="#1-复制ifcfg-eno16777736为ifcfg-br0并更改ifcfg-eno16777736配置">1. 复制ifcfg-eno16777736为ifcfg-br0，并更改ifcfg-eno16777736配置。</a></li>
+        <li><a href="#2-修改ifcfg-eno16777736">2. 修改ifcfg-eno16777736</a></li>
+        <li><a href="#3-重启网路">3. 重启网路</a></li>
+      </ul>
+    </li>
+    <li><a href="#安装">安装</a>
+      <ul>
+        <li><a href="#1-安装kvm">1. 安装KVM</a></li>
+        <li><a href="#2-安装桌面非必需">2. 安装桌面[非必需]</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer>
+    <div class="copyright">
+        
+        
+    </div>
+
+</footer>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NBF4J7F6RW"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-NBF4J7F6RW', { 'anonymize_ip': false });
+}
+</script>
+
+
+<script async src="https://blog.allposs.com/js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+</body>
+
+</html>

@@ -6,16 +6,7 @@
     <description>Recent content in 环境搭建 on allposs博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 17 May 2023 10:33:37 +0800</lastBuildDate><atom:link href="https://blog.allposs.com/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Golang开发环境搭建</title>
-      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
-      <pubDate>Wed, 17 May 2023 10:33:37 +0800</pubDate>
-      
-      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
-      <description>简介 这篇文章主要记录Golang在各个主流操作系统上的开发环境搭建。这里的IDE选择VSCode的原因是比较轻量,功能简单实用并与git结合</description>
-    </item>
-    
+    <lastBuildDate>Wed, 17 May 2023 10:28:31 +0800</lastBuildDate><atom:link href="https://blog.allposs.com/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>开发环境搭建合集</title>
       <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/001-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%90%88%E9%9B%86/</link>
@@ -23,6 +14,15 @@
       
       <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/001-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%90%88%E9%9B%86/</guid>
       <description>简介 正文 代码片段 IDE工具 vscode 配置文件 { &amp;#34;window.openFoldersInNewWindow&amp;#34;: &amp;#34;on&amp;#34;, &amp;#34;editor.fontSize&amp;#34;: 14, &amp;#34;editor.fontLigatures&amp;#34;: false, &amp;#34;editor.fontWeight&amp;#34;: &amp;#34;normal&amp;#34;, &amp;#34;editor.minimap.enabled&amp;#34;: true, &amp;#34;editor.detectIndentation&amp;#34;: false, &amp;#34;editor.wordWrap&amp;#34;: &amp;#34;on&amp;#34;, &amp;#34;editor.renderWhitespace&amp;#34;: &amp;#34;none&amp;#34;, &amp;#34;editor.snippetSuggestions&amp;#34;: &amp;#34;top&amp;#34;, &amp;#34;editor.suggestSelection&amp;#34;: &amp;#34;first&amp;#34;, &amp;#34;editor.renderLineHighlight&amp;#34;: &amp;#34;all&amp;#34;, &amp;#34;editor.quickSuggestions&amp;#34;: { &amp;#34;other&amp;#34;: true, &amp;#34;comments&amp;#34;: true, &amp;#34;strings&amp;#34;: true }, &amp;#34;editor.formatOnSave&amp;#34;: true, &amp;#34;editor.codeActionsOnSave&amp;#34;: { // 开启自动保存修复 &amp;#34;source.fixAll.eslint&amp;#34;: true, //&amp;#34;source.fixAll.markdownlint&amp;#34;: true }, // 默</description>
+    </item>
+    
+    <item>
+      <title>Golang开发环境搭建</title>
+      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Fri, 24 May 2019 10:20:23 +0800</pubDate>
+      
+      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <description>简介 这篇文章主要记录Golang在各个主流操作系统上的开发环境搭建。这里的IDE选择VSCode的原因是比较轻量,功能简单实用并与git结合</description>
     </item>
     
   </channel>

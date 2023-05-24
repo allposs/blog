@@ -2,7 +2,7 @@
 <html lang="zh-cn">
 <head>
     <meta charset="utf-8">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://blog.allposs.com//img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://blog.allposs.com/img/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
     
@@ -15,9 +15,9 @@
 
     
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
-    <link rel="stylesheet" href="https://blog.allposs.com//css/style.css" />
-    <link rel="stylesheet" href="https://blog.allposs.com//css/fonts.css" />
-    <link rel="stylesheet" href="https://blog.allposs.com//css/template.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/style.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/fonts.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/template.css" />
 </head>
 
 <body class="body">
@@ -138,8 +138,371 @@
     <article class="article">
         
         <h1 id="简介">简介</h1>
+<p>这篇文章主要记录Golang在各个主流操作系统上的开发环境搭建。这里的IDE选择VSCode的原因是比较轻量,功能简单实用并与git结合比较紧密,比较适合新手入门。</p>
 <h1 id="环境">环境</h1>
+<ul>
+<li>
+<p><strong>Windows</strong></p>
+</li>
+<li>
+<p>VSCode:   1.34.0</p>
+</li>
+<li>
+<p>Golang:   1.12.5</p>
+</li>
+<li>
+<p>Git:      2.21.0</p>
+</li>
+<li>
+<p><strong>Ubuntu</strong></p>
+</li>
+<li>
+<p>VSCode:   1.34.0</p>
+</li>
+<li>
+<p>Golang:   1.12.5</p>
+</li>
+<li>
+<p>Git:      2.21.0</p>
+</li>
+<li>
+<p><strong>MAC</strong></p>
+</li>
+<li>
+<p>VSCode:   1.34.0</p>
+</li>
+<li>
+<p>Golang:   1.12.5</p>
+</li>
+<li>
+<p>Git:      2.21.0</p>
+</li>
+</ul>
 <h1 id="正文">正文</h1>
+<h2 id="windows安装">Windows安装</h2>
+<p>在windows系统里安装golang+vscode方法和安装普通软件差不多,只不过需要注意配置环境变量,这里我们使用windows10来安装配置,我们先在各个官网下载相关软件包。然后开始安装操作。</p>
+<h3 id="1-装git">1. 装Git</h3>
+<p>安装git的基本上只需要下一步下一步操作,如果对git比较熟悉可以自己选择自己合适的方案安装。</p>
+<p>PS:</p>
+<ul>
+<li>如果大家需要有代理建议大家吧代理配置上,git配置代理的命令如下：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>git config --global https.proxy http://10.226.144.58:8000
+</span></span><span style="display:flex;"><span>git config --global https.proxy https://10.226.144.58:8000
+</span></span><span style="display:flex;"><span>git config --global --unset http.proxy
+</span></span><span style="display:flex;"><span>git config --global --unset https.proxy
+</span></span></code></pre></div><h3 id="2-安装go">2. 安装Go</h3>
+<p>安装Go也是下一步下一步的操作,但是Go默认安装的位置为c:\Go,我个建议在不熟悉Go语言的情况下还是使用默认的。安装完软件后可以根据自己的情况对Go的环境进行个性化的操作。我们在windows的cmd输入go env看看自己的Go语言的环境。我的变量如下图：</p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="../../../../images/golang/002-golang-windows-001.png">
+<img src="../../../../images/golang/002-golang-windows-001.png" alt="image"  />
+</a>
+</div>
+
+</p>
+<p>每个具体环境变量的意思这里不作讲解，具体大家可以去看Go官网查看,这里我们只需要理解GOPATH和GOROOT.</p>
+<ul>
+<li><strong>GOPATH</strong></li>
+</ul>
+<p>GOPATH 是 Go 项目中最重要的一个目录，其决定了使用 Go 命令比如 go install 、go get 要把执行文件和源码放到哪个位置，决定开发 Go 项目依赖包是如何导入的，可以说如果要开发完整的 Go 项目首先要设置的就是 GOPATH.</p>
+<ul>
+<li><strong>GOROOT</strong></li>
+</ul>
+<p>简而言之 GOROOT 就是 Go 的安装目录，如果一台机器上有多个 Go 版本并存就需要注意 GOROOT 的设置，不同的 Go 版本使用不同的目录，对应的 Go 项目正确设置 Go 版本。</p>
+<ul>
+<li><strong>GOPROXY</strong></li>
+</ul>
+<p>Go软件包的代理服务器</p>
+<p>PS：</p>
+<p>GOPATH 可以设置多个值，也就是 GOPATH 允许设置多个目录，这种情况下使用 go get 安装的包默认放在第一个目录。</p>
+<p>官方详解：https://golang.org/cmd/go/#hdr-Environment_variables</p>
+<p>如果大家需要修改环境变量可以在资源管理器（或者我的电脑）里找到此电脑然后右键选择属性,会打开系统控制面板，然后在左侧找到高级系统设置点击打开，会在弹出的界面最下方看到环境变量按钮，点击它，就可以看到环境变量配置界面了。上半部分是用户变量配置，下半部分是系统变量配置。大家可以在用户变量配置找到GOPATH进行自定义的配置。</p>
+<h3 id="3-安装vscode">3. 安装vscode</h3>
+<p>安装vscode同样是傻瓜操作下一步就行,安装完后我们需要对vscode和Go进行整合。</p>
+<h4 id="a-安装插件">a). 安装插件</h4>
+<ul>
+<li><strong>必装插件</strong>:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>id</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Go</td>
+<td>ms-vscode.go</td>
+<td>Go语言插件</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>推荐插件</strong>:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>id</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&ldquo;Chinese (Simplified) Language Pack for Visual Studio Code</td>
+<td>ms-ceintl.vscode-language-pack-zh-hans</td>
+<td>vscode中文插件</td>
+</tr>
+</tbody>
+</table>
+<h4 id="b-配置vscode">b). 配置vscode</h4>
+<p>打开vscode的文件-&gt;首选项-&gt;设置打开设置页面，并找到扩展里的Go configuration并打开settings.json.配置如下内容：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;files.autoSave&#34;</span>: <span style="color:#e6db74">&#34;onFocusChange&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;go.buildOnSave&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;go.lintOnSave&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;go.vetOnSave&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;go.buildFlags&#34;</span>: [],
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;go.lintFlags&#34;</span>: [],
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;go.vetFlags&#34;</span>: [],
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;go.useCodeSnippetsOnFunctionSuggest&#34;</span>: <span style="color:#66d9ef">false</span>,   
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;go.formatOnSave&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;go.formatTool&#34;</span>: <span style="color:#e6db74">&#34;goreturns&#34;</span>, 
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//GOROOT路径，注意路径单\换成\\
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">&#34;go.goroot&#34;</span>: <span style="color:#e6db74">&#34;C:\\Go&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//GOPATH路径，注意路径单\换成\\
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">&#34;go.gopath&#34;</span>: <span style="color:#e6db74">&#34;C:\\Users\\Temp\\go&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//代理配置
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">&#34;http.proxy&#34;</span>: <span style="color:#e6db74">&#34;http://10.226.144.58:8000&#34;</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>保存，并在GOPATH目录下创建 **{bin,pkg,src}**三个目录，这三个目录分别用于编译后生成目录,包目录，代码目录。</p>
+<h3 id="c-安装golang工具">c). 安装golang工具</h3>
+<p>推荐使用vscode自动安装配置工具，直接在src目录下新建一个.go文件就会提示，点击安装全部即可,注意配置vscode代理。如若没有代理可以使用go get的方式下载，如若发现不能下载的可以去github找类似的包。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go get github.com/mdempsky/gocode
+</span></span><span style="display:flex;"><span>go get github.com/uudashr/gopkgs/cmd/gopkgs
+</span></span><span style="display:flex;"><span>go get github.com/ramya-rao-a/go-outline
+</span></span><span style="display:flex;"><span>go get github.com/acroca/go-symbols
+</span></span><span style="display:flex;"><span>go get golang.org/x/tools/cmd/guru
+</span></span><span style="display:flex;"><span>go get golang.org/x/tools/cmd/gorename
+</span></span><span style="display:flex;"><span>go get github.com/go-delve/delve/cmd/dlv
+</span></span><span style="display:flex;"><span>go get github.com/stamblerre/gocode
+</span></span><span style="display:flex;"><span>go get github.com/rogpeppe/godef
+</span></span><span style="display:flex;"><span>go get github.com/sqs/goreturns
+</span></span><span style="display:flex;"><span>go get golang.org/x/lint/golint
+</span></span></code></pre></div><p>安装完成后我们就可以在windows上使用vscode进行Go语言的开发了。</p>
+<h2 id="ubuntu安装">Ubuntu安装</h2>
+<p>Ubuntu安装的方法很多,我这里用的只是自己的安装方法,大家也可以使用其它的方法配置。同样Ubuntu配置Go环境要安装git、golang与vscode.</p>
+<h3 id="1-安装git">1. 安装Git</h3>
+<p>Ubuntu安装git很简单,只需要执行一条命令就行.命令如下:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo apt-get install git
+</span></span></code></pre></div><p>git就安装完成了。</p>
+<h3 id="2-安装go-1">2. 安装Go</h3>
+<p>Ubuntu安装GO有两种方式,一种是使用编译好的二进制包安装,一种是直接使用Ubuntu的软件包安装,这里推荐使用二进制方式安装,原因是二进制可以下载最新版本安装。这里显示的是二进制安装方法。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>wget https://dl.google.com/go/go1.12.5.linux-amd64.tar.gz
+</span></span><span style="display:flex;"><span>sudo tar xf go1.12.5.linux-amd64.tar.gz -C /usr/local/
+</span></span><span style="display:flex;"><span>sudo cat <span style="color:#e6db74">&lt;&lt;EOF &gt;&gt; ~/.bashrc
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#GOROOT目录
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">export GOROOT=/usr/local/go
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#GOPATH目录
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">export GOPATH=$HOME/development/golang
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#开启GO MOD管理工具
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">export GO111MODULE=on
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">export GOPROXY=https://goproxy.cn
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">export PATH=$GOPATH:$GOBIN:$GOROOT/bin:$PATH
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>sudo source ~/.bashrc
+</span></span><span style="display:flex;"><span>sudo mkdir -p <span style="color:#e6db74">${</span>GOPATH<span style="color:#e6db74">}</span>/<span style="color:#f92672">{</span>src,pkg,bin<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>GO语言包就安装完成了。可以使用go env命令看看：</p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="../../../../images/golang/002-golang-ubuntu-001.png">
+<img src="../../../../images/golang/002-golang-ubuntu-001.png" alt="image"  />
+</a>
+</div>
+
+</p>
+<h3 id="3-安装vscode-1">3. 安装VSCode</h3>
+<p>Ubuntu安装VSCode也很简单,在Ubuntu的软件商店里就有,当然也可以去官网下载最新的deb包安装。两种方式都可以,这里我就不过多说明安装了。</p>
+<h4 id="a-安装插件-1">a). 安装插件</h4>
+<ul>
+<li><strong>必装插件</strong>:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>id</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Go</td>
+<td>ms-vscode.go</td>
+<td>Go语言插件</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>推荐插件</strong>:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>id</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chinese (Simplified) Language Pack for Visual Studio Code</td>
+<td>ms-ceintl.vscode-language-pack-zh-hans</td>
+<td>vscode中文插件</td>
+</tr>
+</tbody>
+</table>
+<h4 id="b-配置vscode-1">b). 配置vscode</h4>
+<p>打开vscode的文件-&gt;首选项-&gt;设置打开设置页面，并找到扩展里的Go configuration并打开settings.json.配置如下内容：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;files.autoSave&#34;</span>: <span style="color:#e6db74">&#34;onFocusChange&#34;</span>,  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.buildOnSave&#34;</span>: <span style="color:#e6db74">&#34;package&#34;</span>,  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.lintOnSave&#34;</span>: <span style="color:#e6db74">&#34;package&#34;</span>,  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.vetOnSave&#34;</span>: <span style="color:#e6db74">&#34;package&#34;</span>,  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.buildFlags&#34;</span>: [],  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.lintFlags&#34;</span>: [],  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.vetFlags&#34;</span>: [],  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.formatTool&#34;</span>: <span style="color:#e6db74">&#34;goreturns&#34;</span>,  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.goroot&#34;</span>: <span style="color:#e6db74">&#34;/usr/local/go&#34;</span>,  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.gopath&#34;</span>: <span style="color:#e6db74">&#34;/home/temp/development/golang&#34;</span>,  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;workbench.colorTheme&#34;</span>: <span style="color:#e6db74">&#34;Monokai&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.useLanguageServer&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.languageServerExperimentalFeatures&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;diagnostics&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;http.proxy&#34;</span>: <span style="color:#e6db74">&#34;http://10.226.144.58:8000&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;explorer.confirmDelete&#34;</span>: <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>配置内容我就不过多说明,和windows基本上一样。</p>
+<h4 id="c-安装golang工具-1">c). 安装golang工具</h4>
+<p>安装golang工具最好在命令行下配置代理，当然也可以在VSCode里配置代理然后让VSCode下载。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go get github.com/mdempsky/gocode
+</span></span><span style="display:flex;"><span>go get github.com/uudashr/gopkgs/cmd/gopkgs
+</span></span><span style="display:flex;"><span>go get github.com/ramya-rao-a/go-outline
+</span></span><span style="display:flex;"><span>go get github.com/acroca/go-symbols
+</span></span><span style="display:flex;"><span>go get golang.org/x/tools/cmd/guru
+</span></span><span style="display:flex;"><span>go get golang.org/x/tools/cmd/gorename
+</span></span><span style="display:flex;"><span>go get github.com/go-delve/delve/cmd/dlv
+</span></span><span style="display:flex;"><span>go get github.com/stamblerre/gocode
+</span></span><span style="display:flex;"><span>go get github.com/rogpeppe/godef
+</span></span><span style="display:flex;"><span>go get github.com/sqs/goreturns
+</span></span><span style="display:flex;"><span>go get golang.org/x/lint/golint
+</span></span></code></pre></div><p>OK,Ubuntu的安装完成。</p>
+<h2 id="mac安装">Mac安装</h2>
+<p>Mac安装就比较繁琐，而且安装方式比较多,我这边推荐brew+软件包的形式安装。当让这个形式必须先安装brew,具体安装方式请访问官网,链接为：https://brew.sh/</p>
+<h3 id="1-安装git-1">1. 安装Git</h3>
+<p>MAC下使用brew安装git也很简单,也是一条命令:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>brew install git
+</span></span></code></pre></div><h3 id="2-安装go-2">2. 安装Go</h3>
+<p>安装Go也可以使用brew,也是一条命令:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>brew install go
+</span></span></code></pre></div><p>当然也可以去官网下载最新新的版本安装。然后使用go env 查看。</p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="../../../../images/golang/002-golang-mac-001.png">
+<img src="../../../../images/golang/002-golang-mac-001.png" alt="image"  />
+</a>
+</div>
+
+</p>
+<p>如果要修改GOPATH可以在~/.bash_profile里新增：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>export GOPATH<span style="color:#f92672">=</span>$HOME/Documents/Development/Golang/Projects
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#go mod开启</span>
+</span></span><span style="display:flex;"><span>export GO111MODULE<span style="color:#f92672">=</span>on
+</span></span><span style="display:flex;"><span>export GOPROXY<span style="color:#f92672">=</span>https://goproxy.cn
+</span></span></code></pre></div><h3 id="3-安装vscode-2">3. 安装VSCode</h3>
+<p>先去官网下载mac版本的软件包,正常安装就行。然后找到设置配置的地方。</p>
+<h4 id="a-安装插件-2">a). 安装插件</h4>
+<ul>
+<li><strong>必装插件</strong>:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>id</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Go</td>
+<td>ms-vscode.go</td>
+<td>Go语言插件</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>推荐插件</strong>:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>id</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chinese (Simplified) Language Pack for Visual Studio Code</td>
+<td>ms-ceintl.vscode-language-pack-zh-hans</td>
+<td>vscode中文插件</td>
+</tr>
+</tbody>
+</table>
+<h4 id="b-配置vscode-2">b). 配置vscode</h4>
+<p>打开vscode的Code-&gt;首选项-&gt;设置打开设置页面，并找到扩展里的Go configuration并打开settings.json.配置如下内容：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;explorer.confirmDragAndDrop&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;workbench.startupEditor&#34;</span>: <span style="color:#e6db74">&#34;newUntitledFile&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;explorer.confirmDelete&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;workbench.colorTheme&#34;</span>: <span style="color:#e6db74">&#34;Monokai&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.goroot&#34;</span>: <span style="color:#e6db74">&#34;/usr/local/Cellar/go/1.12.4/libexec&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.gopath&#34;</span>: <span style="color:#e6db74">&#34;/Users/temp/Documents/Development/Golang/Projects&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;files.exclude&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;**/.classpath&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;**/.project&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;**/.settings&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;**/.factorypath&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;editor.suggestSelection&#34;</span>: <span style="color:#e6db74">&#34;first&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;vsintellicode.modify.editor.suggestSelection&#34;</span>: <span style="color:#e6db74">&#34;automaticallyOverrodeDefaultValue&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;java.errors.incompleteClasspath.severity&#34;</span>: <span style="color:#e6db74">&#34;ignore&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;git.enableSmartCommit&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;git.autofetch&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;git.confirmSync&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>配置内容我就不过多说明,和windows基本上一样,修改go.gopath和go.goroot修改成go env命令显示一样就行</p>
+<h3 id="c-安装golang工具-2">c). 安装golang工具</h3>
+<p>安装golang工具最好在命令行下配置代理，当然也可以在VSCode里配置代理然后让VSCode下载。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>go get github.com/mdempsky/gocode
+</span></span><span style="display:flex;"><span>go get github.com/uudashr/gopkgs/cmd/gopkgs
+</span></span><span style="display:flex;"><span>go get github.com/ramya-rao-a/go-outline
+</span></span><span style="display:flex;"><span>go get github.com/acroca/go-symbols
+</span></span><span style="display:flex;"><span>go get golang.org/x/tools/cmd/guru
+</span></span><span style="display:flex;"><span>go get golang.org/x/tools/cmd/gorename
+</span></span><span style="display:flex;"><span>go get github.com/go-delve/delve/cmd/dlv
+</span></span><span style="display:flex;"><span>go get github.com/stamblerre/gocode
+</span></span><span style="display:flex;"><span>go get github.com/rogpeppe/godef
+</span></span><span style="display:flex;"><span>go get github.com/sqs/goreturns
+</span></span><span style="display:flex;"><span>go get golang.org/x/lint/golint
+</span></span></code></pre></div><h3 id="总结">总结</h3>
+<p>三个操作系统其实安装都差不多,但是如果你是Linux开发相关的人员最好还是在Ubuntu环境下开发。虽然GO支持交叉编译,但是在调试方面在原生系统上进行相关开发最好。</p>
 <h1 id="结束">结束</h1>
 
         
@@ -192,7 +555,34 @@
     </article>
     <aside class="aside">
         <h2>目录</h2>
-        <nav id="TableOfContents"></nav>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#windows安装">Windows安装</a>
+      <ul>
+        <li><a href="#1-装git">1. 装Git</a></li>
+        <li><a href="#2-安装go">2. 安装Go</a></li>
+        <li><a href="#3-安装vscode">3. 安装vscode</a></li>
+        <li><a href="#c-安装golang工具">c). 安装golang工具</a></li>
+      </ul>
+    </li>
+    <li><a href="#ubuntu安装">Ubuntu安装</a>
+      <ul>
+        <li><a href="#1-安装git">1. 安装Git</a></li>
+        <li><a href="#2-安装go-1">2. 安装Go</a></li>
+        <li><a href="#3-安装vscode-1">3. 安装VSCode</a></li>
+      </ul>
+    </li>
+    <li><a href="#mac安装">Mac安装</a>
+      <ul>
+        <li><a href="#1-安装git-1">1. 安装Git</a></li>
+        <li><a href="#2-安装go-2">2. 安装Go</a></li>
+        <li><a href="#3-安装vscode-2">3. 安装VSCode</a></li>
+        <li><a href="#c-安装golang工具-2">c). 安装golang工具</a></li>
+        <li><a href="#总结">总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 
     </aside>
 </div>
@@ -220,7 +610,7 @@ if (!doNotTrack) {
 </script>
 
 
-<script async src="https://blog.allposs.com//js/dom.js"></script>
+<script async src="https://blog.allposs.com/js/dom.js"></script>
 
 
 

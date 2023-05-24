@@ -269,7 +269,8 @@ hr {
 }
 
 .content .article .list .group {
-  margin-bottom: 20px;
+  margin: 20px;
+  float: left;
 }
 
 .content .article .title h2 {

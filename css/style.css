@@ -132,6 +132,11 @@ a.fancya {
   border-bottom: none;
 }
 
+a:hover {
+  color: #6eb5ff;
+  border-bottom: 1px solid;
+}
+
 sup a {
   border-bottom: none;
 }
@@ -292,6 +297,21 @@ hr {
   font-size: inherit;
   margin: 10px 0;
   line-height: 0.5;
+}
+
+/*Footer*/
+
+.footer {
+  text-align: center;
+}
+.footer .copyright a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.footer .copyright a:hover {
+  color: #6eb5ff;
+  border-bottom: 1px solid;
 }
 
 /* Tables */

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://blog.allposs.com/img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>编译自带OpenClash的OpenWrt固件 - allposs博客</title>
+    <meta property="og:title" content="编译自带OpenClash的OpenWrt固件 - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://blog.allposs.com/css/style.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/fonts.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../../../" aria-label="个人博客">
+                <img src="https://blog.allposs.com/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../../docs/"  aria-current="page" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs/" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>编译自带OpenClash的OpenWrt固件</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2023-05-30
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                openwrt
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                clash
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                编译
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<p>本文为使用编译纯净的OpenWrt固件，并集成OpenClash。使用编译环境为ubuntu 22.04.2 LTS，如果是其他操作系统可以查看<a href="https://openwrt.org/zh-cn/doc/howto/build">openwrt官网</a></p>
+<h1 id="环境">环境</h1>
+<ul>
+<li>操作系统: ubuntu 22.04.2 LTS</li>
+</ul>
+<h1 id="正文">正文</h1>
+<h2 id="配置编译环境">配置编译环境</h2>
+<h3 id="1-安装依赖包">1. 安装依赖包</h3>
+<p>主要是安装编译环境的依赖包，如果是其他操作系统可以访问<a href="https://openwrt.org/zh/docs/guide-user/additional-software/imagebuilder">openwrt官网</a>查看</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo apt update
+</span></span><span style="display:flex;"><span>sudo apt upgrade
+</span></span><span style="display:flex;"><span>sudo apt install build-essential libncurses5-dev libncursesw5-dev <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>zlib1g-dev gawk git gettext libssl-dev xsltproc rsync wget unzip python
+</span></span></code></pre></div><h3 id="2-拉取代码">2. 拉取代码</h3>
+<p>主要是拉取源码，并切换好相应固件版本版本。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 切换到用户根目录</span>
+</span></span><span style="display:flex;"><span>cd ~
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 拉取OpenWrt</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/openwrt/openwrt
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 进入固件源码目录</span>
+</span></span><span style="display:flex;"><span>cd ./openwrt 
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看Tag版本</span>
+</span></span><span style="display:flex;"><span>git tag
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看当前所在分支</span>
+</span></span><span style="display:flex;"><span>git branch
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 切换版本</span>
+</span></span><span style="display:flex;"><span>git checkout v22.03.5
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 返回上级目录</span>
+</span></span><span style="display:flex;"><span>cd ../
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 下载OpenClash</span>
+</span></span><span style="display:flex;"><span>wget https://github.com/vernesong/OpenClash/archive/master.zip
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 解压</span>
+</span></span><span style="display:flex;"><span>unzip master.zip
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 复制OpenClash软件包到OpenWrt</span>
+</span></span><span style="display:flex;"><span>cp -r OpenClash-master/luci-app-openclash openwrt/package
+</span></span></code></pre></div><h3 id="3-配置参数">3. 配置参数</h3>
+<p>此步骤主要配置编译参数。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cd ~/openwrt
+</span></span><span style="display:flex;"><span>./scripts/feeds update -a
+</span></span><span style="display:flex;"><span>./scripts/feeds install -a
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 进入交互式配置界面</span>
+</span></span><span style="display:flex;"><span>make menuconfig
+</span></span></code></pre></div><p>配置界面修改内容</p>
+<pre><code># 选择系统(以 x86_64 为例)
+Target System -&gt; x86
+Subtarget -&gt; x86_64
+# 选择固件的文件系统
+# https://openwrt.org/docs/techref/filesystems
+Target Images -&gt; squashfs
+
+# 选择构建X86_X64的GRUB固件
+Target Images -&gt; Build GRUB images (Linux x86 or x86_64 host only) 
+
+# 选择更小的压缩格式固件，方便复制
+Target Images -&gt; GZip images
+
+# 修改软件包可用空间，默认安装会占用100M左右，建议修改扩大，为后续安装其他软件打基础
+Target Images -&gt; Root filesystem partition size
+
+# 添加web界面(
+LuCI &gt; Collections -&gt; Luci
+
+# 添加兼容性依赖
+LuCI &gt; Modules -&gt; luci-compat
+
+# 添加中文
+LuCI &gt; Modules -&gt; Translations -&gt; Chinese Simplified
+
+# 添加openclash
+LuCI &gt; Applications -&gt; luci-app-openclash  
+
+# 添加主题
+LuCI -&gt; Themes
+
+# 添加wget
+Nerwork -&gt; File Transfer -&gt; wget-ssl
+
+# 添加kmod-tun，TUN模式必须
+Kernel modules -&gt; Network Support -&gt; kmod-tun
+
+# 排除dnsmasq，由于默认会安装dnsmasq-full，这里需要排除dnsmasq，否则会冲突报错。
+Base system -&gt; dnsmasq 
+</code></pre>
+<p>PS:</p>
+<ul>
+<li>
+<p>菜单解释:</p>
+<ul>
+<li>Target System (x86)  &mdash;&gt;   目标系统（x86）</li>
+<li>Subtarget (x86_64)  &mdash;&gt;   子目标（x86_64）</li>
+<li>Target Profile (Generic)  &mdash;&gt;目标配置文件（通用）</li>
+<li>Target Images  &mdash;&gt; 保存目标镜像的格式</li>
+<li>Global build settings  &mdash;&gt;      全局构建设置</li>
+<li>Advanced configuration options (for developers)  &mdash;- 高级配置选项（适用于开发人员）</li>
+<li>Build the OpenWrt Image Builder 构建OpenWrt图像生成器</li>
+<li>Build the OpenWrt SDK  构建OpenWrt SDK</li>
+<li>Package the OpenWrt-based Toolchain 打包基于OpenWrt的工具链</li>
+<li>Image configuration  &mdash;&gt;图像配置</li>
+<li>Base system  &mdash;&gt;     基本系统</li>
+<li>Administration  &mdash;&gt;     管理</li>
+<li>Boot Loaders  &mdash;&gt; 引导加载程序</li>
+<li>Development  &mdash;&gt;   开发</li>
+<li>Extra packages  &mdash;&gt;  额外包</li>
+<li>Firmware  &mdash;&gt;固件</li>
+<li>Fonts  &mdash;&gt;字体</li>
+<li>Kernel modules  &mdash;&gt;  内核模块</li>
+<li>Languages  &mdash;&gt;语言</li>
+<li>Libraries  &mdash;&gt;  图书馆</li>
+<li>LuCI  &mdash;&gt;      LuCI</li>
+<li>Mail  &mdash;&gt; 邮件</li>
+<li>Multimedia  &mdash;&gt;多媒体</li>
+<li>Network  &mdash;&gt;网络</li>
+<li>Sound  &mdash;&gt; 声音</li>
+<li>Utilities  &mdash;&gt;实用程序</li>
+<li>Xorg  &mdash;&gt;Xorg</li>
+</ul>
+</li>
+<li>
+<p>菜单选项</p>
+<ul>
+<li>[] 空的，不安装</li>
+<li>[M] 仅编译，不安装项（可以在部署完成后手动安装以降低固件大小）</li>
+<li>[*] 即为编译并安装</li>
+</ul>
+</li>
+</ul>
+<p>cd openwrt
+./scripts/feeds update -a
+./scripts/feeds install -a
+输入make menuconfig进入交互式配置界面</p>
+<h2 id="编译">编译</h2>
+<h3 id="1-初次编译">1. 初次编译</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 下载dl库（尽量科学上网），完成后检查是否有报错,如有问题可以百度或与我联系。</span>
+</span></span><span style="display:flex;"><span>make -j8 download V<span style="color:#f92672">=</span>s
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 开始编译，预计时间在30分钟以上,最终生成固件存放位置为openwrt/bin/targets/x86/64/目录下</span>
+</span></span><span style="display:flex;"><span>make -j4 V<span style="color:#f92672">=</span>s
+</span></span></code></pre></div><p>PS:</p>
+<pre><code>+ -j8: 使用8个内核，
++ V=s: 为故障排除目的提供更详细的信息
+</code></pre>
+<h3 id="2-再次编译">2. 再次编译</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 切换到用户根目录</span>
+</span></span><span style="display:flex;"><span>cd ~
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 删除旧的openclash文件</span>
+</span></span><span style="display:flex;"><span>rm -rf master.zip <span style="color:#f92672">&amp;&amp;</span> rm -rf OpenClash-master <span style="color:#f92672">&amp;&amp;</span> rm -rf openwrt/package/luci-app-openclash
+</span></span><span style="display:flex;"><span>cd openwrt
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 更新openwrt</span>
+</span></span><span style="display:flex;"><span>git pull
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 切换版本</span>
+</span></span><span style="display:flex;"><span>git checkout v22.03.5
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 回到上级目录</span>
+</span></span><span style="display:flex;"><span>cd ~
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 重新下载OpenClash</span>
+</span></span><span style="display:flex;"><span>wget https://github.com/vernesong/OpenClash/archive/master.zip
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 解压</span>
+</span></span><span style="display:flex;"><span>unzip master.zip
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 复制OpenClash软件包到OpenWrt</span>
+</span></span><span style="display:flex;"><span>cp -r OpenClash-master/luci-app-openclash openwrt/package
+</span></span><span style="display:flex;"><span>cd openwrt
+</span></span><span style="display:flex;"><span>./scripts/feeds update -a
+</span></span><span style="display:flex;"><span>./scripts/feeds install -a
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 配置</span>
+</span></span><span style="display:flex;"><span>make menuconfig
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 下载dl库（国内请尽量进行科学上网）</span>
+</span></span><span style="display:flex;"><span>make -j8 download V<span style="color:#f92672">=</span>s
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 开始编译</span>
+</span></span><span style="display:flex;"><span>make -j4 V<span style="color:#f92672">=</span>s
+</span></span></code></pre></div><p>PS:</p>
+<ul>
+<li>如果源码没有变化的情况下，可以使用以下命令清除缓存
+<ul>
+<li>ake clean 仅清理编译结果（bin目录）</li>
+<li>make dirclean 清理所有编译文件（除了.config、dl文件夹和feeds以外都清理）</li>
+<li>make distclean 清理所有编译文件以及相关依赖（完全清理干净，一键回到刚git clone下来的时候）</li>
+</ul>
+</li>
+</ul>
+<h2 id="pve安装">PVE安装</h2>
+<p>新建虚拟机，记住VM ID，这里以101为例；操作系统选择不使用任何介质；硬盘默认，稍后需要手动删除的；CPU、内存、网络自行配置。然后将编译好的OpenWrt固件解压(gunzip -d openwrt-x86-64-generic-squashfs-combined.img.gz),并把解压后的img文件通过PVE网页上传功能上传到PVE。然后登陆PVE执行以下命令</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 转换成 PVE 磁盘格式，注意其中的101替换为你的VM ID，openwrt-x86-64-generic-squashfs-combined.img为你的镜像文件</span>
+</span></span><span style="display:flex;"><span>qm  importdisk <span style="color:#ae81ff">101</span> /var/lib/vz/template/iso/openwrt-x86-64-generic-squashfs-combined.img local-lvm
+</span></span></code></pre></div><p>转换完，在虚拟机硬件界面应该会多出一个未使用磁盘。将创建虚拟机时分配的磁盘分离删除，选择转换的OpenWrt磁盘点击编辑添加,并在选项菜单选择启动项为添加的硬盘。</p>
+<h1 id="结束">结束</h1>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#配置编译环境">配置编译环境</a>
+      <ul>
+        <li><a href="#1-安装依赖包">1. 安装依赖包</a></li>
+        <li><a href="#2-拉取代码">2. 拉取代码</a></li>
+        <li><a href="#3-配置参数">3. 配置参数</a></li>
+      </ul>
+    </li>
+    <li><a href="#编译">编译</a>
+      <ul>
+        <li><a href="#1-初次编译">1. 初次编译</a></li>
+        <li><a href="#2-再次编译">2. 再次编译</a></li>
+      </ul>
+    </li>
+    <li><a href="#pve安装">PVE安装</a></li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer class="footer">
+    <div class="copyright">
+        
+        
+        © Powered by <a href="https://github.com/allposs/Axis-Hugo-Theme.git">Axis-Hugo-Theme</a> and <a href="https://gohugo.io">Hugo</a> | 2022 - 2023
+        
+    </div>
+</footer>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NBF4J7F6RW"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-NBF4J7F6RW', { 'anonymize_ip': false });
+}
+</script>
+
+
+<script async src="https://blog.allposs.com/js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+</body>
+
+</html>

@@ -8,6 +8,24 @@
     <language>zh-cn</language>
     <lastBuildDate>Fri, 01 Nov 2019 16:10:12 +0800</lastBuildDate><atom:link href="https://blog.allposs.com/docs/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>编译自带OpenClash的OpenWrt固件</title>
+      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/openwrt/001-%E7%BC%96%E8%AF%91%E8%87%AA%E5%B8%A6openclash%E7%9A%84openwrt%E5%9B%BA%E4%BB%B6/</link>
+      <pubDate>Tue, 30 May 2023 15:51:51 +0800</pubDate>
+      
+      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/openwrt/001-%E7%BC%96%E8%AF%91%E8%87%AA%E5%B8%A6openclash%E7%9A%84openwrt%E5%9B%BA%E4%BB%B6/</guid>
+      <description>简介 本文为使用编译纯净的OpenWrt固件，并集成OpenClash。使用编译环境为ubuntu 22.04.2 LTS，如果是其他操作系统可以查看open</description>
+    </item>
+    
+    <item>
+      <title>kubectl的debug命令实现</title>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%BC%80%E5%8F%91%E5%90%88%E9%9B%86/001-kubectl%E7%9A%84debug%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0/</link>
+      <pubDate>Sat, 27 May 2023 08:28:22 +0800</pubDate>
+      
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%BC%80%E5%8F%91%E5%90%88%E9%9B%86/001-kubectl%E7%9A%84debug%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0/</guid>
+      <description>简介 kubectl是管理Kubernetes常用工具之一，在调试、排查问题的时候，我们一般情况使用 logs describe exec debug等子命令便可以找到问题原因</description>
+    </item>
+    
+    <item>
       <title>kubernetes原理合集</title>
       <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/005-kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/</link>
       <pubDate>Fri, 19 May 2023 18:00:39 +0800</pubDate>
@@ -94,7 +112,7 @@
       <pubDate>Mon, 15 May 2023 18:35:44 +0800</pubDate>
       
       <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
-      <description>简介 正文 1. 进入Pod网络命名空间 说明: 处理: docker inspect pause|grep Pid &amp;quot;Pid&amp;quot;: 3083138, nsenter &amp;ndash;net=/proc/3083138/ns/net 结束</description>
+      <description>简介 正文 1. nsenter 说明: nsenter命令是一个可以在指定进程的命令空间下运行指定程序的命令。它位于util-linux包中。 语法: nsenter [options] [program [arguments]] 处理:</description>
     </item>
     
     <item>

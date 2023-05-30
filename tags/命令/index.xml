@@ -13,7 +13,7 @@
       <pubDate>Mon, 15 May 2023 18:35:44 +0800</pubDate>
       
       <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
-      <description>简介 正文 1. 进入Pod网络命名空间 说明: 处理: docker inspect pause|grep Pid &amp;quot;Pid&amp;quot;: 3083138, nsenter &amp;ndash;net=/proc/3083138/ns/net 结束</description>
+      <description>简介 正文 1. nsenter 说明: nsenter命令是一个可以在指定进程的命令空间下运行指定程序的命令。它位于util-linux包中。 语法: nsenter [options] [program [arguments]] 处理:</description>
     </item>
     
   </channel>

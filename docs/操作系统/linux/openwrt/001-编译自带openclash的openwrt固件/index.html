@@ -166,18 +166,8 @@
 <p>主要是拉取源码，并切换好相应固件版本版本。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 切换到用户根目录</span>
 </span></span><span style="display:flex;"><span>cd ~
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 拉取OpenWrt</span>
-</span></span><span style="display:flex;"><span>git clone https://github.com/openwrt/openwrt
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 进入固件源码目录</span>
-</span></span><span style="display:flex;"><span>cd ./openwrt 
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看Tag版本</span>
-</span></span><span style="display:flex;"><span>git tag
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看当前所在分支</span>
-</span></span><span style="display:flex;"><span>git branch
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 切换版本</span>
-</span></span><span style="display:flex;"><span>git checkout v22.03.5
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 返回上级目录</span>
-</span></span><span style="display:flex;"><span>cd ../
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 拉取OpenWrt,下载指定分支的最后一次提交：</span>
+</span></span><span style="display:flex;"><span>git clone --depth <span style="color:#ae81ff">1</span> -b openwrt-22.03 https://github.com/openwrt/openwrt openwrt
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 下载OpenClash</span>
 </span></span><span style="display:flex;"><span>wget https://github.com/vernesong/OpenClash/archive/master.zip
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 解压</span>

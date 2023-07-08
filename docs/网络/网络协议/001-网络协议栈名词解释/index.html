@@ -7,8 +7,8 @@
     <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
     
     
-    <title>NFS详解 - allposs博客</title>
-    <meta property="og:title" content="NFS详解 - allposs博客">
+    <title>001-网络协议栈名词解释 - allposs博客</title>
+    <meta property="og:title" content="001-网络协议栈名词解释 - allposs博客">
     
 
     
@@ -25,7 +25,7 @@
 <div class="intro-and-nav" role="banner">
     <div>
         <div class="intro">
-            <a class="logo" href="../../../" aria-label="个人博客">
+            <a class="logo" href="../../../../" aria-label="个人博客">
                 <img src="https://blog.allposs.com/logo.jpeg" alt="">
             </a>
             <p class="library-desc">
@@ -47,7 +47,7 @@
                         
                         
                         
-                        <a href="../../../" >
+                        <a href="../../../../" >
                             首页
                         </a>
                     </li>
@@ -56,7 +56,7 @@
                         
                         
                         
-                        <a href="../../../docs/"  aria-current="page" >
+                        <a href="../../../../docs/"  aria-current="page" >
                             文档
                         </a>
                     </li>
@@ -65,7 +65,7 @@
                         
                         
                         
-                        <a href="../../../tags/" >
+                        <a href="../../../../tags/" >
                             标签
                         </a>
                     </li>
@@ -74,7 +74,7 @@
                         
                         
                         
-                        <a href="../../../archives/" >
+                        <a href="../../../../archives/" >
                             归档
                         </a>
                     </li>
@@ -83,7 +83,7 @@
                         
                         
                         
-                        <a href="../../../about/" >
+                        <a href="../../../../about/" >
                             关于
                         </a>
                     </li>
@@ -116,17 +116,23 @@
         
 
 <div class="title">
-    <h1>NFS详解</h1>
+    <h1>001-网络协议栈名词解释</h1>
     <div class="tags">
         <i class="fa fa-tags" aria-hidden="true">
             <span>
-                2023-05-19
+                2023-07-08
             </span>
         </i>
         
         <i class="fa fa-tags" aria-hidden="true">
             <span>
-                NFS
+                TCP/IP
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                网络
             </span>
         </i>
         
@@ -137,68 +143,52 @@
     <article class="article">
         
         <h1 id="简介">简介</h1>
-<blockquote>
-<p>NFS 是 Network File System 的缩写，是Sun公司于1984开发的一种分布式文件系统协议。它的核心功能就是可以通过网络，让不同的客户端，可以彼此访问共同的文件系统 ，来实现文件的共享。像许多其他的协议，建立在开放的网络计算的远程过程调用（RPC）之上。NFS是在RFC中定义的开放标准，允许任何人实现该协议。</p>
-</blockquote>
-<h1 id="环境">环境</h1>
 <h1 id="正文">正文</h1>
-<h2 id="版本说明">版本说明</h2>
+<h3 id="1-keepalive">1. KeepAlive</h3>
 <ul>
-<li>NFS V2</li>
+<li>说明:</li>
 </ul>
 <blockquote>
-<p>V2版本是NFS最早实现的版本之一，基于UDP协议实现了一个无状态的服务器版本。仅仅支持32位的系统，且不大于2GB的文件。</p>
+<p>TCP的KeepAlive机制是一种保活机制，就是为了保证连接的有效性，探测连接的对端是否存活的作用，在间隔一定的时间发探测包，根据回复来确认该连接是否有效。此外，KeepAlive机制还可以解决大量无用连接无法回收、占用资源的问题了（在TCP通信中客户端和服务器若长时间无数据交互情况下，若一方出现异常情况关闭连接，抑或是连接中间路由出于某种机制断开连接，而此时另一方不知道对方状态而一直维护连接，浪费系统资源的同时，也会引起下次数据交互时出错）。，都实现了KeepAlive功能。</p>
+</blockquote>
+<blockquote>
+<p>PS:</p>
+</blockquote>
+<blockquote>
+<p>KeepAlive并不是TCP协议规范的一部分，但在几乎所有的TCP/IP协议栈（不管是Linux还是Windows）中,具体请看<a href="https://datatracker.ietf.org/doc/html/rfc1122#page-101">rfc1122</a></p>
 </blockquote>
 <ul>
-<li>NFS V3</li>
+<li>处理:</li>
 </ul>
 <blockquote>
-<p>V3版本在V2基础之上做了大量的改进。支持了大于2GB的文件读写，使用了TCP协议来进行数据交互，支持了客户端的异步读写来提高文件系统的性能（同时也会产生我们头疼的一致性问题）</p>
+<h4 id="1-在linux内核设置">1. 在Linux内核设置</h4>
+<p>KeepAlive默认不是开启的，如果想使用KeepAlive，需要在你的应用中设置SO_KEEPALIVE才可以生效,Linux内核提供了通过sysctl命令查看和配置Linux内核参数的方法。</p>
 </blockquote>
-<ul>
-<li>NFS V4</li>
-</ul>
-<blockquote>
-<p>V4版本提高了安全性，通过TCP协议实现了一个有状态的服务器版本，通过锁租约的机制来实现多客户端的读写同步。在4.1版本引入了pNFS，通过类似于一个HDFS架构来提供并行的一个分布式文件系统。</p>
-</blockquote>
-<h3 id="服务器安装">服务器安装</h3>
-<h4 id="a-安装">a) 安装</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 安装依赖包,只安装 nfs-utils 即可，它的依赖rpcbind，会附带安装上。</span>
-</span></span><span style="display:flex;"><span>yum install nfs-utils -y
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 开机服务</span>
-</span></span><span style="display:flex;"><span>systemctl enable rpcbind <span style="color:#f92672">&amp;&amp;</span> systemctl enable nfs
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 启动服务</span>
-</span></span><span style="display:flex;"><span>systemctl start rpcbind <span style="color:#f92672">&amp;&amp;</span> systemctl start nfs
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建共享目录</span>
-</span></span><span style="display:flex;"><span>mkdir -p /volume1/data <span style="color:#f92672">&amp;&amp;</span> chmod -R <span style="color:#ae81ff">755</span> /volume1/data
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 配置共享目录</span>
-</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt;&gt; /etc/exports
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">/volume1/data     10.199.88.0/24(rw,sync,no_root_squash,no_all_squash)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 查看当前内核TCP KeepAlive参数</span>
+</span></span><span style="display:flex;"><span>sysctl -a | grep keepalive
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 返回内容如下:</span>
+</span></span><span style="display:flex;"><span>    net.ipv4.tcp_keepalive_intvl <span style="color:#f92672">=</span> <span style="color:#ae81ff">75</span>
+</span></span><span style="display:flex;"><span>    net.ipv4.tcp_keepalive_probes <span style="color:#f92672">=</span> <span style="color:#ae81ff">9</span>
+</span></span><span style="display:flex;"><span>    net.ipv4.tcp_keepalive_time <span style="color:#f92672">=</span> <span style="color:#ae81ff">7200</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改参数</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 永久修改方式是写入文件</span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; /etc/sysctl.d/keepalive.conf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">net.ipv4.tcp_keepalive_time = 3600
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 重启服务</span>
-</span></span><span style="display:flex;"><span>systemctl restart nfs
-</span></span></code></pre></div><h4 id="b参数详解">b)参数详解</h4>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#立即应用sysctl参数</span>
+</span></span><span style="display:flex;"><span>sysctl --system
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 临时修改则直接使用命令</span>
+</span></span><span style="display:flex;"><span>sysctl net.ipv4.tcp_keepalive_time<span style="color:#f92672">=</span><span style="color:#ae81ff">3600</span>
+</span></span></code></pre></div><blockquote>
+<p>PS:</p>
 <ul>
-<li>/volume1/data: 共享目录位置。</li>
-<li>10.199.88.0/24: 客户端 IP 范围，三种方式:单主机10.199.88.210，通用符:<em>、</em>.allposs.com，网段:10.199.88.0/24。</li>
-<li>rw: 权限设置，可读可写。</li>
-<li>sync: 同步共享目录。</li>
-<li>no_root_squash: 可以使用 root 授权。</li>
-<li>no_all_squash: 可以使用普通用户授权。</li>
+<li>tcp_keepalive_time，在TCP保活打开的情况下，最后一次数据交换到TCP发送第一个保活探测包的间隔，即允许的持续空闲时长，或者说每次正常发送心跳的周期，默认值为7200s（2h）。</li>
+<li>tcp_keepalive_probes 在tcp_keepalive_time之后，没有接收到对方确认，继续发送保活探测包次数，默认值为9（次）</li>
+<li>tcp_keepalive_intvl，在tcp_keepalive_time之后，没有接收到对方确认，继续发送保活探测包的发送频率，默认值为75s。</li>
 </ul>
-<h3 id="客户端安装">客户端安装</h3>
-<h4 id="a-安装-1">a) 安装</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 安装依赖包</span>
-</span></span><span style="display:flex;"><span>yum install nfs-utils -y
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建挂载目录</span>
-</span></span><span style="display:flex;"><span>mkdir -p /data/share <span style="color:#f92672">&amp;&amp;</span> chmod <span style="color:#ae81ff">755</span> -R /data/share
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 手动挂载</span>
-</span></span><span style="display:flex;"><span>mount -t nfs 10.199.88.210:/volume1/data /data/share -o nolock,rsize<span style="color:#f92672">=</span>1048576,wsize<span style="color:#f92672">=</span>1048576,hard,timeo<span style="color:#f92672">=</span>600,retrans<span style="color:#f92672">=</span>2,_netdev
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 写入fstab,开机启动</span>
-</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt;&gt; /etc/fstab
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">10.199.88.211:/volume1/data /data/share nfs nolock,rsize=1048576,,wsize=1048576,hard,timeo=600,retrans=2,_netdev 0 0
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
-</span></span></code></pre></div><h1 id="结束">结束</h1>
+</blockquote>
+<h1 id="结束">结束</h1>
 
         
         <hr />
@@ -252,10 +242,9 @@
         <h2>目录</h2>
         <nav id="TableOfContents">
   <ul>
-    <li><a href="#版本说明">版本说明</a>
+    <li>
       <ul>
-        <li><a href="#服务器安装">服务器安装</a></li>
-        <li><a href="#客户端安装">客户端安装</a></li>
+        <li><a href="#1-keepalive">1. KeepAlive</a></li>
       </ul>
     </li>
   </ul>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>网络 on allposs博客</title>
+    <link>https://blog.allposs.com/tags/%E7%BD%91%E7%BB%9C/</link>
+    <description>Recent content in 网络 on allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 08 Jul 2023 09:22:35 +0800</lastBuildDate><atom:link href="https://blog.allposs.com/tags/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>001-网络协议栈名词解释</title>
+      <link>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/001-%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%A0%88%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</link>
+      <pubDate>Sat, 08 Jul 2023 09:22:35 +0800</pubDate>
+      
+      <guid>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/001-%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%A0%88%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</guid>
+      <description>简介 正文 1. KeepAlive 说明: TCP的KeepAlive机制是一种保活机制，就是为了保证连接的有效性，探测连接的对端是否存活的作用，在间隔一定的时间发探</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OSI7层模型 on allposs博客</title>
+    <link>https://blog.allposs.com/tags/osi7%E5%B1%82%E6%A8%A1%E5%9E%8B/</link>
+    <description>Recent content in OSI7层模型 on allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 08 Jul 2023 17:45:49 +0800</lastBuildDate><atom:link href="https://blog.allposs.com/tags/osi7%E5%B1%82%E6%A8%A1%E5%9E%8B/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OSI7层网络模型详解</title>
+      <link>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/002-osi7%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/</link>
+      <pubDate>Sat, 08 Jul 2023 17:45:49 +0800</pubDate>
+      
+      <guid>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/002-osi7%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/</guid>
+      <description>简介 先上网图: OSI7层模型是open system interconnection 开放式系统互联参考模型，注意是参考模型，在实际生活中并未全部实现（现实使用的是TCP/IP4层模型</description>
+    </item>
+    
+  </channel>
+</rss>

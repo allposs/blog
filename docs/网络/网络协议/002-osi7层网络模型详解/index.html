@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://blog.allposs.com/img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>OSI7层网络模型详解 - allposs博客</title>
+    <meta property="og:title" content="OSI7层网络模型详解 - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://blog.allposs.com/css/style.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/fonts.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../../" aria-label="个人博客">
+                <img src="https://blog.allposs.com/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../docs/"  aria-current="page" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs/" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>OSI7层网络模型详解</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2023-07-08
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                OSI7层模型
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                网络
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                模型
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<p>先上网图:
+
+<div class="post-img-view">
+<a data-fancybox="gallery" href="../../../../images/OSI%E4%B8%83%E5%B1%82%E6%A8%A1%E5%9E%8B%E5%9B%BE%E8%A7%A3.gif">
+<img src="../../../../images/OSI%E4%B8%83%E5%B1%82%E6%A8%A1%E5%9E%8B%E5%9B%BE%E8%A7%A3.gif" alt="OSI7层模型"  />
+</a>
+</div>
+
+
+<strong>OSI7层模型</strong>是open system interconnection 开放式系统互联参考模型，注意是参考模型，在实际生活中并未全部实现（现实使用的是<strong>TCP/IP4层模型</strong>），但是不妨碍我们通过<strong>OSI7层模型</strong>去了解网络通讯原理。<strong>OSI7层模型</strong>分别为如下7层:应用层（Application）、表示层（Presentation）、会话层（Session）、传输层（Transport）、网络层（Network）、数据链路层（Data Link）、物理层（Physical）。</p>
+<h1 id="正文">正文</h1>
+<h2 id="1-物理层">1. 物理层</h2>
+<blockquote>
+<p>OSI的物理层包含的是基础设施，它让网络通信变成可能。这一层规范是有关传输介质的，这些规范通常也参考了其他组织制定的标准。连接头、帧、帧的使用、电流、编码及光调制等都属于各种物理层规范中的内容。物理层常用多个规范完成对所有细节的定义。示例：Rj45，802.3等。</p>
+</blockquote>
+<blockquote>
+<ol>
+<li>这一层中有很多技术——从物理网络设备、布线到电缆如何连接到设备之间的一切。另外，如果我们不需要电缆，那么信号的类型和传输方式是什么（例如，无线宽带）。我没有列出第一层中的各种技术，而是为这些技术创建了一个更大的分类。我鼓励读者进一步学习每一种分类：</li>
+</ol>
+<blockquote>
+<ul>
+<li><strong>节点（设备）和网络硬件</strong>: 设备包括集线器、中继器、路由器、计算机、打印机，等等。这些设备内的硬件包括天线、放大器、网卡（NIC，Network Interface Card）等等。</li>
+<li><strong>设备接口机制</strong>: 电缆如何连接到某个设备，以及连接到设备上的哪个地方（电缆连接器和设备插座）？连接器的大小和形状如何，它有多少个引脚？决定引脚处于活动状态还是非活动状态的东西是什么？</li>
+<li><strong>功能和程序逻辑</strong>: 连接器中每个引脚的功能是什么——发送还是接收？决定事件顺序，以便节点能够开始与第二层上的另一个节点通信的程序逻辑是什么？</li>
+<li><strong>电缆协议和规范</strong>: 以太网（CAT）、USB、数字用户线（DSL，Digital Subcriber Line）等。规范包括最大电缆长度、调制技术、无线电规范、线路编码和位同步（下文还有更多）。</li>
+<li><strong>电缆类型</strong>: 选择有屏蔽或非屏蔽双绞线、非双绞线、同轴电缆等。从这里了解更多电缆类型。</li>
+<li><strong>信号类型</strong>: 基带一次一个比特流，就像铁路一样——只支持单向。宽带同时包含多个比特流，就像双向高速公路一样。</li>
+<li><strong>信号传输方法（可能是有线的或无线的）</strong>: 选择包括电（以太网）、光（光纤网络、光纤）、无线电波（802.11 WiFi，a/b/g/n/ac/ax 变种或蓝牙）。如果是无线的话，则要考虑频率：2.5 GHz 还是 5 GHz。如果是有线或以太网的话，则还要考虑网络标准，例如 100BASE-T 和相关标准。</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>这一层，数据单位是比特（bit）：
+比特是可传输数字信息的最小单元。比特是二进制的，要么为 0 要么为 1。字节（byte）由八个比特组成，用于表示单个字符，比如字母、数字或符号。
+根据硬件设备支持的数据速率（传输速率，每秒或每毫秒的比特数量），比特被发送到硬件设备或从设备发出。这个过程是同步的，从而保持单位时间内发送和接收比特的数量相等（这被称为比特同步）。比特的传输方式由信号的传输方式决定。
+节点可以发送比特、接收比特，或者收发兼顾。如果节点只能收或只能发，那么该节点采用的就是单工模式。如果节点既可以收又可以发，那么该节点采用的就是双工模式。如果一个节点可以同时进行收发操作，那么它就是全双工的，否则就是半双工的。
+最初的以太网是半双工的。如果采用了正确的设备，现在也可以选择全双工的以太网。</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="3">
+<li>这一层容易出现的问题，如果这一层出了问题，第一层以上的任何东西都不会正常工作。</li>
+</ol>
+<ul>
+<li>电缆失效，例如电线损坏或连接器损坏</li>
+<li>网络硬件设备故障，例如电路损坏</li>
+<li>东西正被拔出（我们都遇到过……）</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>PS</p>
+<blockquote>
+<p><a href="https://www.submarinecablemap.com/%E3%80%82">深海通信电缆拓扑图</a></p>
+</blockquote>
+</blockquote>
+<h2 id="1-应用层">1. 应用层</h2>
+<p>与其它计算机进行通讯的一个应用，它是对应应用程序的通信服务的。例如，一个没有通信功能的字处理程序就不能执行通信的代码，从事字处理工作的程序员也不关心OSI的第7层。但是，如果添加了一个传输文件的选项，那么字处理器的程序员就需要实现OSI的第7层。示例：TELNET，HTTP，FTP，NFS，SMTP等。这一层，数据单位还是报文。</p>
+<h2 id="2-表示层">2. 表示层</h2>
+<p>这一层的主要功能是定义数据格式及加密。例如，FTP允许你选择以二进制或ASCII格式传输。如果选择二进制，那么发送方和接收方不改变文件的内容。如果选择ASCII格式，发送方将把文本从发送方的字符集转换成标准的ASCII后发送数据。在接收方将标准的ASCII转换成接收方计算机的字符集。示例：加密，ASCII等。这一层，数据单位还是报文。</p>
+<h2 id="3--会话层">3.  会话层</h2>
+<p>它定义了如何开始、控制和结束一个会话，包括对多个双向消息的控制和管理，以便在只完成连续消息的一部分时可以通知应用，从而使表示层看到的数据是连续的，在某些情况下，如果表示层收到了所有的数据，则用数据代表表示层。示例：RPC，SQL等。在会话层及以上的高层次中，数据传送的单位不再另外命名，而是统称为报文。</p>
+<h2 id="4-传输层">4. 传输层</h2>
+<p>这层的功能包括是否选择差错恢复协议还是无差错恢复协议，及在同一主机上对不同应用的数据流的输入进行复用，还包括对收到的顺序不对的数据包的重新排序功能。示例：TCP，UDP，SPX。这一层的数据单元也称作数据包(packets)。但是，当你谈论TCP等具体的协议时又有特殊的叫法，TCP的数据单元称为段 (segments)而UDP协议的数据单元称为“数据报(datagrams)”。</p>
+<h2 id="5-网络层">5. 网络层</h2>
+<p>这层对端到端的包传输进行定义，它定义了能够标识所有结点的逻辑地址，还定义了路由实现的方式和学习的方式。为了适应最大传输单元长度小于包长度的传输介质，网络层还定义了如何将一个包分解成更小的包的分段方法。示例：IP，IPX等。在这一层，数据的单位称为数据包(packet)。</p>
+<h2 id="6-数据链路层">6. 数据链路层</h2>
+<p>它定义了在单个链路上如何传输数据。这些协议与被讨论的各种介质有关。示例：ATM，FDDI等。在这一层，数据的单位称为帧(frame)。</p>
+<h1 id="结束">结束</h1>
+<p>引用：</p>
+<ul>
+<li><a href="https://www.freecodecamp.org/chinese/news/osi-model-networking-layers/">白话 OSI 七层网络模型</a></li>
+</ul>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-物理层">1. 物理层</a></li>
+    <li><a href="#1-应用层">1. 应用层</a></li>
+    <li><a href="#2-表示层">2. 表示层</a></li>
+    <li><a href="#3--会话层">3.  会话层</a></li>
+    <li><a href="#4-传输层">4. 传输层</a></li>
+    <li><a href="#5-网络层">5. 网络层</a></li>
+    <li><a href="#6-数据链路层">6. 数据链路层</a></li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer class="footer">
+    <div class="copyright">
+        
+        
+        © Powered by <a href="https://github.com/allposs/Axis-Hugo-Theme.git">Axis-Hugo-Theme</a> and <a href="https://gohugo.io">Hugo</a> | 2022 - 2023
+        
+    </div>
+</footer>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NBF4J7F6RW"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-NBF4J7F6RW', { 'anonymize_ip': false });
+}
+</script>
+
+
+<script async src="https://blog.allposs.com/js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+</body>
+
+</html>

@@ -155,7 +155,9 @@
 <p>PS:</p>
 </blockquote>
 <blockquote>
+<blockquote>
 <p>KeepAlive并不是TCP协议规范的一部分，但在几乎所有的TCP/IP协议栈（不管是Linux还是Windows）中,具体请看<a href="https://datatracker.ietf.org/doc/html/rfc1122#page-101">rfc1122</a></p>
+</blockquote>
 </blockquote>
 <ul>
 <li>处理:</li>
@@ -182,11 +184,13 @@
 </span></span><span style="display:flex;"><span>sysctl net.ipv4.tcp_keepalive_time<span style="color:#f92672">=</span><span style="color:#ae81ff">3600</span>
 </span></span></code></pre></div><blockquote>
 <p>PS:</p>
+<blockquote>
 <ul>
 <li>tcp_keepalive_time，在TCP保活打开的情况下，最后一次数据交换到TCP发送第一个保活探测包的间隔，即允许的持续空闲时长，或者说每次正常发送心跳的周期，默认值为7200s（2h）。</li>
 <li>tcp_keepalive_probes 在tcp_keepalive_time之后，没有接收到对方确认，继续发送保活探测包次数，默认值为9（次）</li>
 <li>tcp_keepalive_intvl，在tcp_keepalive_time之后，没有接收到对方确认，继续发送保活探测包的发送频率，默认值为75s。</li>
 </ul>
+</blockquote>
 </blockquote>
 <h1 id="结束">结束</h1>
 

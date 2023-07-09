@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://blog.allposs.com/img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>Mitaka版openstack三节点安装 - allposs博客</title>
+    <meta property="og:title" content="Mitaka版openstack三节点安装 - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://blog.allposs.com/css/style.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/fonts.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../../" aria-label="个人博客">
+                <img src="https://blog.allposs.com/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../docs/"  aria-current="page" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs/" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>Mitaka版openstack三节点安装</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2016-06-17
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                openstack
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                虚拟化
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<blockquote>
+<p>Mitaka版openstack三节点安装文档。</p>
+</blockquote>
+<h1 id="环境">环境</h1>
+<ul>
+<li>操作系统：CentOS7.1 X86_64</li>
+<li>Yum源：163源</li>
+<li>IP地址：略</li>
+<li>DNS：略</li>
+<li>主机名：opsnode1.example.com,opsnode2.example.com,opsnode3.example.com</li>
+</ul>
+<h1 id="正文">正文</h1>
+<h2 id="1-准备工作">1. 准备工作</h2>
+<blockquote>
+<p>注意:</p>
+<blockquote>
+<p>各节点机器至少3个网卡,标注“//”的为暂时没有测试，标注“[root@opsnode* ~]# ”为命令提示符，标注为“#”的为注示，标注“MariaDB [(none)]&gt;”为数据库命令行,标注“[root@opsnode1 ~]# ”为opsnode1主机，标注“[root@opsnode2 ~]# ”为opsnode2主机,以些类推，标注“[root@opsnode* ~]# ”为所有主机</p>
+</blockquote>
+</blockquote>
+<h3 id="11-初始环境">1.1 初始环境</h3>
+<h3 id="111-系统初始安装">1.1.1 系统初始安装</h3>
+<p>因为我的linux是使用CentOS7.2版本最小化安装，所以需要安装相关软件和配置网络</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode* ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install bash-* vim wget net-tools</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode* ~<span style="color:#f92672">]</span><span style="color:#75715e"># cat &lt;&lt;EOF &gt; /etc/hosts</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#node1</span>
+</span></span><span style="display:flex;"><span>172.16.10.11    opsnode1.example.com    
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#node2</span>
+</span></span><span style="display:flex;"><span>172.16.10.12    opsnode2.example.com    
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#node3</span>
+</span></span><span style="display:flex;"><span>172.16.10.13    opsnode3.example.com    
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#node4</span>
+</span></span><span style="display:flex;"><span>172.16.10.14    opsnode4.example.com
+</span></span><span style="display:flex;"><span>EOF
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode* ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl stop firewall</span>
+</span></span></code></pre></div><p>计算节点需要配置kvm</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e">#	yum -y install libcanberra-gtk2 qemu-kvm.x86_64 qemu-kvm-tools.x86_64 \</span>
+</span></span><span style="display:flex;"><span>libvirt.x86_64 libvirt-cim.x86_64 libvirt-client.x86_64 libvirt-java.noarch <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>libvirt-python.x86_64 libiscsi* dbus-devel  virt-clone virt-manager libvirt <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>libvirt-python python-virtinst
+</span></span></code></pre></div><h3 id="112-安装yum源">1.1.2 安装yum源</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># centos系统</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode* ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install centos-release-openstack-mitaka</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># redhat系统</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode* ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install https://rdoproject.org/repos/rdo-release.rpm</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode* ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum upgrade</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode* ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install python-openstackclient</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode* ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install openstack-selinux</span>
+</span></span></code></pre></div><h3 id="113-配置相关辅助服务dns-ntp">1.1.3 配置相关辅助服务：dns， ntp</h3>
+<p>可以根据我以前写的文章配置，这里就不重复了，dns可以用修改hosts文件替代</p>
+<h2 id="2-开始安装">2. 开始安装</h2>
+<h3 id="21-安装数据库">2.1 安装数据库</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install mariadb mariadb-server python2-PyMySQL</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/my.cnf.d/openstack.cnf</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>mysqld<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	bind-address <span style="color:#f92672">=</span>  192.168.10.101
+</span></span><span style="display:flex;"><span>	default-storage-engine <span style="color:#f92672">=</span> innodb
+</span></span><span style="display:flex;"><span>	collation-server <span style="color:#f92672">=</span> utf8_general_ci
+</span></span><span style="display:flex;"><span>	datadir <span style="color:#f92672">=</span> /data/mariadb/db/openstack
+</span></span><span style="display:flex;"><span>	interactive_timeout <span style="color:#f92672">=</span> <span style="color:#ae81ff">300</span>
+</span></span><span style="display:flex;"><span>	wait_timeout <span style="color:#f92672">=</span> <span style="color:#ae81ff">300</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#character set</span>
+</span></span><span style="display:flex;"><span>	character-set-server <span style="color:#f92672">=</span> utf8
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	open_files_limit <span style="color:#f92672">=</span> <span style="color:#ae81ff">65535</span>
+</span></span><span style="display:flex;"><span>	max_connections <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>	max_connect_errors <span style="color:#f92672">=</span> <span style="color:#ae81ff">100000</span>
+</span></span><span style="display:flex;"><span>	explicit_defaults_for_timestamp
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#logs</span>
+</span></span><span style="display:flex;"><span>	log-output<span style="color:#f92672">=</span>file
+</span></span><span style="display:flex;"><span>	slow_query_log <span style="color:#f92672">=</span> 0.5
+</span></span><span style="display:flex;"><span>	slow_query_log_file <span style="color:#f92672">=</span> slow.log
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#log-error = error.log</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#log_error_verbosity=3</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#pid-file = </span>
+</span></span><span style="display:flex;"><span>	long_query_time <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#log-slow-admin-statements = 1</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#log-queries-not-using-indexes = 1</span>
+</span></span><span style="display:flex;"><span>	log-slow-slave-statements <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#binlog</span>
+</span></span><span style="display:flex;"><span>	binlog_format <span style="color:#f92672">=</span> row
+</span></span><span style="display:flex;"><span>	server-id <span style="color:#f92672">=</span> <span style="color:#ae81ff">63306</span>
+</span></span><span style="display:flex;"><span>	log-bin <span style="color:#f92672">=</span> /data/mariadb/db/openstack
+</span></span><span style="display:flex;"><span>	binlog_cache_size <span style="color:#f92672">=</span> 1M
+</span></span><span style="display:flex;"><span>	max_binlog_size <span style="color:#f92672">=</span> 200M
+</span></span><span style="display:flex;"><span>	max_binlog_cache_size <span style="color:#f92672">=</span> 1G
+</span></span><span style="display:flex;"><span>	sync_binlog <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>	expire_logs_days <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#relay log</span>
+</span></span><span style="display:flex;"><span>	skip_slave_start <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>	max_relay_log_size <span style="color:#f92672">=</span> 500M
+</span></span><span style="display:flex;"><span>	relay_log_purge <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>	relay_log_recovery <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>	log_slave_updates
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#buffers &amp; cache</span>
+</span></span><span style="display:flex;"><span>	table_open_cache <span style="color:#f92672">=</span> <span style="color:#ae81ff">2048</span>
+</span></span><span style="display:flex;"><span>	table_definition_cache <span style="color:#f92672">=</span> <span style="color:#ae81ff">2048</span>
+</span></span><span style="display:flex;"><span>	table_open_cache <span style="color:#f92672">=</span> <span style="color:#ae81ff">2048</span>
+</span></span><span style="display:flex;"><span>	max_heap_table_size <span style="color:#f92672">=</span> 6M
+</span></span><span style="display:flex;"><span>	sort_buffer_size <span style="color:#f92672">=</span> 2M
+</span></span><span style="display:flex;"><span>	join_buffer_size <span style="color:#f92672">=</span> 2M
+</span></span><span style="display:flex;"><span>	thread_cache_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">256</span>
+</span></span><span style="display:flex;"><span>	query_cache_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>	query_cache_type <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>	thread_stack <span style="color:#f92672">=</span> 192K
+</span></span><span style="display:flex;"><span>	tmp_table_size <span style="color:#f92672">=</span> 8M
+</span></span><span style="display:flex;"><span>	read_buffer_size <span style="color:#f92672">=</span> 2M
+</span></span><span style="display:flex;"><span>	read_rnd_buffer_size <span style="color:#f92672">=</span> 16M
+</span></span><span style="display:flex;"><span>	bulk_insert_buffer_size <span style="color:#f92672">=</span> 32M
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#myisam</span>
+</span></span><span style="display:flex;"><span>	key_buffer_size<span style="color:#f92672">=</span>8M
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#innodb</span>
+</span></span><span style="display:flex;"><span>	innodb_buffer_pool_size <span style="color:#f92672">=</span> 2G
+</span></span><span style="display:flex;"><span>	innodb_buffer_pool_instances <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>	innodb_data_file_path <span style="color:#f92672">=</span> ibdata1:1024M:autoextend
+</span></span><span style="display:flex;"><span>	innodb_flush_log_at_trx_commit <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>	innodb_log_buffer_size <span style="color:#f92672">=</span> 64M
+</span></span><span style="display:flex;"><span>	innodb_log_file_size <span style="color:#f92672">=</span> 256M
+</span></span><span style="display:flex;"><span>	innodb_log_files_in_group <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>	innodb_max_dirty_pages_pct <span style="color:#f92672">=</span> <span style="color:#ae81ff">90</span>
+</span></span><span style="display:flex;"><span>	innodb_file_per_table <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>	innodb_rollback_on_timeout
+</span></span><span style="display:flex;"><span>	innodb_status_file <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>	innodb_io_capacity <span style="color:#f92672">=</span> <span style="color:#ae81ff">2000</span>
+</span></span><span style="display:flex;"><span>	innodb_read_io_threads<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>	innodb_write_io_threads<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@7Node1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir -p /data/mariadb/db/openstack</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@7Node1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># chown -R mysql.mysql /data/mariadb</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@7Node* ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl enable mariadb.service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@7Node* ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl start mariadb.service</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#初始化mariadb，密码为redhat</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@7Node* ~<span style="color:#f92672">]</span><span style="color:#75715e"># mysql_secure_installation</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># mysql -u root -p</span>
+</span></span><span style="display:flex;"><span>MariaDB <span style="color:#f92672">[(</span>none<span style="color:#f92672">)]</span>&gt; GRANT ALL PRIVILEGES ON *.* TO <span style="color:#e6db74">&#39;root&#39;</span>@<span style="color:#e6db74">&#39;%&#39;</span> IDENTIFIED BY <span style="color:#e6db74">&#39;redhat&#39;</span> WITH GRANT OPTION;
+</span></span></code></pre></div><h3 id="22-安装rabbitmq">2.2 安装rabbitmq</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install rabbitmq-server</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl enable rabbitmq-server.service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl start rabbitmq-server.service</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#（开启web管理，这里所有操作都要先启动rabbitmq，web默认帐号和密码都为guest）</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># rabbitmq-plugins enable rabbitmq_management </span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># rabbitmqctl add_user openstack openstack</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># rabbitmqctl set_permissions openstack &#34;.*&#34; &#34;.*&#34; &#34;.*&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl restart rabbitmq-server.service</span>
+</span></span></code></pre></div><h3 id="23-安装memcached">2.3 安装Memcached</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install memcached python-memcached</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl enable memcached.service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl start memcached.service</span>
+</span></span></code></pre></div><h3 id="24-安装mongodb">2.4 安装mongodb</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@7Node1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install mongodb-server mongodb</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@7Node1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/mongod.conf</span>
+</span></span><span style="display:flex;"><span>	bind_ip <span style="color:#f92672">=</span> 192.168.10.101
+</span></span><span style="display:flex;"><span>	dbpath <span style="color:#f92672">=</span> /data/mongodb/db/
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@7Node1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir  /data/mongodb/db/ -p</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@7Node1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># chown -R  mongodb.mongodb /data/mongodb	</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@7Node1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl enable mongod.service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@7Node1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl start mongod.service</span>
+</span></span></code></pre></div><h3 id="25-配置keystone">2.5 配置keystone</h3>
+<h3 id="251-配置keystone数据库">2.5.1 配置keystone数据库</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># mysql -u root -p</span>
+</span></span><span style="display:flex;"><span>MariaDB <span style="color:#f92672">[(</span>none<span style="color:#f92672">)]</span>&gt; CREATE DATABASE keystone;
+</span></span><span style="display:flex;"><span>MariaDB <span style="color:#f92672">[(</span>none<span style="color:#f92672">)]</span>&gt; GRANT ALL PRIVILEGES ON keystone.* TO <span style="color:#e6db74">&#39;keystone&#39;</span>@<span style="color:#e6db74">&#39;keystone&#39;</span> IDENTIFIED BY <span style="color:#e6db74">&#39;keystone&#39;</span>;
+</span></span><span style="display:flex;"><span>MariaDB <span style="color:#f92672">[(</span>none<span style="color:#f92672">)]</span>&gt; GRANT ALL PRIVILEGES ON keystone.* TO <span style="color:#e6db74">&#39;keystone&#39;</span>@<span style="color:#e6db74">&#39;%&#39;</span> IDENTIFIED BY <span style="color:#e6db74">&#39;keystone&#39;</span>;
+</span></span></code></pre></div><h3 id="252-配置安装keystone">2.5.2 配置安装keystone</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#hex一个随机值</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openssl rand -hex 10</span>
+</span></span><span style="display:flex;"><span>	f2c421acc8ac94a01097	
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install openstack-keystone httpd mod_wsgi</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/keystone/keystone.conf </span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>DEFAULT<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#开启详细日志功能</span>
+</span></span><span style="display:flex;"><span>	verbose <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#定义管理员token初始值</span>
+</span></span><span style="display:flex;"><span>	admin_token <span style="color:#f92672">=</span> f2c421acc8ac94a01097
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>database<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#数据库连接</span>
+</span></span><span style="display:flex;"><span>	connection <span style="color:#f92672">=</span> mysql+pymysql://keystone:keystone@opsnode1.example.com/keystone
+</span></span><span style="display:flex;"><span>	//<span style="color:#f92672">[</span>memcache<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	//#配置Memcached服务
+</span></span><span style="display:flex;"><span>	//servers <span style="color:#f92672">=</span> 172.16.10.11:11211
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>token<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	provider <span style="color:#f92672">=</span> fernet
+</span></span><span style="display:flex;"><span>	//配置 UUID token provider 和Memcached 驱动
+</span></span><span style="display:flex;"><span>	//provider <span style="color:#f92672">=</span> uuid
+</span></span><span style="display:flex;"><span>	//driver <span style="color:#f92672">=</span> memcache
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#导入数据库</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># su -s /bin/sh -c &#34;keystone-manage db_sync&#34; keystone</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#初始化Fernet密钥</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/httpd/conf/httpd.conf</span>
+</span></span><span style="display:flex;"><span>	ServerName opsnode1.example.com
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim  /etc/httpd/conf.d/wsgi-keystone.conf </span>
+</span></span><span style="display:flex;"><span>	Listen <span style="color:#ae81ff">5000</span>
+</span></span><span style="display:flex;"><span>	Listen <span style="color:#ae81ff">35357</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	&lt;VirtualHost *:5000&gt;
+</span></span><span style="display:flex;"><span>		WSGIDaemonProcess keystone-public processes<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span> threads<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> user<span style="color:#f92672">=</span>keystone group<span style="color:#f92672">=</span>keystone display-name<span style="color:#f92672">=</span>%<span style="color:#f92672">{</span>GROUP<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		WSGIProcessGroup keystone-public
+</span></span><span style="display:flex;"><span>		WSGIScriptAlias / /usr/bin/keystone-wsgi-public
+</span></span><span style="display:flex;"><span>		WSGIApplicationGroup %<span style="color:#f92672">{</span>GLOBAL<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		WSGIPassAuthorization On
+</span></span><span style="display:flex;"><span>		ErrorLogFormat <span style="color:#e6db74">&#34;%{cu}t %M&#34;</span>
+</span></span><span style="display:flex;"><span>		ErrorLog /var/log/httpd/keystone-error.log
+</span></span><span style="display:flex;"><span>		CustomLog /var/log/httpd/keystone-access.log combined
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		&lt;Directory /usr/bin&gt;
+</span></span><span style="display:flex;"><span>			Require all granted
+</span></span><span style="display:flex;"><span>		&lt;/Directory&gt;
+</span></span><span style="display:flex;"><span>	&lt;/VirtualHost&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	&lt;VirtualHost *:35357&gt;
+</span></span><span style="display:flex;"><span>		WSGIDaemonProcess keystone-admin processes<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span> threads<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> user<span style="color:#f92672">=</span>keystone group<span style="color:#f92672">=</span>keystone display-name<span style="color:#f92672">=</span>%<span style="color:#f92672">{</span>GROUP<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		WSGIProcessGroup keystone-admin
+</span></span><span style="display:flex;"><span>		WSGIScriptAlias / /usr/bin/keystone-wsgi-admin
+</span></span><span style="display:flex;"><span>		WSGIApplicationGroup %<span style="color:#f92672">{</span>GLOBAL<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		WSGIPassAuthorization On
+</span></span><span style="display:flex;"><span>		ErrorLogFormat <span style="color:#e6db74">&#34;%{cu}t %M&#34;</span>
+</span></span><span style="display:flex;"><span>		ErrorLog /var/log/httpd/keystone-error.log
+</span></span><span style="display:flex;"><span>		CustomLog /var/log/httpd/keystone-access.log combined
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		&lt;Directory /usr/bin&gt;
+</span></span><span style="display:flex;"><span>			Require all granted
+</span></span><span style="display:flex;"><span>		&lt;/Directory&gt;
+</span></span><span style="display:flex;"><span>	&lt;/VirtualHost&gt;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl enable httpd.service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl start httpd.service</span>
+</span></span></code></pre></div><h3 id="353-创建服务实体和api端点">3.5.3 创建服务实体和API端点</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 设置临时环境变量 </span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># export OS_TOKEN=f2c421acc8ac94a01097</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># export OS_URL=http://opsnode1.example.com:35357/v3	</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># export OS_IDENTITY_API_VERSION=3</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 在你的Openstack环境中，认证服务管理服务目录。服务使用这个目录来决定您的环境中可用的服务</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建服务实体的身份服务：</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack service create --name keystone --description &#34;OpenStack Identity&#34; identity</span>
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field       | Value                            |
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| description | OpenStack Identity               |
+</span></span><span style="display:flex;"><span>	| enabled     | True                             |
+</span></span><span style="display:flex;"><span>	| id          | 0b94ae323bc54478a5e21a9395357c70 |
+</span></span><span style="display:flex;"><span>	| name        | keystone                         |
+</span></span><span style="display:flex;"><span>	| type        | identity                         |
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 身份服务管理目录的API端点 OpenStack的服务环境。 服务使用这个目录决定如何在您的环境中与其他服务进行通信。</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># OpenStack使用三个API端点变种代表每种服务：admin，internal和public。默认情况下，管理API端点允许修改用户和租户而公共和内部APIs不允许这些操作。在生产环境中，处于安全原因，变种为了服务不同类型的用户可能驻留在单独的网络上。对实例而言，公共API网络为了让顾客管理他们自己的云在互联网上是可见的。管理API网络在管理云基础设施的组织中操作也是有所限制的。内部API网络可能会被限制在包含OpenStack服务的主机上。此外，OpenStack支持可伸缩性的多区域。为了简单起见，本指南为所有端点变种和默认``RegionOne``区域都使用管理网络。</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 每个添加到OpenStack环境中的服务要求一个或多个服务实体和三个认证服务中的API 端点变种。</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建认证服务的 API 端点：</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack endpoint create --region RegionOne identity public http://opsnode1.example.com:5000/v3</span>
+</span></span><span style="display:flex;"><span>	+--------------+-------------------------------------+
+</span></span><span style="display:flex;"><span>	| Field        | Value                               |
+</span></span><span style="display:flex;"><span>	+--------------+-------------------------------------+
+</span></span><span style="display:flex;"><span>	| enabled      | True                                |
+</span></span><span style="display:flex;"><span>	| id           | 574c20d08e274cb1b4bb9cc96b0f3254    |
+</span></span><span style="display:flex;"><span>	| interface    | public                              |
+</span></span><span style="display:flex;"><span>	| region       | RegionOne                           |
+</span></span><span style="display:flex;"><span>	| region_id    | RegionOne                           |
+</span></span><span style="display:flex;"><span>	| service_id   | 0b94ae323bc54478a5e21a9395357c70    |
+</span></span><span style="display:flex;"><span>	| service_name | keystone                            |
+</span></span><span style="display:flex;"><span>	| service_type | identity                            |
+</span></span><span style="display:flex;"><span>	| url          | http://opsnode1.example.com:5000/v3 |
+</span></span><span style="display:flex;"><span>	+--------------+-------------------------------------+	
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack endpoint create --region RegionOne identity internal http://opsnode1.example.com:5000/v3</span>
+</span></span><span style="display:flex;"><span>	+--------------+-------------------------------------+
+</span></span><span style="display:flex;"><span>	| Field        | Value                               |
+</span></span><span style="display:flex;"><span>	+--------------+-------------------------------------+
+</span></span><span style="display:flex;"><span>	| enabled      | True                                |
+</span></span><span style="display:flex;"><span>	| id           | 224c1f5b94014ba2afa585d73a9f0cd8    |
+</span></span><span style="display:flex;"><span>	| interface    | internal                            |
+</span></span><span style="display:flex;"><span>	| region       | RegionOne                           |
+</span></span><span style="display:flex;"><span>	| region_id    | RegionOne                           |
+</span></span><span style="display:flex;"><span>	| service_id   | 0b94ae323bc54478a5e21a9395357c70    |
+</span></span><span style="display:flex;"><span>	| service_name | keystone                            |
+</span></span><span style="display:flex;"><span>	| service_type | identity                            |
+</span></span><span style="display:flex;"><span>	| url          | http://opsnode1.example.com:5000/v3 |
+</span></span><span style="display:flex;"><span>	+--------------+-------------------------------------+
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack endpoint create --region RegionOne identity admin http://opsnode1.example.com:35357/v3</span>
+</span></span><span style="display:flex;"><span>	+--------------+--------------------------------------+
+</span></span><span style="display:flex;"><span>	| Field        | Value                                |
+</span></span><span style="display:flex;"><span>	+--------------+--------------------------------------+
+</span></span><span style="display:flex;"><span>	| enabled      | True                                 |
+</span></span><span style="display:flex;"><span>	| id           | a0c6960c833447378b7bb46222c8a8d9     |
+</span></span><span style="display:flex;"><span>	| interface    | admin                                |
+</span></span><span style="display:flex;"><span>	| region       | RegionOne                            |
+</span></span><span style="display:flex;"><span>	| region_id    | RegionOne                            |
+</span></span><span style="display:flex;"><span>	| service_id   | 0b94ae323bc54478a5e21a9395357c70     |
+</span></span><span style="display:flex;"><span>	| service_name | keystone                             |
+</span></span><span style="display:flex;"><span>	| service_type | identity                             |
+</span></span><span style="display:flex;"><span>	| url          | http://opsnode1.example.com:35357/v3 |
+</span></span><span style="display:flex;"><span>	+--------------+--------------------------------------+
+</span></span></code></pre></div><h3 id="254-创建项目用户和角色">2.5.4 创建项目、用户和角色</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#创建 admin 项目：</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack domain create --description &#34;Default Domain&#34; default</span>
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field       | Value                            |
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| description | Default Domain                   |
+</span></span><span style="display:flex;"><span>	| enabled     | True                             |
+</span></span><span style="display:flex;"><span>	| id          | e824551f502b4083aee78ca2392400ad |
+</span></span><span style="display:flex;"><span>	| name        | default                          |
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#创建 admin 组：</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e">#  openstack project create --domain default  --description &#34;Admin Project&#34; admin</span>
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field       | Value                            |
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| description | Admin Project                    |
+</span></span><span style="display:flex;"><span>	| domain_id   | e824551f502b4083aee78ca2392400ad |
+</span></span><span style="display:flex;"><span>	| enabled     | True                             |
+</span></span><span style="display:flex;"><span>	| id          | 964f00c0843c45be982b8898a722bd63 |
+</span></span><span style="display:flex;"><span>	| is_domain   | False                            |
+</span></span><span style="display:flex;"><span>	| name        | admin                            |
+</span></span><span style="display:flex;"><span>	| parent_id   | e824551f502b4083aee78ca2392400ad |
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#创建 admin 用户：	</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack user create --domain default --password-prompt admin</span>
+</span></span><span style="display:flex;"><span>	User Password:admin
+</span></span><span style="display:flex;"><span>	Repeat User Password:admin
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field     | Value                            |
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| domain_id | e824551f502b4083aee78ca2392400ad |
+</span></span><span style="display:flex;"><span>	| enabled   | True                             |
+</span></span><span style="display:flex;"><span>	| id        | 513f2b8c7e674cce8dca4002166b81a0 |
+</span></span><span style="display:flex;"><span>	| name      | admin                            |
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#创建 admin 角色：</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack role create admin</span>
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field     | Value                            |
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| domain_id | None                             |
+</span></span><span style="display:flex;"><span>	| id        | c3332913b40b4410976be37bfb2b1120 |
+</span></span><span style="display:flex;"><span>	| name      | admin                            |
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#添加``admin`` 角色到 admin 项目和用户上：</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack role add --project admin --user admin admin</span>
+</span></span><span style="display:flex;"><span>创建service项目：
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack project create --domain default --description &#34;Service Project&#34; service</span>
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field       | Value                            |
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| description | Service Project                  |
+</span></span><span style="display:flex;"><span>	| domain_id   | e824551f502b4083aee78ca2392400ad |
+</span></span><span style="display:flex;"><span>	| enabled     | True                             |
+</span></span><span style="display:flex;"><span>	| id          | 62d5e7d6fe3f45fcbdf92177c6f9c289 |
+</span></span><span style="display:flex;"><span>	| is_domain   | False                            |
+</span></span><span style="display:flex;"><span>	| name        | service                          |
+</span></span><span style="display:flex;"><span>	| parent_id   | e824551f502b4083aee78ca2392400ad |
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#创建demo项目：</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack project create --domain default  --description &#34;Demo Project&#34; demo</span>
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field       | Value                            |
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| description | Demo Project                     |
+</span></span><span style="display:flex;"><span>	| domain_id   | e824551f502b4083aee78ca2392400ad |
+</span></span><span style="display:flex;"><span>	| enabled     | True                             |
+</span></span><span style="display:flex;"><span>	| id          | 70622483fbe243b5bb96facbe41b7139 |
+</span></span><span style="display:flex;"><span>	| is_domain   | False                            |
+</span></span><span style="display:flex;"><span>	| name        | demo                             |
+</span></span><span style="display:flex;"><span>	| parent_id   | e824551f502b4083aee78ca2392400ad |
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#创建demo用户：</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack user create --domain default  --password-prompt demo</span>
+</span></span><span style="display:flex;"><span>	User Password:apidemo
+</span></span><span style="display:flex;"><span>	Repeat User Password:apidemo
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field     | Value                            |
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| domain_id | e824551f502b4083aee78ca2392400ad |
+</span></span><span style="display:flex;"><span>	| enabled   | True                             |
+</span></span><span style="display:flex;"><span>	| id        | e9cf15056cda424db7356da095b547ec |
+</span></span><span style="display:flex;"><span>	| name      | demo                             |
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#创建 user 角色：</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack role create user</span>
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field     | Value                            |
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| domain_id | None                             |
+</span></span><span style="display:flex;"><span>	| id        | ea25765d55e24ef2a4f369b55fa4955b |
+</span></span><span style="display:flex;"><span>	| name      | user                             |
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#添加user角色到demo项目和用户：</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack role add --project demo --user demo user</span>
+</span></span></code></pre></div><h3 id="255-验证操作">2.5.5 验证操作</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 删除临时环境变量 </span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># unset OS_TOKEN OS_URL</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使用 admin 用户，请求认证令牌：</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack --os-auth-url http://opsnode1.example.com:35357/v3 --os-project-domain-name default --os-user-domain-name default --os-project-name admin --os-username admin token issue</span>
+</span></span><span style="display:flex;"><span>	Password: admin
+</span></span><span style="display:flex;"><span>	+------------+-----------------------------------------------------------------------------------------------------------+
+</span></span><span style="display:flex;"><span>	| Field      | Value                                                                                                     |
+</span></span><span style="display:flex;"><span>	+------------+-----------------------------------------------------------------------------------------------------------+
+</span></span><span style="display:flex;"><span>	| expires    | 2016-06-15T04:28:39.224333Z                                                                               |
+</span></span><span style="display:flex;"><span>	| id         | gAAAAABXYMtnYpkjpLFS99oOEp_3n1yqQNzMCba6eP2n9l5zIyzC5JXLUCOkIeVVajIXIGfGBF3g7ZUJkJxaO_7jb4WBQaAGabGI549XY |
+</span></span><span style="display:flex;"><span>	|            | Kc858BEWOU_OYwl_hOhxRkKJB-XovhwnBNmy0YAnw8B7JEXFrOTdJ29cGh6YREj8i9SIY6VOdSEBaE                            |
+</span></span><span style="display:flex;"><span>	| project_id | 964f00c0843c45be982b8898a722bd63                                                                          |
+</span></span><span style="display:flex;"><span>	| user_id    | 513f2b8c7e674cce8dca4002166b81a0                                                                          |
+</span></span><span style="display:flex;"><span>	+------------+-----------------------------------------------------------------------------------------------------------+
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#使用demo用户，请求认证令牌：	</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack --os-auth-url http://opsnode1.example.com:5000/v3 --os-project-domain-name default --os-user-domain-name default  --os-project-name demo --os-username demo token issue</span>
+</span></span><span style="display:flex;"><span>	Password: apidemo
+</span></span><span style="display:flex;"><span>	+------------+-----------------------------------------------------------------------------------------------------------+
+</span></span><span style="display:flex;"><span>	| Field      | Value                                                                                                     |
+</span></span><span style="display:flex;"><span>	+------------+-----------------------------------------------------------------------------------------------------------+
+</span></span><span style="display:flex;"><span>	| expires    | 2016-06-15T04:30:15.048744Z                                                                               |
+</span></span><span style="display:flex;"><span>	| id         | gAAAAABXYMvHBJHMimr4rDH73Eg40Gvw378hlSBiUtq3oCtI7o8h7                                                     |
+</span></span><span style="display:flex;"><span>	|            | -PzbzMsgcLePlzHxOR0ZzAGxDw3kThpHTqvgxkYBSijuG10MZe28YWg1aFFXVZy01o784IxXGyMdA05Y41F48jd-                  |
+</span></span><span style="display:flex;"><span>	|            | R8OAHbR6clDxCJJYavrYXMu5Ond4H8p-yhVcLdrWbM                                                                |
+</span></span><span style="display:flex;"><span>	| project_id | 70622483fbe243b5bb96facbe41b7139                                                                          |
+</span></span><span style="display:flex;"><span>	| user_id    | e9cf15056cda424db7356da095b547ec                                                                          |
+</span></span><span style="display:flex;"><span>	+------------+-----------------------------------------------------------------------------------------------------------+
+</span></span></code></pre></div><h3 id="256-创建环境脚本">2.5.6 创建环境脚本</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim admin-openrc</span>
+</span></span><span style="display:flex;"><span>	export OS_PROJECT_DOMAIN_NAME<span style="color:#f92672">=</span>default
+</span></span><span style="display:flex;"><span>	export OS_USER_DOMAIN_NAME<span style="color:#f92672">=</span>default
+</span></span><span style="display:flex;"><span>	export OS_PROJECT_NAME<span style="color:#f92672">=</span>admin
+</span></span><span style="display:flex;"><span>	export OS_USERNAME<span style="color:#f92672">=</span>admin
+</span></span><span style="display:flex;"><span>	export OS_PASSWORD<span style="color:#f92672">=</span>admin
+</span></span><span style="display:flex;"><span>	export OS_AUTH_URL<span style="color:#f92672">=</span>http://opsnode1.example.com:35357/v3
+</span></span><span style="display:flex;"><span>	export OS_IDENTITY_API_VERSION<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>	export OS_IMAGE_API_VERSION<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim demo-openrc</span>
+</span></span><span style="display:flex;"><span>	export OS_PROJECT_DOMAIN_NAME<span style="color:#f92672">=</span>default
+</span></span><span style="display:flex;"><span>	export OS_USER_DOMAIN_NAME<span style="color:#f92672">=</span>default
+</span></span><span style="display:flex;"><span>	export OS_PROJECT_NAME<span style="color:#f92672">=</span>demo
+</span></span><span style="display:flex;"><span>	export OS_USERNAME<span style="color:#f92672">=</span>demo
+</span></span><span style="display:flex;"><span>	export OS_PASSWORD<span style="color:#f92672">=</span>apidemo
+</span></span><span style="display:flex;"><span>	export OS_AUTH_URL<span style="color:#f92672">=</span>http://opsnode1.example.com:5000/v3
+</span></span><span style="display:flex;"><span>	export OS_IDENTITY_API_VERSION<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>	export OS_IMAGE_API_VERSION<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># . admin-openrc</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack token issue</span>
+</span></span><span style="display:flex;"><span>	+------------+-----------------------------------------------------------------------------------------------------------+
+</span></span><span style="display:flex;"><span>	| Field      | Value                                                                                                     |
+</span></span><span style="display:flex;"><span>	+------------+-----------------------------------------------------------------------------------------------------------+
+</span></span><span style="display:flex;"><span>	| expires    | 2016-06-15T04:35:06.149368Z                                                                               |
+</span></span><span style="display:flex;"><span>	| id         | gAAAAABXYMzqTVO5HBg6Uk1ZJeXDmBPAx2gO4P2X1u1Z8RP2zCRyB3dTSoilRxwt7gG66VLF_MFC69uPn_z00pE2QzENzkYLPSoa4M32J |
+</span></span><span style="display:flex;"><span>	|            | JzDRKYx4xvM0PTvhfPXmwHIrMN9B4KMM45d_jqs45orKJfhNledgjlqYJCdb0BccP1H198zIbHe-hQ                            |
+</span></span><span style="display:flex;"><span>	| project_id | 964f00c0843c45be982b8898a722bd63                                                                          |
+</span></span><span style="display:flex;"><span>	| user_id    | 513f2b8c7e674cce8dca4002166b81a0                                                                          |
+</span></span><span style="display:flex;"><span>	+------------+-----------------------------------------------------------------------------------------------------------+
+</span></span></code></pre></div><h3 id="26-安装glance服务">2.6 安装glance服务</h3>
+<h3 id="261-配置glance数据库">2.6.1 配置glance数据库</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># mysql -u root -p</span>
+</span></span><span style="display:flex;"><span>	MariaDB <span style="color:#f92672">[(</span>none<span style="color:#f92672">)]</span>&gt; CREATE DATABASE glance;
+</span></span><span style="display:flex;"><span>	MariaDB <span style="color:#f92672">[(</span>none<span style="color:#f92672">)]</span>&gt; GRANT ALL PRIVILEGES ON glance.* TO <span style="color:#e6db74">&#39;glance&#39;</span>@<span style="color:#e6db74">&#39;localhost&#39;</span> IDENTIFIED BY <span style="color:#e6db74">&#39;glance&#39;</span>;
+</span></span><span style="display:flex;"><span>	MariaDB <span style="color:#f92672">[(</span>none<span style="color:#f92672">)]</span>&gt; GRANT ALL PRIVILEGES ON glance.* TO <span style="color:#e6db74">&#39;glance&#39;</span>@<span style="color:#e6db74">&#39;%&#39;</span>   IDENTIFIED BY <span style="color:#e6db74">&#39;glance&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># . admin-openrc</span>
+</span></span></code></pre></div><h3 id="262-配置glance用户">2.6.2 配置glance用户</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建 glance 用户</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack user create --domain default --password-prompt glance</span>
+</span></span><span style="display:flex;"><span>	User Password:apiglance
+</span></span><span style="display:flex;"><span>	Repeat User Password:apiglance
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field     | Value                            |
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| domain_id | e824551f502b4083aee78ca2392400ad |
+</span></span><span style="display:flex;"><span>	| enabled   | True                             |
+</span></span><span style="display:flex;"><span>	| id        | 0506e78d40bb4a469d928c8878ab0110 |
+</span></span><span style="display:flex;"><span>	| name      | glance                           |
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 添加admin角色到glance用户和service项目上</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack role add --project service --user glance admin</span>
+</span></span></code></pre></div><h3 id="263-创建glance服务实体">2.6.3 创建glance服务实体</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack service create --name glance   --description &#34;OpenStack Image&#34; image</span>
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field       | Value                            |
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| description | OpenStack Image                  |
+</span></span><span style="display:flex;"><span>	| enabled     | True                             |
+</span></span><span style="display:flex;"><span>	| id          | 3efcad9d64a74f49a33e1b3eb72d3a78 |
+</span></span><span style="display:flex;"><span>	| name        | glance                           |
+</span></span><span style="display:flex;"><span>	| type        | image                            |
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span></code></pre></div><h3 id="264-创建镜像服务的-api-端点">2.6.4 创建镜像服务的 API 端点</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack endpoint create --region RegionOne image public http://opsnode1.example.com:9292</span>
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field        | Value                            |
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| enabled      | True                             |
+</span></span><span style="display:flex;"><span>	| id           | 1d22b7e0b67346a1bf1848a89c6c2977 |
+</span></span><span style="display:flex;"><span>	| interface    | public                           |
+</span></span><span style="display:flex;"><span>	| region       | RegionOne                        |
+</span></span><span style="display:flex;"><span>	| region_id    | RegionOne                        |
+</span></span><span style="display:flex;"><span>	| service_id   | 3efcad9d64a74f49a33e1b3eb72d3a78 |
+</span></span><span style="display:flex;"><span>	| service_name | glance                           |
+</span></span><span style="display:flex;"><span>	| service_type | image                            |
+</span></span><span style="display:flex;"><span>	| url          | http://opsnode1.example.com:9292 |
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack endpoint create --region RegionOne image internal  http://opsnode1.example.com:9292</span>
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field        | Value                            |
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| enabled      | True                             |
+</span></span><span style="display:flex;"><span>	| id           | 7e1f661101c442329e6df4e56566bb79 |
+</span></span><span style="display:flex;"><span>	| interface    | internal                         |
+</span></span><span style="display:flex;"><span>	| region       | RegionOne                        |
+</span></span><span style="display:flex;"><span>	| region_id    | RegionOne                        |
+</span></span><span style="display:flex;"><span>	| service_id   | 3efcad9d64a74f49a33e1b3eb72d3a78 |
+</span></span><span style="display:flex;"><span>	| service_name | glance                           |
+</span></span><span style="display:flex;"><span>	| service_type | image                            |
+</span></span><span style="display:flex;"><span>	| url          | http://opsnode1.example.com:9292 |
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack endpoint create --region RegionOne image admin http://opsnode1.example.com:9292</span>
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field        | Value                            |
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| enabled      | True                             |
+</span></span><span style="display:flex;"><span>	| id           | 49832a30b41043438166937c7eab3361 |
+</span></span><span style="display:flex;"><span>	| interface    | admin                            |
+</span></span><span style="display:flex;"><span>	| region       | RegionOne                        |
+</span></span><span style="display:flex;"><span>	| region_id    | RegionOne                        |
+</span></span><span style="display:flex;"><span>	| service_id   | 3efcad9d64a74f49a33e1b3eb72d3a78 |
+</span></span><span style="display:flex;"><span>	| service_name | glance                           |
+</span></span><span style="display:flex;"><span>	| service_type | image                            |
+</span></span><span style="display:flex;"><span>	| url          | http://opsnode1.example.com:9292 |
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span></code></pre></div><h3 id="265-安装配置glance">2.6.5 安装配置glance</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install openstack-glance</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/glance/glance-api.conf</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>DEFAULT<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	//#配置 noop 禁用通知，因为他们只适合与可选的Telemetry 服务：
+</span></span><span style="display:flex;"><span>	//notification_driver <span style="color:#f92672">=</span> noop
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#启用详细日志</span>
+</span></span><span style="display:flex;"><span>	verbose <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>database<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置数据库访问(格式mysql+pymysql://用户名:密码@数据库地址/库名)</span>
+</span></span><span style="display:flex;"><span>	connection <span style="color:#f92672">=</span> mysql+pymysql://glance:glance@opsnode1.example.com/glance
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>keystone_authtoken<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置认证服务访问</span>
+</span></span><span style="display:flex;"><span>	auth_uri <span style="color:#f92672">=</span> http://opsnode1.example.com:5000
+</span></span><span style="display:flex;"><span>	auth_url <span style="color:#f92672">=</span> http://opsnode1.example.com:35357
+</span></span><span style="display:flex;"><span>	memcached_servers <span style="color:#f92672">=</span> opsnode1.example.com:11211
+</span></span><span style="display:flex;"><span>	auth_type <span style="color:#f92672">=</span> password
+</span></span><span style="display:flex;"><span>	project_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	user_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	project_name <span style="color:#f92672">=</span> service
+</span></span><span style="display:flex;"><span>	username <span style="color:#f92672">=</span> glance
+</span></span><span style="display:flex;"><span>	password <span style="color:#f92672">=</span> apiglance
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>paste_deploy<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#认证服务访问为keystone</span>
+</span></span><span style="display:flex;"><span>	flavor <span style="color:#f92672">=</span> keystone
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>glance_store<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置本地文件系统存储和镜像文件位置</span>
+</span></span><span style="display:flex;"><span>	stores <span style="color:#f92672">=</span> file,http
+</span></span><span style="display:flex;"><span>	default_store <span style="color:#f92672">=</span> file
+</span></span><span style="display:flex;"><span>	filesystem_store_datadir <span style="color:#f92672">=</span> /var/lib/glance/images/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim  /etc/glance/glance-registry.conf</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>database<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置数据库访问(格式mysql+pymysql://用户名:密码@数据库地址/库名)</span>
+</span></span><span style="display:flex;"><span>	connection <span style="color:#f92672">=</span> mysql+pymysql://glance:glance@opsnode1.example.com/glance
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>keystone_authtoken<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置认证服务访问</span>
+</span></span><span style="display:flex;"><span>	auth_uri <span style="color:#f92672">=</span> http://opsnode1.example.com:5000
+</span></span><span style="display:flex;"><span>	auth_url <span style="color:#f92672">=</span> http://opsnode1.example.com:35357
+</span></span><span style="display:flex;"><span>	memcached_servers <span style="color:#f92672">=</span> opsnode1.example.com:11211
+</span></span><span style="display:flex;"><span>	auth_type <span style="color:#f92672">=</span> password
+</span></span><span style="display:flex;"><span>	project_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	user_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	project_name <span style="color:#f92672">=</span> service
+</span></span><span style="display:flex;"><span>	username <span style="color:#f92672">=</span> glance
+</span></span><span style="display:flex;"><span>	password <span style="color:#f92672">=</span> apiglance
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>paste_deploy<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	flavor <span style="color:#f92672">=</span> keystone
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># su -s /bin/sh -c &#34;glance-manage db_sync&#34; glance</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl enable openstack-glance-api.service \</span>
+</span></span><span style="display:flex;"><span>openstack-glance-registry.service
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl start openstack-glance-api.service \</span>
+</span></span><span style="display:flex;"><span>openstack-glance-registry.service
+</span></span></code></pre></div><h3 id="266-验证操作">2.6.6 验证操作</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># . admin-openrc	</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack image create &#34;cirros&#34;  --file cirros-0.3.4-x86_64-disk.img --disk-format qcow2 --container-format bare --public</span>
+</span></span><span style="display:flex;"><span>	+------------------+------------------------------------------------------+
+</span></span><span style="display:flex;"><span>	| Field            | Value                                                |
+</span></span><span style="display:flex;"><span>	+------------------+------------------------------------------------------+
+</span></span><span style="display:flex;"><span>	| checksum         | ee1eca47dc88f4879d8a229cc70a07c6                     |
+</span></span><span style="display:flex;"><span>	| container_format | bare                                                 |
+</span></span><span style="display:flex;"><span>	| created_at       | 2016-06-15T03:56:16Z                                 |
+</span></span><span style="display:flex;"><span>	| disk_format      | qcow2                                                |
+</span></span><span style="display:flex;"><span>	| file             | /v2/images/3eae8aeb-9eab-4b59-868d-7f25d97d260a/file |
+</span></span><span style="display:flex;"><span>	| id               | 3eae8aeb-9eab-4b59-868d-7f25d97d260a                 |
+</span></span><span style="display:flex;"><span>	| min_disk         | <span style="color:#ae81ff">0</span>                                                    |
+</span></span><span style="display:flex;"><span>	| min_ram          | <span style="color:#ae81ff">0</span>                                                    |
+</span></span><span style="display:flex;"><span>	| name             | cirros                                               |
+</span></span><span style="display:flex;"><span>	| owner            | 964f00c0843c45be982b8898a722bd63                     |
+</span></span><span style="display:flex;"><span>	| protected        | False                                                |
+</span></span><span style="display:flex;"><span>	| schema           | /v2/schemas/image                                    |
+</span></span><span style="display:flex;"><span>	| size             | <span style="color:#ae81ff">13287936</span>                                             |
+</span></span><span style="display:flex;"><span>	| status           | active                                               |
+</span></span><span style="display:flex;"><span>	| tags             |                                                      |
+</span></span><span style="display:flex;"><span>	| updated_at       | 2016-06-15T03:56:17Z                                 |
+</span></span><span style="display:flex;"><span>	| virtual_size     | None                                                 |
+</span></span><span style="display:flex;"><span>	| visibility       | public                                               |
+</span></span><span style="display:flex;"><span>	+------------------+------------------------------------------------------+
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack image list</span>
+</span></span><span style="display:flex;"><span>	+--------------------------------------+--------+--------+
+</span></span><span style="display:flex;"><span>	| ID                                   | Name   | Status |
+</span></span><span style="display:flex;"><span>	+--------------------------------------+--------+--------+
+</span></span><span style="display:flex;"><span>	| 3eae8aeb-9eab-4b59-868d-7f25d97d260a | cirros | active |
+</span></span><span style="display:flex;"><span>	+--------------------------------------+--------+--------+
+</span></span></code></pre></div><h3 id="27-安装nova">2.7 安装nova</h3>
+<h3 id="271-控制节点安装">2.7.1 控制节点安装：</h3>
+<h3 id="2711-配置nova数据库">2.7.1.1 配置nova数据库</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># mysql -u root -p</span>
+</span></span><span style="display:flex;"><span>MariaDB <span style="color:#f92672">[(</span>none<span style="color:#f92672">)]</span>&gt; CREATE DATABASE nova_api;
+</span></span><span style="display:flex;"><span>MariaDB <span style="color:#f92672">[(</span>none<span style="color:#f92672">)]</span>&gt; CREATE DATABASE nova;
+</span></span><span style="display:flex;"><span>MariaDB <span style="color:#f92672">[(</span>none<span style="color:#f92672">)]</span>&gt; GRANT ALL PRIVILEGES ON nova_api.* TO <span style="color:#e6db74">&#39;nova&#39;</span>@<span style="color:#e6db74">&#39;localhost&#39;</span>  IDENTIFIED BY <span style="color:#e6db74">&#39;nova&#39;</span>;
+</span></span><span style="display:flex;"><span>MariaDB <span style="color:#f92672">[(</span>none<span style="color:#f92672">)]</span>&gt; GRANT ALL PRIVILEGES ON nova_api.* TO <span style="color:#e6db74">&#39;nova&#39;</span>@<span style="color:#e6db74">&#39;%&#39;</span> IDENTIFIED BY <span style="color:#e6db74">&#39;nova&#39;</span>;
+</span></span><span style="display:flex;"><span>MariaDB <span style="color:#f92672">[(</span>none<span style="color:#f92672">)]</span>&gt; GRANT ALL PRIVILEGES ON nova.* TO <span style="color:#e6db74">&#39;nova&#39;</span>@<span style="color:#e6db74">&#39;localhost&#39;</span> IDENTIFIED BY <span style="color:#e6db74">&#39;nova&#39;</span>;
+</span></span><span style="display:flex;"><span>MariaDB <span style="color:#f92672">[(</span>none<span style="color:#f92672">)]</span>&gt; GRANT ALL PRIVILEGES ON nova.* TO <span style="color:#e6db74">&#39;nova&#39;</span>@<span style="color:#e6db74">&#39;%&#39;</span>  IDENTIFIED BY <span style="color:#e6db74">&#39;nova&#39;</span>;
+</span></span></code></pre></div><h3 id="2712-配置用户和角色">2.7.1.2 配置用户和角色</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># . admin-openrc	</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建 nova 用户</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack user create --domain default  --password-prompt nova</span>
+</span></span><span style="display:flex;"><span>	User Password:apinova
+</span></span><span style="display:flex;"><span>	Repeat User Password:apinova
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field     | Value                            |
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| domain_id | e824551f502b4083aee78ca2392400ad |
+</span></span><span style="display:flex;"><span>	| enabled   | True                             |
+</span></span><span style="display:flex;"><span>	| id        | fe1f3131fb6c4437ad8b91666a357dc1 |
+</span></span><span style="display:flex;"><span>	| name      | nova                             |
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 添加admin 角色到 nova 用户</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack role add --project service --user nova admin</span>
+</span></span></code></pre></div><h3 id="2713-创建nova服务实体">2.7.1.3 创建nova服务实体</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack service create --name nova   --description &#34;OpenStack Compute&#34; compute</span>
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field       | Value                            |
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| description | OpenStack Compute                |
+</span></span><span style="display:flex;"><span>	| enabled     | True                             |
+</span></span><span style="display:flex;"><span>	| id          | 7cbae2cd1f6040b493d6fc5f74ff9d1b |
+</span></span><span style="display:flex;"><span>	| name        | nova                             |
+</span></span><span style="display:flex;"><span>	| type        | compute                          |
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span></code></pre></div><h3 id="2714-创建计算服务api端点">2.7.1.4 创建计算服务API端点</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack endpoint create --region RegionOne  compute public http://opsnode1.example.com:8774/v2.1/%\(tenant_id\)s</span>
+</span></span><span style="display:flex;"><span>	+--------------+-----------------------------------------------------+
+</span></span><span style="display:flex;"><span>	| Field        | Value                                               |
+</span></span><span style="display:flex;"><span>	+--------------+-----------------------------------------------------+
+</span></span><span style="display:flex;"><span>	| enabled      | True                                                |
+</span></span><span style="display:flex;"><span>	| id           | 8365a2b437a746278ecaca3c54b1f616                    |
+</span></span><span style="display:flex;"><span>	| interface    | public                                              |
+</span></span><span style="display:flex;"><span>	| region       | RegionOne                                           |
+</span></span><span style="display:flex;"><span>	| region_id    | RegionOne                                           |
+</span></span><span style="display:flex;"><span>	| service_id   | 7cbae2cd1f6040b493d6fc5f74ff9d1b                    |
+</span></span><span style="display:flex;"><span>	| service_name | nova                                                |
+</span></span><span style="display:flex;"><span>	| service_type | compute                                             |
+</span></span><span style="display:flex;"><span>	| url          | http://opsnode1.example.com:8774/v2.1/%<span style="color:#f92672">(</span>tenant_id<span style="color:#f92672">)</span>s |
+</span></span><span style="display:flex;"><span>	+--------------+-----------------------------------------------------+
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack endpoint create --region RegionOne   compute internal http://opsnode1.example.com:8774/v2.1/%\(tenant_id\)s</span>
+</span></span><span style="display:flex;"><span>	+--------------+-----------------------------------------------------+
+</span></span><span style="display:flex;"><span>	| Field        | Value                                               |
+</span></span><span style="display:flex;"><span>	+--------------+-----------------------------------------------------+
+</span></span><span style="display:flex;"><span>	| enabled      | True                                                |
+</span></span><span style="display:flex;"><span>	| id           | 7513bc4bb26b4be49251205adc07ab5b                    |
+</span></span><span style="display:flex;"><span>	| interface    | internal                                            |
+</span></span><span style="display:flex;"><span>	| region       | RegionOne                                           |
+</span></span><span style="display:flex;"><span>	| region_id    | RegionOne                                           |
+</span></span><span style="display:flex;"><span>	| service_id   | 7cbae2cd1f6040b493d6fc5f74ff9d1b                    |
+</span></span><span style="display:flex;"><span>	| service_name | nova                                                |
+</span></span><span style="display:flex;"><span>	| service_type | compute                                             |
+</span></span><span style="display:flex;"><span>	| url          | http://opsnode1.example.com:8774/v2.1/%<span style="color:#f92672">(</span>tenant_id<span style="color:#f92672">)</span>s |
+</span></span><span style="display:flex;"><span>	+--------------+-----------------------------------------------------+
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack endpoint create --region RegionOne  compute admin http://opsnode1.example.com:8774/v2.1/%\(tenant_id\)s</span>
+</span></span><span style="display:flex;"><span>	+--------------+-----------------------------------------------------+
+</span></span><span style="display:flex;"><span>	| Field        | Value                                               |
+</span></span><span style="display:flex;"><span>	+--------------+-----------------------------------------------------+
+</span></span><span style="display:flex;"><span>	| enabled      | True                                                |
+</span></span><span style="display:flex;"><span>	| id           | a5e38483f8c848e2a3d4226fabfd4bb3                    |
+</span></span><span style="display:flex;"><span>	| interface    | admin                                               |
+</span></span><span style="display:flex;"><span>	| region       | RegionOne                                           |
+</span></span><span style="display:flex;"><span>	| region_id    | RegionOne                                           |
+</span></span><span style="display:flex;"><span>	| service_id   | 7cbae2cd1f6040b493d6fc5f74ff9d1b                    |
+</span></span><span style="display:flex;"><span>	| service_name | nova                                                |
+</span></span><span style="display:flex;"><span>	| service_type | compute                                             |
+</span></span><span style="display:flex;"><span>	| url          | http://opsnode1.example.com:8774/v2.1/%<span style="color:#f92672">(</span>tenant_id<span style="color:#f92672">)</span>s |
+</span></span><span style="display:flex;"><span>	+--------------+-----------------------------------------------------+
+</span></span></code></pre></div><h3 id="2715-配置安装服务组件">2.7.1.5 配置安装服务组件</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install openstack-nova-api openstack-nova-conductor \</span>
+</span></span><span style="display:flex;"><span>	openstack-nova-console openstack-nova-novncproxy  openstack-nova-scheduler
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/nova/nova.conf</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>DEFAULT<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	enabled_apis <span style="color:#f92672">=</span> osapi_compute,metadata
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#使用RabbitMQ消息队列</span>
+</span></span><span style="display:flex;"><span>	rpc_backend <span style="color:#f92672">=</span> rabbit
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#使用认证服务keystone</span>
+</span></span><span style="display:flex;"><span>	auth_strategy <span style="color:#f92672">=</span> keystone
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置变量$my_ip</span>
+</span></span><span style="display:flex;"><span>	my_ip <span style="color:#f92672">=</span> 172.16.10.11
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#启用网络服务支持</span>
+</span></span><span style="display:flex;"><span>	use_neutron <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	firewall_driver <span style="color:#f92672">=</span> nova.virt.firewall.NoopFirewallDriver
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	service_metadata_proxy <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#注意metadatascere为网络节点的metadata_proxy_shared_secret</span>
+</span></span><span style="display:flex;"><span>	metadata_proxy_shared_secret <span style="color:#f92672">=</span> metadatascere
+</span></span><span style="display:flex;"><span>	verbose <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>api_database<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置数据库访问</span>
+</span></span><span style="display:flex;"><span>	connection <span style="color:#f92672">=</span> mysql+pymysql://nova:nova@opsnode1.example.com/nova_api
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>database<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	connection <span style="color:#f92672">=</span> mysql+pymysql://nova:nova@opsnode1.example.com/nova
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>oslo_messaging_rabbit<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置RabbitMQ消息队列访问</span>
+</span></span><span style="display:flex;"><span>	rabbit_host <span style="color:#f92672">=</span> opsnode1.example.com
+</span></span><span style="display:flex;"><span>	rabbit_userid <span style="color:#f92672">=</span> openstack
+</span></span><span style="display:flex;"><span>	rabbit_password <span style="color:#f92672">=</span> openstack
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>keystone_authtoken<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置认证服务访问</span>
+</span></span><span style="display:flex;"><span>	auth_uri <span style="color:#f92672">=</span> http://opsnode1.example.com:5000
+</span></span><span style="display:flex;"><span>	auth_url <span style="color:#f92672">=</span> http://opsnode1.example.com:35357
+</span></span><span style="display:flex;"><span>	memcached_servers <span style="color:#f92672">=</span> opsnode1.example.com:11211
+</span></span><span style="display:flex;"><span>	auth_type <span style="color:#f92672">=</span> password
+</span></span><span style="display:flex;"><span>	project_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	user_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	project_name <span style="color:#f92672">=</span> service
+</span></span><span style="display:flex;"><span>	username <span style="color:#f92672">=</span> nova
+</span></span><span style="display:flex;"><span>	password <span style="color:#f92672">=</span> apinova
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>vnc<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置VNC代理使用控制节点的管理IP地址</span>
+</span></span><span style="display:flex;"><span>	vncserver_listen <span style="color:#f92672">=</span> $my_ip
+</span></span><span style="display:flex;"><span>	vncserver_proxyclient_address <span style="color:#f92672">=</span> $my_ip
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>glance<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置镜像服务的位置</span>
+</span></span><span style="display:flex;"><span>	api_servers <span style="color:#f92672">=</span> http://opsnode1.example.com:9292
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>oslo_concurrency<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置锁路径</span>
+</span></span><span style="display:flex;"><span>	lock_path <span style="color:#f92672">=</span> /var/lib/nova/tmp
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># su -s /bin/sh -c &#34;nova-manage api_db sync&#34; nova</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># su -s /bin/sh -c &#34;nova-manage db sync&#34; nova</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl enable openstack-nova-api.service   \</span>
+</span></span><span style="display:flex;"><span>openstack-nova-consoleauth.service openstack-nova-scheduler.service  <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>openstack-nova-conductor.service openstack-nova-novncproxy.service
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl start openstack-nova-api.service  \</span>
+</span></span><span style="display:flex;"><span>openstack-nova-consoleauth.service openstack-nova-scheduler.service  <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>openstack-nova-conductor.service openstack-nova-novncproxy.service
+</span></span></code></pre></div><h3 id="272-计算节点安装与配置">2.7.2 计算节点安装与配置</h3>
+<h3 id="2721-配置内核参数">2.7.2.1 配置内核参数</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 配置内核参数，不知道是否有效</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/sysctl.conf</span>
+</span></span><span style="display:flex;"><span>	net.ipv4.conf.all.rp_filter <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>	net.ipv4.conf.default.rp_filter <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e">#  sysctl -p	</span>
+</span></span></code></pre></div><h3 id="2722-配置安装服务组件">2.7.2.2 配置安装服务组件</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install openstack-nova-compute</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/nova/nova.conf</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>DEFAULT<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	rpc_backend <span style="color:#f92672">=</span> rabbit
+</span></span><span style="display:flex;"><span>	auth_strategy <span style="color:#f92672">=</span> keystone
+</span></span><span style="display:flex;"><span>	my_ip <span style="color:#f92672">=</span> 172.16.10.12
+</span></span><span style="display:flex;"><span>	use_neutron <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	firewall_driver <span style="color:#f92672">=</span> nova.virt.firewall.NoopFirewallDriver
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>oslo_messaging_rabbit<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	rabbit_host <span style="color:#f92672">=</span> opsnode1.example.com
+</span></span><span style="display:flex;"><span>	rabbit_userid <span style="color:#f92672">=</span> openstack
+</span></span><span style="display:flex;"><span>	rabbit_password <span style="color:#f92672">=</span> openstack
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>keystone_authtoken<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	auth_uri <span style="color:#f92672">=</span> http://opsnode1.example.com:5000
+</span></span><span style="display:flex;"><span>	auth_url <span style="color:#f92672">=</span> http://opsnode1.example.com:35357
+</span></span><span style="display:flex;"><span>	memcached_servers <span style="color:#f92672">=</span> opsnode1.example.com:11211
+</span></span><span style="display:flex;"><span>	auth_type <span style="color:#f92672">=</span> password
+</span></span><span style="display:flex;"><span>	project_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	user_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	project_name <span style="color:#f92672">=</span> service
+</span></span><span style="display:flex;"><span>	username <span style="color:#f92672">=</span> nova
+</span></span><span style="display:flex;"><span>	password <span style="color:#f92672">=</span> apinova
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>vnc<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	enabled <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	vncserver_listen <span style="color:#f92672">=</span> 0.0.0.0
+</span></span><span style="display:flex;"><span>	vncserver_proxyclient_address <span style="color:#f92672">=</span> $my_ip
+</span></span><span style="display:flex;"><span>	novncproxy_base_url <span style="color:#f92672">=</span> http://opsnode1.example.com:6080/vnc_auto.html
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>glance<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	api_servers <span style="color:#f92672">=</span> http://opsnode1.example.com:9292
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>oslo_concurrency<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	lock_path <span style="color:#f92672">=</span> /var/lib/nova/tmp
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>libvirt<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	virt_type <span style="color:#f92672">=</span> kvm
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#如果是虚拟机下实验就改为qemu</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl enable libvirtd.service openstack-nova-compute.service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl start libvirtd.service openstack-nova-compute.service</span>
+</span></span></code></pre></div><h3 id="273-操作验证">2.7.3 操作验证</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># . admin-openrc</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack compute service list</span>
+</span></span></code></pre></div><h3 id="28-安装neutron">2.8 安装neutron</h3>
+<h3 id="281-在控制节点上安装">2.8.1 在控制节点上安装</h3>
+<h3 id="2811-配置neutron数据库">2.8.1.1 配置neutron数据库</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># mysql -u root -p</span>
+</span></span><span style="display:flex;"><span>MariaDB <span style="color:#f92672">[(</span>none<span style="color:#f92672">)]</span>&gt; CREATE DATABASE neutron;
+</span></span><span style="display:flex;"><span>MariaDB <span style="color:#f92672">[(</span>none<span style="color:#f92672">)]</span>&gt; GRANT ALL PRIVILEGES ON neutron.* TO <span style="color:#e6db74">&#39;neutron&#39;</span>@<span style="color:#e6db74">&#39;localhost&#39;</span>  IDENTIFIED BY <span style="color:#e6db74">&#39;neutron&#39;</span>;
+</span></span><span style="display:flex;"><span>MariaDB <span style="color:#f92672">[(</span>none<span style="color:#f92672">)]</span>&gt; GRANT ALL PRIVILEGES ON neutron.* TO <span style="color:#e6db74">&#39;neutron&#39;</span>@<span style="color:#e6db74">&#39;%&#39;</span>  IDENTIFIED BY <span style="color:#e6db74">&#39;neutron&#39;</span>;
+</span></span></code></pre></div><h3 id="2812-配置用户和角色">2.8.1.2 配置用户和角色</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># . admin-openrc</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack user create --domain default --password-prompt neutron</span>
+</span></span><span style="display:flex;"><span>	User Password:apineutron
+</span></span><span style="display:flex;"><span>	Repeat User Password:apineutron
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field     | Value                            |
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| domain_id | e824551f502b4083aee78ca2392400ad |
+</span></span><span style="display:flex;"><span>	| enabled   | True                             |
+</span></span><span style="display:flex;"><span>	| id        | 835062c56ab341369b240e8dabc7203d |
+</span></span><span style="display:flex;"><span>	| name      | neutron                          |
+</span></span><span style="display:flex;"><span>	+-----------+----------------------------------+
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack role add --project service --user neutron admin</span>
+</span></span></code></pre></div><h3 id="2813-创建服务实体">2.8.1.3 创建服务实体</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack service create --name neutron   --description &#34;OpenStack Networking&#34; network</span>
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field       | Value                            |
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| description | OpenStack Networking             |
+</span></span><span style="display:flex;"><span>	| enabled     | True                             |
+</span></span><span style="display:flex;"><span>	| id          | be48ffe3253a431586bef46a02ca2f8d |
+</span></span><span style="display:flex;"><span>	| name        | neutron                          |
+</span></span><span style="display:flex;"><span>	| type        | network                          |
+</span></span><span style="display:flex;"><span>	+-------------+----------------------------------+
+</span></span></code></pre></div><h3 id="2814-创建api端点">2.8.1.4 创建API端点</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack endpoint create --region RegionOne  network public http://opsnode1.example.com:9696</span>
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field        | Value                            |
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| enabled      | True                             |
+</span></span><span style="display:flex;"><span>	| id           | f5aab86fdf7c411eb905ab8547c2bb9e |
+</span></span><span style="display:flex;"><span>	| interface    | public                           |
+</span></span><span style="display:flex;"><span>	| region       | RegionOne                        |
+</span></span><span style="display:flex;"><span>	| region_id    | RegionOne                        |
+</span></span><span style="display:flex;"><span>	| service_id   | be48ffe3253a431586bef46a02ca2f8d |
+</span></span><span style="display:flex;"><span>	| service_name | neutron                          |
+</span></span><span style="display:flex;"><span>	| service_type | network                          |
+</span></span><span style="display:flex;"><span>	| url          | http://opsnode1.example.com:9696 |
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack endpoint create --region RegionOne  network internal http://opsnode1.example.com:9696</span>
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field        | Value                            |
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| enabled      | True                             |
+</span></span><span style="display:flex;"><span>	| id           | a9a5a4b0bfa240e2957d2b8635d0a17b |
+</span></span><span style="display:flex;"><span>	| interface    | internal                         |
+</span></span><span style="display:flex;"><span>	| region       | RegionOne                        |
+</span></span><span style="display:flex;"><span>	| region_id    | RegionOne                        |
+</span></span><span style="display:flex;"><span>	| service_id   | be48ffe3253a431586bef46a02ca2f8d |
+</span></span><span style="display:flex;"><span>	| service_name | neutron                          |
+</span></span><span style="display:flex;"><span>	| service_type | network                          |
+</span></span><span style="display:flex;"><span>	| url          | http://opsnode1.example.com:9696 |
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack endpoint create --region RegionOne  network admin http://opsnode1.example.com:9696</span>
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| Field        | Value                            |
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span><span style="display:flex;"><span>	| enabled      | True                             |
+</span></span><span style="display:flex;"><span>	| id           | 3aa24f52c2cf4c2d8bb25914ddd763c4 |
+</span></span><span style="display:flex;"><span>	| interface    | admin                            |
+</span></span><span style="display:flex;"><span>	| region       | RegionOne                        |
+</span></span><span style="display:flex;"><span>	| region_id    | RegionOne                        |
+</span></span><span style="display:flex;"><span>	| service_id   | be48ffe3253a431586bef46a02ca2f8d |
+</span></span><span style="display:flex;"><span>	| service_name | neutron                          |
+</span></span><span style="display:flex;"><span>	| service_type | network                          |
+</span></span><span style="display:flex;"><span>	| url          | http://opsnode1.example.com:9696 |
+</span></span><span style="display:flex;"><span>	+--------------+----------------------------------+
+</span></span></code></pre></div><h3 id="2815-配置安装服务组件">2.8.1.5 配置安装服务组件</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install openstack-neutron openstack-neutron-ml2 openstack-neutron-linuxbridge ebtables</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/neutron/neutron.conf</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># 配置数据库连接</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>database<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	connection <span style="color:#f92672">=</span> mysql+pymysql://neutron:neutron@opsnode1.example.com/neutron
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>DEFAULT<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	core_plugin <span style="color:#f92672">=</span> ml2
+</span></span><span style="display:flex;"><span>	service_plugins <span style="color:#f92672">=</span> router
+</span></span><span style="display:flex;"><span>	allow_overlapping_ips <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	rpc_backend <span style="color:#f92672">=</span> rabbit	
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># 使用RabbitMQ消息队列</span>
+</span></span><span style="display:flex;"><span>	auth_strategy <span style="color:#f92672">=</span> keystone 
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#使用keystone身份服务认证</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># 开启网络通知计算网络拓扑变化	</span>
+</span></span><span style="display:flex;"><span>	notify_nova_on_port_status_changes <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	notify_nova_on_port_data_changes <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># 配置RabbitMQ消息队列访问参数，api地址与帐号密码</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>oslo_messaging_rabbit<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	rabbit_host <span style="color:#f92672">=</span> opsnode1.example.com
+</span></span><span style="display:flex;"><span>	rabbit_userid <span style="color:#f92672">=</span> openstack
+</span></span><span style="display:flex;"><span>	rabbit_password <span style="color:#f92672">=</span> openstack
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># 身份服务访问参数api地址、帐号与密码	</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>keystone_authtoken<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	auth_uri <span style="color:#f92672">=</span> http://opsnode1.example.com:5000
+</span></span><span style="display:flex;"><span>	auth_url <span style="color:#f92672">=</span> http://opsnode1.example.com:35357
+</span></span><span style="display:flex;"><span>	memcached_servers <span style="color:#f92672">=</span> opsnode1.example.com:11211
+</span></span><span style="display:flex;"><span>	auth_type <span style="color:#f92672">=</span> password
+</span></span><span style="display:flex;"><span>	project_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	user_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	project_name <span style="color:#f92672">=</span> service
+</span></span><span style="display:flex;"><span>	username <span style="color:#f92672">=</span> neutron
+</span></span><span style="display:flex;"><span>	password <span style="color:#f92672">=</span> apineutron
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># 配置网络通知计算网络拓扑变化参数api地址、帐号与密码			</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>nova<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	auth_url <span style="color:#f92672">=</span> http://opsnode1.example.com:35357
+</span></span><span style="display:flex;"><span>	auth_type <span style="color:#f92672">=</span> password
+</span></span><span style="display:flex;"><span>	project_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	user_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	region_name <span style="color:#f92672">=</span> RegionOne
+</span></span><span style="display:flex;"><span>	project_name <span style="color:#f92672">=</span> service
+</span></span><span style="display:flex;"><span>	username <span style="color:#f92672">=</span> nova
+</span></span><span style="display:flex;"><span>	password <span style="color:#f92672">=</span> apinova
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># 配置锁路径		</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>oslo_concurrency<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	lock_path <span style="color:#f92672">=</span> /var/lib/neutron/tmp
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/neutron/plugins/ml2/ml2_conf.ini	</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>ml2<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># 支持的网络驱动	</span>
+</span></span><span style="display:flex;"><span>	type_drivers <span style="color:#f92672">=</span> flat,vlan,vxlan 
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># 使用的网络类型</span>
+</span></span><span style="display:flex;"><span>	tenant_network_types <span style="color:#f92672">=</span> vxlan  
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># 启用端口安全</span>
+</span></span><span style="display:flex;"><span>	extension_drivers <span style="color:#f92672">=</span> port_security 
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># 底层驱动为linuxbridge,l2population</span>
+</span></span><span style="display:flex;"><span>	mechanism_drivers <span style="color:#f92672">=</span> linuxbridge,l2population
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>ml2_type_flat<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># 配置扁平网络供应商，可以有多个provider,provider和physical_interface_mappings的值相对应。</span>
+</span></span><span style="display:flex;"><span>	flat_networks <span style="color:#f92672">=</span> provider
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>ml2_type_vxlan<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># 配置VXLAN网络标识符范围</span>
+</span></span><span style="display:flex;"><span>	vni_ranges <span style="color:#f92672">=</span> 1:1000
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># 使ipset提高效率的安全组规则</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>securitygroup<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	enable_ipset <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/nova/nova.conf</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># 配置访问neutron参数</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>neutron<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	url <span style="color:#f92672">=</span> http://opsnode1.example.com:9696
+</span></span><span style="display:flex;"><span>	auth_url <span style="color:#f92672">=</span> http://opsnode1.example.com:35357
+</span></span><span style="display:flex;"><span>	auth_type <span style="color:#f92672">=</span> password
+</span></span><span style="display:flex;"><span>	project_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	user_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	region_name <span style="color:#f92672">=</span> RegionOne
+</span></span><span style="display:flex;"><span>	project_name <span style="color:#f92672">=</span> service
+</span></span><span style="display:flex;"><span>	username <span style="color:#f92672">=</span> neutron
+</span></span><span style="display:flex;"><span>	password <span style="color:#f92672">=</span> apineutron
+</span></span><span style="display:flex;"><span>	service_metadata_proxy <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># ln -s /etc/neutron/plugins/ml2/ml2_conf.ini /etc/neutron/plugin.ini</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 同步数据库</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># su -s /bin/sh -c &#34;neutron-db-manage --config-file /etc/neutron/neutron.conf   --config-file /etc/neutron/plugins/ml2ml2_conf.ini upgrade head&#34; neutron</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl restart openstack-nova-api.service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl enable neutron-linuxbridge-agent.service neutron-server.service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl start neutron-server.service</span>
+</span></span></code></pre></div><h3 id="382-网络节点上安装">3.8.2 网络节点上安装</h3>
+<h3 id="3821-调整内核参数">3.8.2.1 调整内核参数</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode3 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/sysctl.conf</span>
+</span></span><span style="display:flex;"><span>	net.ipv4.ip_forward<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    net.ipv4.conf.all.rp_filter<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>	net.ipv4.conf.default.rp_filter<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode3 ~<span style="color:#f92672">]</span><span style="color:#75715e">#  sysctl -p</span>
+</span></span></code></pre></div><h3 id="2822-配置安装服务组件">2.8.2.2 配置安装服务组件</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode3 ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install openstack-neutron openstack-neutron-ml2 openstack-neutron-linuxbridge ebtables	</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode3 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/neutron/neutron.conf</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>DEFAULT<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	core_plugin <span style="color:#f92672">=</span> ml2
+</span></span><span style="display:flex;"><span>	service_plugins <span style="color:#f92672">=</span> router
+</span></span><span style="display:flex;"><span>	allow_overlapping_ips <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	rpc_backend <span style="color:#f92672">=</span> rabbit
+</span></span><span style="display:flex;"><span>	auth_strategy <span style="color:#f92672">=</span> keystone
+</span></span><span style="display:flex;"><span>	notify_nova_on_port_status_changes <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	notify_nova_on_port_data_changes <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置RabbitMQ消息队列访问参数，api地址与帐号密码</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>oslo_messaging_rabbit<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	rabbit_host <span style="color:#f92672">=</span> opsnode1.example.com
+</span></span><span style="display:flex;"><span>	rabbit_userid <span style="color:#f92672">=</span> openstack
+</span></span><span style="display:flex;"><span>	rabbit_password <span style="color:#f92672">=</span> openstack
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#身份服务访问参数api地址、帐号与密码	</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>keystone_authtoken<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	auth_uri <span style="color:#f92672">=</span> http://opsnode1.example.com:5000
+</span></span><span style="display:flex;"><span>	auth_url <span style="color:#f92672">=</span> http://opsnode1.example.com:35357
+</span></span><span style="display:flex;"><span>	memcached_servers <span style="color:#f92672">=</span> opsnode1.example.com:11211
+</span></span><span style="display:flex;"><span>	auth_type <span style="color:#f92672">=</span> password
+</span></span><span style="display:flex;"><span>	project_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	user_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	project_name <span style="color:#f92672">=</span> service
+</span></span><span style="display:flex;"><span>	username <span style="color:#f92672">=</span> neutron
+</span></span><span style="display:flex;"><span>	password <span style="color:#f92672">=</span> apineutron
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置网络通知计算网络拓扑变化参数api地址、帐号与密码			</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>nova<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	auth_url <span style="color:#f92672">=</span> http://opsnode1.example.com:35357
+</span></span><span style="display:flex;"><span>	auth_type <span style="color:#f92672">=</span> password
+</span></span><span style="display:flex;"><span>	project_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	user_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	region_name <span style="color:#f92672">=</span> RegionOne
+</span></span><span style="display:flex;"><span>	project_name <span style="color:#f92672">=</span> service
+</span></span><span style="display:flex;"><span>	username <span style="color:#f92672">=</span> nova
+</span></span><span style="display:flex;"><span>	password <span style="color:#f92672">=</span> apinova
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置锁路径		</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>oslo_concurrency<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	lock_path <span style="color:#f92672">=</span> /var/lib/neutron/tmp
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode3 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/neutron/plugins/ml2/ml2_conf.ini</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>ml2<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	type_drivers <span style="color:#f92672">=</span> flat,vlan,vxlan 
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#使用扁平化网络、VLAN网络和VXLAN网络</span>
+</span></span><span style="display:flex;"><span>	tenant_network_types <span style="color:#f92672">=</span> vxlan  
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#使VXLAN自助服务网络</span>
+</span></span><span style="display:flex;"><span>	extension_drivers <span style="color:#f92672">=</span> port_security 
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#启用端口安全</span>
+</span></span><span style="display:flex;"><span>	mechanism_drivers <span style="color:#f92672">=</span> linuxbridge,l2population
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#使Linux桥和2层人口机制</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置扁平网络供应商</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>ml2_type_flat<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	flat_networks <span style="color:#f92672">=</span> provider
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#配置VXLAN网络标识符范围</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>ml2_type_vxlan<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	vni_ranges <span style="color:#f92672">=</span> 1:1000
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#使ipset提高效率的安全组规则</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>securitygroup<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	enable_ipset <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode3 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/neutron/plugins/ml2/linuxbridge_agent.ini</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>linux_bridge<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#physical_interface_mappings用来把名字和该网络使用的物理网卡对应起来。也就是虚拟机使用这个网卡与外界通讯，可以设置多个。</span>
+</span></span><span style="display:flex;"><span>	physical_interface_mappings <span style="color:#f92672">=</span> provider:enp0s9
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>vxlan<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	enable_vxlan <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#local_ip为实例通讯的网络IP</span>
+</span></span><span style="display:flex;"><span>	local_ip <span style="color:#f92672">=</span> 192.16.20.13
+</span></span><span style="display:flex;"><span>	l2_population <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>securitygroup<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	enable_security_group <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	firewall_driver <span style="color:#f92672">=</span> neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode3 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/neutron/l3_agent.ini</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>DEFAULT<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	interface_driver <span style="color:#f92672">=</span> neutron.agent.linux.interface.BridgeInterfaceDriver
+</span></span><span style="display:flex;"><span>	external_network_bridge <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#注意external_network_bridge故意不包含值,external_network_bridge区域故意缺少值是为了在一个单点agent上启用多个外部网络。</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode3 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/neutron/dhcp_agent.ini</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>DEFAULT<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	interface_driver <span style="color:#f92672">=</span> neutron.agent.linux.interface.BridgeInterfaceDriver
+</span></span><span style="display:flex;"><span>	dhcp_driver <span style="color:#f92672">=</span> neutron.agent.linux.dhcp.Dnsmasq
+</span></span><span style="display:flex;"><span>	enable_isolated_metadata <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode3 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/neutron/metadata_agent.ini</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>DEFAULT<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	nova_metadata_ip<span style="color:#f92672">=</span>opsnode1.example.com
+</span></span><span style="display:flex;"><span>	metadata_proxy_shared_secret<span style="color:#f92672">=</span>metadatasceret
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#这里假定neutron服务的keystone帐号密码为neutron_pass,且在控制节点上配置的metadata_proxy_shared_secret为metadatasceret</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode3 ~<span style="color:#f92672">]</span><span style="color:#75715e"># ln -s /etc/neutron/plugins/ml2/ml2_conf.ini /etc/neutron/plugin.ini</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode3 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl enable   neutron-linuxbridge-agent.service neutron-dhcp-agent.service neutron-metadata-agent.service neutron-l3-agent.service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode3 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl start neutron-linuxbridge-agent.service neutron-dhcp-agent.service neutron-metadata-agent.service neutron-l3-agent.service</span>
+</span></span></code></pre></div><h3 id="283-计算节点安装">2.8.3 计算节点安装</h3>
+<h3 id="2831-配置内核参数">2.8.3.1 配置内核参数</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/sysctl.conf</span>
+</span></span><span style="display:flex;"><span>	net.ipv4.conf.all.rp_filter <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>	net.ipv4.conf.default.rp_filter <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e">#  sysctl -p</span>
+</span></span></code></pre></div><h3 id="2832-配置安装服务组件">2.8.3.2 配置安装服务组件</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install openstack-neutron-linuxbridge ebtables	</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/neutron/neutron.conf</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>DEFAULT<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	rpc_backend <span style="color:#f92672">=</span> rabbit
+</span></span><span style="display:flex;"><span>	auth_strategy <span style="color:#f92672">=</span> keystone
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>oslo_messaging_rabbit<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	rabbit_host <span style="color:#f92672">=</span> opsnode1.example.com
+</span></span><span style="display:flex;"><span>	rabbit_userid <span style="color:#f92672">=</span> openstack
+</span></span><span style="display:flex;"><span>	rabbit_password <span style="color:#f92672">=</span> openstack
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>keystone_authtoken<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	auth_uri <span style="color:#f92672">=</span> http://opsnode1.example.com:5000
+</span></span><span style="display:flex;"><span>	auth_url <span style="color:#f92672">=</span> http://opsnode1.example.com:35357
+</span></span><span style="display:flex;"><span>	memcached_servers <span style="color:#f92672">=</span> opsnode1.example.com:11211
+</span></span><span style="display:flex;"><span>	auth_type <span style="color:#f92672">=</span> password
+</span></span><span style="display:flex;"><span>	project_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	user_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	project_name <span style="color:#f92672">=</span> service
+</span></span><span style="display:flex;"><span>	username <span style="color:#f92672">=</span> neutron
+</span></span><span style="display:flex;"><span>	password <span style="color:#f92672">=</span> apineutron
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>oslo_concurrency<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	lock_path <span style="color:#f92672">=</span> /var/lib/neutron/tmp
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/neutron/plugins/ml2/linuxbridge_agent.ini </span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>linux_bridge<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	physical_interface_mappings <span style="color:#f92672">=</span> provider:enp0s9
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># 注意这里是连接外网的网卡</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>vxlan<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	enable_vxlan <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	local_ip <span style="color:#f92672">=</span> 192.16.20.12
+</span></span><span style="display:flex;"><span>	l2_population <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>securitygroup<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	enable_security_group <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	firewall_driver <span style="color:#f92672">=</span> neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/nova/nova.conf</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>neutron<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	url <span style="color:#f92672">=</span> http://opsnode1.example.com:9696
+</span></span><span style="display:flex;"><span>	auth_url <span style="color:#f92672">=</span> http://opsnode1.example.com:35357
+</span></span><span style="display:flex;"><span>	auth_type <span style="color:#f92672">=</span> password
+</span></span><span style="display:flex;"><span>	project_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	user_domain_name <span style="color:#f92672">=</span> default
+</span></span><span style="display:flex;"><span>	region_name <span style="color:#f92672">=</span> RegionOne
+</span></span><span style="display:flex;"><span>	project_name <span style="color:#f92672">=</span> service
+</span></span><span style="display:flex;"><span>	username <span style="color:#f92672">=</span> neutron
+</span></span><span style="display:flex;"><span>	password <span style="color:#f92672">=</span> apineutron
+</span></span><span style="display:flex;"><span>	service_metadata_proxy <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl restart openstack-nova-compute.service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl enable neutron-linuxbridge-agent.service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl start neutron-linuxbridge-agent.service</span>
+</span></span></code></pre></div><h3 id="284-创建网络">2.8.4 创建网络</h3>
+<pre><code>注意，必须先provider network，然后才能
+</code></pre>
+<h3 id="2841-创建供应商网络">2.8.4.1 创建供应商网络</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># neutron net-create --shared --provider:physical_network provider --provider:network_type flat provider</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		Created a new network:
+</span></span><span style="display:flex;"><span>		+---------------------------+--------------------------------------+
+</span></span><span style="display:flex;"><span>		| Field                     | Value                                |
+</span></span><span style="display:flex;"><span>		+---------------------------+--------------------------------------+
+</span></span><span style="display:flex;"><span>		| admin_state_up            | True                                 |
+</span></span><span style="display:flex;"><span>		| availability_zone_hints   |                                      |
+</span></span><span style="display:flex;"><span>		| availability_zones        |                                      |
+</span></span><span style="display:flex;"><span>		| created_at                | 2016-06-16T10:33:11                  |
+</span></span><span style="display:flex;"><span>		| description               |                                      |
+</span></span><span style="display:flex;"><span>		| id                        | 8dc91652-95f0-406d-9613-2c8d9fa53657 |
+</span></span><span style="display:flex;"><span>		| ipv4_address_scope        |                                      |
+</span></span><span style="display:flex;"><span>		| ipv6_address_scope        |                                      |
+</span></span><span style="display:flex;"><span>		| mtu                       | <span style="color:#ae81ff">1500</span>                                 |
+</span></span><span style="display:flex;"><span>		| name                      | provider                             |
+</span></span><span style="display:flex;"><span>		| port_security_enabled     | True                                 |
+</span></span><span style="display:flex;"><span>		| provider:network_type     | flat                                 |
+</span></span><span style="display:flex;"><span>		| provider:physical_network | provider                             |
+</span></span><span style="display:flex;"><span>		| provider:segmentation_id  |                                      |
+</span></span><span style="display:flex;"><span>		| router:external           | False                                |
+</span></span><span style="display:flex;"><span>		| shared                    | True                                 |
+</span></span><span style="display:flex;"><span>		| status                    | ACTIVE                               |
+</span></span><span style="display:flex;"><span>		| subnets                   |                                      |
+</span></span><span style="display:flex;"><span>		| tags                      |                                      |
+</span></span><span style="display:flex;"><span>		| tenant_id                 | 964f00c0843c45be982b8898a722bd63     |
+</span></span><span style="display:flex;"><span>		| updated_at                | 2016-06-16T10:33:11                  |
+</span></span><span style="display:flex;"><span>		+---------------------------+--------------------------------------+
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode2 ~<span style="color:#f92672">]</span><span style="color:#75715e"># neutron subnet-create --name provider --allocation-pool start=192.168.8.211,end=192.168.8.222 --dns-nameserver 114.114.114.114 --gateway 192.168.8.1 provider 192.168.8.0/24</span>
+</span></span><span style="display:flex;"><span>		Created a new subnet:
+</span></span><span style="display:flex;"><span>		+-------------------+----------------------------------------------------+
+</span></span><span style="display:flex;"><span>		| Field             | Value                                              |
+</span></span><span style="display:flex;"><span>		+-------------------+----------------------------------------------------+
+</span></span><span style="display:flex;"><span>		| allocation_pools  | <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;start&#34;</span>: <span style="color:#e6db74">&#34;192.168.8.211&#34;</span>, <span style="color:#e6db74">&#34;end&#34;</span>: <span style="color:#e6db74">&#34;192.168.8.222&#34;</span><span style="color:#f92672">}</span> |
+</span></span><span style="display:flex;"><span>		| cidr              | 192.168.8.0/24                                     |
+</span></span><span style="display:flex;"><span>		| created_at        | 2016-06-16T10:39:53                                |
+</span></span><span style="display:flex;"><span>		| description       |                                                    |
+</span></span><span style="display:flex;"><span>		| dns_nameservers   | 114.114.114.114                                    |
+</span></span><span style="display:flex;"><span>		| enable_dhcp       | True                                               |
+</span></span><span style="display:flex;"><span>		| gateway_ip        | 192.168.8.1                                        |
+</span></span><span style="display:flex;"><span>		| host_routes       |                                                    |
+</span></span><span style="display:flex;"><span>		| id                | ce8ca87a-2b34-4e15-8fbd-1e23d719108e               |
+</span></span><span style="display:flex;"><span>		| ip_version        | <span style="color:#ae81ff">4</span>                                                  |
+</span></span><span style="display:flex;"><span>		| ipv6_address_mode |                                                    |
+</span></span><span style="display:flex;"><span>		| ipv6_ra_mode      |                                                    |
+</span></span><span style="display:flex;"><span>		| name              | provider                                           |
+</span></span><span style="display:flex;"><span>		| network_id        | 8dc91652-95f0-406d-9613-2c8d9fa53657               |
+</span></span><span style="display:flex;"><span>		| subnetpool_id     |                                                    |
+</span></span><span style="display:flex;"><span>		| tenant_id         | 964f00c0843c45be982b8898a722bd63                   |
+</span></span><span style="display:flex;"><span>		| updated_at        | 2016-06-16T10:39:53                                |
+</span></span><span style="display:flex;"><span>		+-------------------+----------------------------------------------------+
+</span></span></code></pre></div><h3 id="2842-创建自助网络">2.8.4.2 创建自助网络</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># . admin-openrc</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># nova flavor-list</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 列出实例类型</span>
+</span></span><span style="display:flex;"><span>		+----+-----------+-----------+------+-----------+------+-------+-------------+-----------+
+</span></span><span style="display:flex;"><span>		| ID | Name      | Memory_MB | Disk | Ephemeral | Swap | VCPUs | RXTX_Factor | Is_Public |
+</span></span><span style="display:flex;"><span>		+----+-----------+-----------+------+-----------+------+-------+-------------+-----------+
+</span></span><span style="display:flex;"><span>		| <span style="color:#ae81ff">1</span>  | m1.tiny   | <span style="color:#ae81ff">512</span>       | <span style="color:#ae81ff">1</span>    | <span style="color:#ae81ff">0</span>         |      | <span style="color:#ae81ff">1</span>     | 1.0         | True      |
+</span></span><span style="display:flex;"><span>		| <span style="color:#ae81ff">2</span>  | m1.small  | <span style="color:#ae81ff">2048</span>      | <span style="color:#ae81ff">20</span>   | <span style="color:#ae81ff">0</span>         |      | <span style="color:#ae81ff">1</span>     | 1.0         | True      |
+</span></span><span style="display:flex;"><span>		| <span style="color:#ae81ff">3</span>  | m1.medium | <span style="color:#ae81ff">4096</span>      | <span style="color:#ae81ff">40</span>   | <span style="color:#ae81ff">0</span>         |      | <span style="color:#ae81ff">2</span>     | 1.0         | True      |
+</span></span><span style="display:flex;"><span>		| <span style="color:#ae81ff">4</span>  | m1.large  | <span style="color:#ae81ff">8192</span>      | <span style="color:#ae81ff">80</span>   | <span style="color:#ae81ff">0</span>         |      | <span style="color:#ae81ff">4</span>     | 1.0         | True      |
+</span></span><span style="display:flex;"><span>		| <span style="color:#ae81ff">5</span>  | m1.xlarge | <span style="color:#ae81ff">16384</span>     | <span style="color:#ae81ff">160</span>  | <span style="color:#ae81ff">0</span>         |      | <span style="color:#ae81ff">8</span>     | 1.0         | True      |
+</span></span><span style="display:flex;"><span>		+----+-----------+-----------+------+-----------+------+-------+-------------+-----------+
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># nova image-list</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 列出可用镜像</span>
+</span></span><span style="display:flex;"><span>		+--------------------------------------+--------+--------+--------+
+</span></span><span style="display:flex;"><span>		| ID                                   | Name   | Status | Server |
+</span></span><span style="display:flex;"><span>		+--------------------------------------+--------+--------+--------+
+</span></span><span style="display:flex;"><span>		| 3eae8aeb-9eab-4b59-868d-7f25d97d260a | cirros | ACTIVE |        |
+</span></span><span style="display:flex;"><span>		+--------------------------------------+--------+--------+--------+
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># neutron net-list</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 列出代理以验证启动 neutron 代理是否成功</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># neutron agent-list</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># neutron net-create selfservice</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 添加网络selfservice</span>
+</span></span><span style="display:flex;"><span>	Created a new network:
+</span></span><span style="display:flex;"><span>		+---------------------------+--------------------------------------+
+</span></span><span style="display:flex;"><span>		| Field                     | Value                                |
+</span></span><span style="display:flex;"><span>		+---------------------------+--------------------------------------+
+</span></span><span style="display:flex;"><span>		| admin_state_up            | True                                 |
+</span></span><span style="display:flex;"><span>		| availability_zone_hints   |                                      |
+</span></span><span style="display:flex;"><span>		| availability_zones        |                                      |
+</span></span><span style="display:flex;"><span>		| created_at                | 2016-06-16T10:04:31                  |
+</span></span><span style="display:flex;"><span>		| description               |                                      |
+</span></span><span style="display:flex;"><span>		| id                        | a5505308-d67b-43ae-aa44-532b4cd4e579 |
+</span></span><span style="display:flex;"><span>		| ipv4_address_scope        |                                      |
+</span></span><span style="display:flex;"><span>		| ipv6_address_scope        |                                      |
+</span></span><span style="display:flex;"><span>		| mtu                       | <span style="color:#ae81ff">1450</span>                                 |
+</span></span><span style="display:flex;"><span>		| name                      | selfservice                          |
+</span></span><span style="display:flex;"><span>		| port_security_enabled     | True                                 |
+</span></span><span style="display:flex;"><span>		| provider:network_type     | vxlan                                |
+</span></span><span style="display:flex;"><span>		| provider:physical_network |                                      |
+</span></span><span style="display:flex;"><span>		| provider:segmentation_id  | <span style="color:#ae81ff">16</span>                                   |
+</span></span><span style="display:flex;"><span>		| router:external           | False                                |
+</span></span><span style="display:flex;"><span>		| shared                    | False                                |
+</span></span><span style="display:flex;"><span>		| status                    | ACTIVE                               |
+</span></span><span style="display:flex;"><span>		| subnets                   |                                      |
+</span></span><span style="display:flex;"><span>		| tags                      |                                      |
+</span></span><span style="display:flex;"><span>		| tenant_id                 | 964f00c0843c45be982b8898a722bd63     |
+</span></span><span style="display:flex;"><span>		| updated_at                | 2016-06-16T10:04:31                  |
+</span></span><span style="display:flex;"><span>		+---------------------------+--------------------------------------+
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># neutron subnet-create --name selfservice --allocation-pool \</span>
+</span></span><span style="display:flex;"><span>start<span style="color:#f92672">=</span>10.199.200.100,end<span style="color:#f92672">=</span>10.199.200.200   --dns-nameserver 10.199.200.1 --gateway 10.199.200.1  <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>selfservice 10.199.200.0/24
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建子网</span>
+</span></span><span style="display:flex;"><span>	Created a new subnet:
+</span></span><span style="display:flex;"><span>		+-------------------+------------------------------------------------------+
+</span></span><span style="display:flex;"><span>		| Field             | Value                                                |
+</span></span><span style="display:flex;"><span>		+-------------------+------------------------------------------------------+
+</span></span><span style="display:flex;"><span>		| allocation_pools  | <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;start&#34;</span>: <span style="color:#e6db74">&#34;10.199.200.100&#34;</span>, <span style="color:#e6db74">&#34;end&#34;</span>: <span style="color:#e6db74">&#34;10.199.200.200&#34;</span><span style="color:#f92672">}</span> |
+</span></span><span style="display:flex;"><span>		| cidr              | 10.199.200.0/24                                      |
+</span></span><span style="display:flex;"><span>		| created_at        | 2016-06-16T10:42:32                                  |
+</span></span><span style="display:flex;"><span>		| description       |                                                      |
+</span></span><span style="display:flex;"><span>		| dns_nameservers   | 10.199.200.1                                         |
+</span></span><span style="display:flex;"><span>		| enable_dhcp       | True                                                 |
+</span></span><span style="display:flex;"><span>		| gateway_ip        | 10.199.200.1                                         |
+</span></span><span style="display:flex;"><span>		| host_routes       |                                                      |
+</span></span><span style="display:flex;"><span>		| id                | 7893b87c-6467-4c1f-9147-f15ef14e4b21                 |
+</span></span><span style="display:flex;"><span>		| ip_version        | <span style="color:#ae81ff">4</span>                                                    |
+</span></span><span style="display:flex;"><span>		| ipv6_address_mode |                                                      |
+</span></span><span style="display:flex;"><span>		| ipv6_ra_mode      |                                                      |
+</span></span><span style="display:flex;"><span>		| name              | selfservice                                          |
+</span></span><span style="display:flex;"><span>		| network_id        | a5505308-d67b-43ae-aa44-532b4cd4e579                 |
+</span></span><span style="display:flex;"><span>		| subnetpool_id     |                                                      |
+</span></span><span style="display:flex;"><span>		| tenant_id         | 964f00c0843c45be982b8898a722bd63                     |
+</span></span><span style="display:flex;"><span>		| updated_at        | 2016-06-16T10:42:32                                  |
+</span></span><span style="display:flex;"><span>		+-------------------+------------------------------------------------------+
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># openstack network list</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 保证有以下两个网络</span>
+</span></span><span style="display:flex;"><span>		+--------------------------------------+-------------+--------------------------------------+
+</span></span><span style="display:flex;"><span>		| ID                                   | Name        | Subnets                              |
+</span></span><span style="display:flex;"><span>		+--------------------------------------+-------------+--------------------------------------+
+</span></span><span style="display:flex;"><span>		| 8dc91652-95f0-406d-9613-2c8d9fa53657 | provider    | ce8ca87a-2b34-4e15-8fbd-1e23d719108e |
+</span></span><span style="display:flex;"><span>		| a5505308-d67b-43ae-aa44-532b4cd4e579 | selfservice | 7893b87c-6467-4c1f-9147-f15ef14e4b21 |
+</span></span><span style="display:flex;"><span>		+--------------------------------------+-------------+--------------------------------------+
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># neutron net-update provider --router:external</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 添加路由到供应商网络</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># . demo-openrc</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># neutron router-create router</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建路由</span>
+</span></span><span style="display:flex;"><span>	Created a new router:
+</span></span><span style="display:flex;"><span>		+-------------------------+--------------------------------------+
+</span></span><span style="display:flex;"><span>		| Field                   | Value                                |
+</span></span><span style="display:flex;"><span>		+-------------------------+--------------------------------------+
+</span></span><span style="display:flex;"><span>		| admin_state_up          | True                                 |
+</span></span><span style="display:flex;"><span>		| availability_zone_hints |                                      |
+</span></span><span style="display:flex;"><span>		| availability_zones      |                                      |
+</span></span><span style="display:flex;"><span>		| description             |                                      |
+</span></span><span style="display:flex;"><span>		| external_gateway_info   |                                      |
+</span></span><span style="display:flex;"><span>		| id                      | f97c030a-b885-4685-ae37-4613ca859ea1 |
+</span></span><span style="display:flex;"><span>		| name                    | router                               |
+</span></span><span style="display:flex;"><span>		| routes                  |                                      |
+</span></span><span style="display:flex;"><span>		| status                  | ACTIVE                               |
+</span></span><span style="display:flex;"><span>		| tenant_id               | 70622483fbe243b5bb96facbe41b7139     |
+</span></span><span style="display:flex;"><span>		+-------------------------+--------------------------------------+
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e">#. admin-openrc	</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># neutron router-interface-add router selfservice</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 添加一个接口从route到selfservice子网</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># neutron router-gateway-set router provider</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#设置网关</span>
+</span></span></code></pre></div><h3 id="284-验证操作">2.8.4 验证操作</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># . admin-openrc</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># neutron ext-list</span>
+</span></span><span style="display:flex;"><span>	+---------------------------+-----------------------------------------------+
+</span></span><span style="display:flex;"><span>	| alias                     | name                                          |
+</span></span><span style="display:flex;"><span>	+---------------------------+-----------------------------------------------+
+</span></span><span style="display:flex;"><span>	| default-subnetpools       | Default Subnetpools                           |
+</span></span><span style="display:flex;"><span>	| network-ip-availability   | Network IP Availability                       |
+</span></span><span style="display:flex;"><span>	| network_availability_zone | Network Availability Zone                     |
+</span></span><span style="display:flex;"><span>	| auto-allocated-topology   | Auto Allocated Topology Services              |
+</span></span><span style="display:flex;"><span>	| ext-gw-mode               | Neutron L3 Configurable external gateway mode |
+</span></span><span style="display:flex;"><span>	| binding                   | Port Binding                                  |
+</span></span><span style="display:flex;"><span>	| agent                     | agent                                         |
+</span></span><span style="display:flex;"><span>	| subnet_allocation         | Subnet Allocation                             |
+</span></span><span style="display:flex;"><span>	| l3_agent_scheduler        | L3 Agent Scheduler                            |
+</span></span><span style="display:flex;"><span>	| tag                       | Tag support                                   |
+</span></span><span style="display:flex;"><span>	| external-net              | Neutron external network                      |
+</span></span><span style="display:flex;"><span>	| net-mtu                   | Network MTU                                   |
+</span></span><span style="display:flex;"><span>	| availability_zone         | Availability Zone                             |
+</span></span><span style="display:flex;"><span>	| quotas                    | Quota management support                      |
+</span></span><span style="display:flex;"><span>	| l3-ha                     | HA Router extension                           |
+</span></span><span style="display:flex;"><span>	| provider                  | Provider Network                              |
+</span></span><span style="display:flex;"><span>	| multi-provider            | Multi Provider Network                        |
+</span></span><span style="display:flex;"><span>	| address-scope             | Address scope                                 |
+</span></span><span style="display:flex;"><span>	| extraroute                | Neutron Extra Route                           |
+</span></span><span style="display:flex;"><span>	| timestamp_core            | Time Stamp Fields addition <span style="color:#66d9ef">for</span> core resources |
+</span></span><span style="display:flex;"><span>	| router                    | Neutron L3 Router                             |
+</span></span><span style="display:flex;"><span>	| extra_dhcp_opt            | Neutron Extra DHCP opts                       |
+</span></span><span style="display:flex;"><span>	| dns-integration           | DNS Integration                               |
+</span></span><span style="display:flex;"><span>	| security-group            | security-group                                |
+</span></span><span style="display:flex;"><span>	| dhcp_agent_scheduler      | DHCP Agent Scheduler                          |
+</span></span><span style="display:flex;"><span>	| router_availability_zone  | Router Availability Zone                      |
+</span></span><span style="display:flex;"><span>	| rbac-policies             | RBAC Policies                                 |
+</span></span><span style="display:flex;"><span>	| standard-attr-description | standard-attr-description                     |
+</span></span><span style="display:flex;"><span>	| port-security             | Port Security                                 |
+</span></span><span style="display:flex;"><span>	| allowed-address-pairs     | Allowed Address Pairs                         |
+</span></span><span style="display:flex;"><span>	| dvr                       | Distributed Virtual Router                    |
+</span></span><span style="display:flex;"><span>	+---------------------------+-----------------------------------------------+
+</span></span></code></pre></div><h3 id="29-安装配置web界面">2.9 安装配置web界面</h3>
+<h3 id="291-配置安装服务组件">2.9.1 配置安装服务组件</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># yum install openstack-dashboard</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># vim /etc/openstack-dashboard/local_settings</span>
+</span></span><span style="display:flex;"><span>	OPENSTACK_HOST <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;opsnode1.example.com&#34;</span>
+</span></span><span style="display:flex;"><span>	ALLOWED_HOSTS <span style="color:#f92672">=</span> <span style="color:#f92672">[</span><span style="color:#e6db74">&#39;*&#39;</span>, <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	SESSION_ENGINE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;django.contrib.sessions.backends.cache&#39;</span>
+</span></span><span style="display:flex;"><span>	CACHES <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#39;default&#39;</span>: <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#e6db74">&#39;BACKEND&#39;</span>: <span style="color:#e6db74">&#39;django.core.cache.backends.memcached.MemcachedCache&#39;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#e6db74">&#39;LOCATION&#39;</span>: <span style="color:#e6db74">&#39;opsnode1.example.com:11211&#39;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	OPENSTACK_KEYSTONE_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;http://%s:5000/v3&#34;</span> % OPENSTACK_HOST
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT <span style="color:#f92672">=</span> True
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	OPENSTACK_API_VERSIONS <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#34;identity&#34;</span>: 3,
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#34;image&#34;</span>: 2,
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#34;volume&#34;</span>: 2,
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	OPENSTACK_KEYSTONE_DEFAULT_DOMAIN <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;default&#34;</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	OPENSTACK_KEYSTONE_DEFAULT_ROLE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;user&#34;</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#如果配置是供应商网络，则使用下面参数	</span>
+</span></span><span style="display:flex;"><span>	OPENSTACK_NEUTRON_NETWORK <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		...
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#39;enable_router&#39;</span>: False,
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#39;enable_quotas&#39;</span>: False,
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#39;enable_distributed_router&#39;</span>: False,
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#39;enable_ha_router&#39;</span>: False,
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#39;enable_lb&#39;</span>: False,
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#39;enable_firewall&#39;</span>: False,
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#39;enable_vpn&#39;</span>: False,
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#39;enable_fip_topology_check&#39;</span>: False,
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	TIME_ZONE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Asia/Shanghai&#34;</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>root@opsnode1 ~<span style="color:#f92672">]</span><span style="color:#75715e"># systemctl restart httpd.service memcached.service</span>
+</span></span></code></pre></div><h3 id="292-验证操作">2.9.2 验证操作</h3>
+<p>使用浏览器打开网址http://controller/dashboard即可访问dashboard.</p>
+<p>验证使用 admin 或者demo用户凭证和default域凭证。</p>
+<h1 id="结束">结束</h1>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-准备工作">1. 准备工作</a>
+      <ul>
+        <li><a href="#11-初始环境">1.1 初始环境</a></li>
+        <li><a href="#111-系统初始安装">1.1.1 系统初始安装</a></li>
+        <li><a href="#112-安装yum源">1.1.2 安装yum源</a></li>
+        <li><a href="#113-配置相关辅助服务dns-ntp">1.1.3 配置相关辅助服务：dns， ntp</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-开始安装">2. 开始安装</a>
+      <ul>
+        <li><a href="#21-安装数据库">2.1 安装数据库</a></li>
+        <li><a href="#22-安装rabbitmq">2.2 安装rabbitmq</a></li>
+        <li><a href="#23-安装memcached">2.3 安装Memcached</a></li>
+        <li><a href="#24-安装mongodb">2.4 安装mongodb</a></li>
+        <li><a href="#25-配置keystone">2.5 配置keystone</a></li>
+        <li><a href="#251-配置keystone数据库">2.5.1 配置keystone数据库</a></li>
+        <li><a href="#252-配置安装keystone">2.5.2 配置安装keystone</a></li>
+        <li><a href="#353-创建服务实体和api端点">3.5.3 创建服务实体和API端点</a></li>
+        <li><a href="#254-创建项目用户和角色">2.5.4 创建项目、用户和角色</a></li>
+        <li><a href="#255-验证操作">2.5.5 验证操作</a></li>
+        <li><a href="#256-创建环境脚本">2.5.6 创建环境脚本</a></li>
+        <li><a href="#26-安装glance服务">2.6 安装glance服务</a></li>
+        <li><a href="#261-配置glance数据库">2.6.1 配置glance数据库</a></li>
+        <li><a href="#262-配置glance用户">2.6.2 配置glance用户</a></li>
+        <li><a href="#263-创建glance服务实体">2.6.3 创建glance服务实体</a></li>
+        <li><a href="#264-创建镜像服务的-api-端点">2.6.4 创建镜像服务的 API 端点</a></li>
+        <li><a href="#265-安装配置glance">2.6.5 安装配置glance</a></li>
+        <li><a href="#266-验证操作">2.6.6 验证操作</a></li>
+        <li><a href="#27-安装nova">2.7 安装nova</a></li>
+        <li><a href="#271-控制节点安装">2.7.1 控制节点安装：</a></li>
+        <li><a href="#2711-配置nova数据库">2.7.1.1 配置nova数据库</a></li>
+        <li><a href="#2712-配置用户和角色">2.7.1.2 配置用户和角色</a></li>
+        <li><a href="#2713-创建nova服务实体">2.7.1.3 创建nova服务实体</a></li>
+        <li><a href="#2714-创建计算服务api端点">2.7.1.4 创建计算服务API端点</a></li>
+        <li><a href="#2715-配置安装服务组件">2.7.1.5 配置安装服务组件</a></li>
+        <li><a href="#272-计算节点安装与配置">2.7.2 计算节点安装与配置</a></li>
+        <li><a href="#2721-配置内核参数">2.7.2.1 配置内核参数</a></li>
+        <li><a href="#2722-配置安装服务组件">2.7.2.2 配置安装服务组件</a></li>
+        <li><a href="#273-操作验证">2.7.3 操作验证</a></li>
+        <li><a href="#28-安装neutron">2.8 安装neutron</a></li>
+        <li><a href="#281-在控制节点上安装">2.8.1 在控制节点上安装</a></li>
+        <li><a href="#2811-配置neutron数据库">2.8.1.1 配置neutron数据库</a></li>
+        <li><a href="#2812-配置用户和角色">2.8.1.2 配置用户和角色</a></li>
+        <li><a href="#2813-创建服务实体">2.8.1.3 创建服务实体</a></li>
+        <li><a href="#2814-创建api端点">2.8.1.4 创建API端点</a></li>
+        <li><a href="#2815-配置安装服务组件">2.8.1.5 配置安装服务组件</a></li>
+        <li><a href="#382-网络节点上安装">3.8.2 网络节点上安装</a></li>
+        <li><a href="#3821-调整内核参数">3.8.2.1 调整内核参数</a></li>
+        <li><a href="#2822-配置安装服务组件">2.8.2.2 配置安装服务组件</a></li>
+        <li><a href="#283-计算节点安装">2.8.3 计算节点安装</a></li>
+        <li><a href="#2831-配置内核参数">2.8.3.1 配置内核参数</a></li>
+        <li><a href="#2832-配置安装服务组件">2.8.3.2 配置安装服务组件</a></li>
+        <li><a href="#284-创建网络">2.8.4 创建网络</a></li>
+        <li><a href="#2841-创建供应商网络">2.8.4.1 创建供应商网络</a></li>
+        <li><a href="#2842-创建自助网络">2.8.4.2 创建自助网络</a></li>
+        <li><a href="#284-验证操作">2.8.4 验证操作</a></li>
+        <li><a href="#29-安装配置web界面">2.9 安装配置web界面</a></li>
+        <li><a href="#291-配置安装服务组件">2.9.1 配置安装服务组件</a></li>
+        <li><a href="#292-验证操作">2.9.2 验证操作</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer class="footer">
+    <div class="copyright">
+        
+        
+        © Powered by <a href="https://github.com/allposs/Axis-Hugo-Theme.git">Axis-Hugo-Theme</a> and <a href="https://gohugo.io">Hugo</a> | 2022 - 2023
+        
+    </div>
+</footer>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NBF4J7F6RW"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-NBF4J7F6RW', { 'anonymize_ip': false });
+}
+</script>
+
+
+<script async src="https://blog.allposs.com/js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+</body>
+
+</html>

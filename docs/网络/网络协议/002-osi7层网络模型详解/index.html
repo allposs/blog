@@ -157,8 +157,10 @@
 </a>
 </div>
 
-
-<strong>OSI7层模型</strong>是open system interconnection 开放式系统互联参考模型，注意是参考模型，在实际生活中并未全部实现（现实使用的是<strong>TCP/IP4层模型</strong>），但是不妨碍我们通过<strong>OSI7层模型</strong>去了解网络通讯原理。<strong>OSI7层模型</strong>分别为如下7层:应用层（Application）、表示层（Presentation）、会话层（Session）、传输层（Transport）、网络层（Network）、数据链路层（Data Link）、物理层（Physical）。</p>
+</p>
+<blockquote>
+<p><strong>OSI7层模型</strong>是open system interconnection 开放式系统互联参考模型，注意是参考模型，在实际生活中并未全部实现（现实使用的是<strong>TCP/IP4层模型</strong>），但是不妨碍我们通过<strong>OSI7层模型</strong>去了解网络通讯原理。<strong>OSI7层模型</strong>分别为如下7层:应用层（Application）、表示层（Presentation）、会话层（Session）、传输层（Transport）、网络层（Network）、数据链路层（Data Link）、物理层（Physical）。</p>
+</blockquote>
 <h1 id="正文">正文</h1>
 <h2 id="1-物理层">1. 物理层</h2>
 <blockquote>
@@ -166,9 +168,10 @@
 </blockquote>
 <blockquote>
 <ol>
-<li>这一层中有很多技术——从物理网络设备、布线到电缆如何连接到设备之间的一切。另外，如果我们不需要电缆，那么信号的类型和传输方式是什么（例如，无线宽带）。我没有列出第一层中的各种技术，而是为这些技术创建了一个更大的分类。我鼓励读者进一步学习每一种分类：</li>
+<li>技术分类</li>
 </ol>
 <blockquote>
+<p>这一层中有很多技术——从物理网络设备、布线到电缆如何连接到设备之间的一切。另外，如果我们不需要电缆，那么信号的类型和传输方式是什么（例如，无线宽带）。我没有列出第一层中的各种技术，而是为这些技术创建了一个更大的分类：</p>
 <ul>
 <li><strong>节点（设备）和网络硬件</strong>: 设备包括集线器、中继器、路由器、计算机、打印机，等等。这些设备内的硬件包括天线、放大器、网卡（NIC，Network Interface Card）等等。</li>
 <li><strong>设备接口机制</strong>: 电缆如何连接到某个设备，以及连接到设备上的哪个地方（电缆连接器和设备插座）？连接器的大小和形状如何，它有多少个引脚？决定引脚处于活动状态还是非活动状态的东西是什么？</li>
@@ -182,48 +185,194 @@
 </blockquote>
 <blockquote>
 <ol start="2">
-<li>这一层，数据单位是比特（bit）：
+<li>数据格式</li>
+</ol>
+<blockquote>
+<p>这一层，数据单位是比特（bit）,注意这里的比特（bit）是指数据信息的概念，而实际传输过程中可能是<strong>电平信号</strong>或者<strong>脉冲信号</strong>：
 比特是可传输数字信息的最小单元。比特是二进制的，要么为 0 要么为 1。字节（byte）由八个比特组成，用于表示单个字符，比如字母、数字或符号。
 根据硬件设备支持的数据速率（传输速率，每秒或每毫秒的比特数量），比特被发送到硬件设备或从设备发出。这个过程是同步的，从而保持单位时间内发送和接收比特的数量相等（这被称为比特同步）。比特的传输方式由信号的传输方式决定。
 节点可以发送比特、接收比特，或者收发兼顾。如果节点只能收或只能发，那么该节点采用的就是单工模式。如果节点既可以收又可以发，那么该节点采用的就是双工模式。如果一个节点可以同时进行收发操作，那么它就是全双工的，否则就是半双工的。
-最初的以太网是半双工的。如果采用了正确的设备，现在也可以选择全双工的以太网。</li>
-</ol>
+最初的以太网是半双工的。如果采用了正确的设备，现在也可以选择全双工的以太网。</p>
+</blockquote>
 </blockquote>
 <blockquote>
 <ol start="3">
-<li>这一层容易出现的问题，如果这一层出了问题，第一层以上的任何东西都不会正常工作。</li>
+<li>常见问题</li>
 </ol>
+<blockquote>
+<p>这一层容易出现的问题，如果这一层出了问题，第一层以上的任何东西都不会正常工作。</p>
 <ul>
 <li>电缆失效，例如电线损坏或连接器损坏</li>
 <li>网络硬件设备故障，例如电路损坏</li>
 <li>东西正被拔出（我们都遇到过……）</li>
 </ul>
 </blockquote>
+</blockquote>
 <blockquote>
 <p>PS</p>
 <blockquote>
-<p><a href="https://www.submarinecablemap.com/%E3%80%82">深海通信电缆拓扑图</a></p>
+<ul>
+<li><a href="https://www.submarinecablemap.com/%E3%80%82">深海通信电缆拓扑图</a></li>
+</ul>
 </blockquote>
 </blockquote>
-<h2 id="1-应用层">1. 应用层</h2>
-<p>与其它计算机进行通讯的一个应用，它是对应应用程序的通信服务的。例如，一个没有通信功能的字处理程序就不能执行通信的代码，从事字处理工作的程序员也不关心OSI的第7层。但是，如果添加了一个传输文件的选项，那么字处理器的程序员就需要实现OSI的第7层。示例：TELNET，HTTP，FTP，NFS，SMTP等。这一层，数据单位还是报文。</p>
-<h2 id="2-表示层">2. 表示层</h2>
-<p>这一层的主要功能是定义数据格式及加密。例如，FTP允许你选择以二进制或ASCII格式传输。如果选择二进制，那么发送方和接收方不改变文件的内容。如果选择ASCII格式，发送方将把文本从发送方的字符集转换成标准的ASCII后发送数据。在接收方将标准的ASCII转换成接收方计算机的字符集。示例：加密，ASCII等。这一层，数据单位还是报文。</p>
-<h2 id="3--会话层">3.  会话层</h2>
-<p>它定义了如何开始、控制和结束一个会话，包括对多个双向消息的控制和管理，以便在只完成连续消息的一部分时可以通知应用，从而使表示层看到的数据是连续的，在某些情况下，如果表示层收到了所有的数据，则用数据代表表示层。示例：RPC，SQL等。在会话层及以上的高层次中，数据传送的单位不再另外命名，而是统称为报文。</p>
+<h2 id="2-数据链路层">2. 数据链路层</h2>
+<blockquote>
+<p>数据链路层定义了数据的传输格式、可以在节点间流动的数据量大小、数据流动可以持续的时长，以及在流中检测到错误时应采取的措施。而这些协议与被讨论的各种介质有关，示例：ATM，FDDI等。数据链路层允许局域网内的各节点彼此相互通信。这一层建立了线路规划、流量控制和错误控制的基础。</p>
+<ol>
+<li>技术分类</li>
+</ol>
+<blockquote>
+<p>这一层的技术分类简单点来说：</p>
+<ul>
+<li><strong>线路规划</strong>: 谁应该交流多久？节点传输信息的时间应该持续多久？</li>
+<li><strong>流量控制</strong>: 应该传输的数据量是多少？</li>
+<li><strong>错误控制</strong>-检测和校正。 从电尖峰脉冲到卑鄙的连接器，所有的数据传输方法都有可能出错。一旦第二层的技术告知网络管理员有关第二层或第一层的问题，系统管理员就能为后续几层纠正那些错误。第二层主要关心的是错误检测，而不是错误校正。</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>并且第二层内有两个截然不同的子层:</p>
+<blockquote>
+<ul>
+<li><strong>介质访问控制层</strong>（MAC，Media Access Control）： MAC 子层负责分配硬件标识号，这个标识号被称为 MAC 地址，它能够唯一标识网络上的各个设备。两个设备不应该有相同的 MAC 地址。MAC 地址在硬件制造时就分配好了，位于网卡当中，大多数网络都会自动对其进行识别。交换机会跟踪网络上所有的 MAC 地址。</li>
+<li><strong>逻辑链路控制层</strong>（LLC，Logical Link Control）: LLC 子层处理帧的寻址以及流量控制。速度取决于两个节点之间的链路，例如以太网或 Wifi。</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>数据格式</li>
+</ol>
+<blockquote>
+<p>第二层的数据单元是 帧（frame）, 这层数据数据传输是真正意义上的数据信息:
+每一帧都包括一个帧头、主体和一个帧尾：</p>
+<ul>
+<li>帧头：通常包括源节点和目的节点的 MAC 地址。</li>
+<li>主体：由要传输的比特组成。</li>
+<li>帧尾：包括错误检测信息。当检测到错误时，根据实现或网络的配置或协议，帧可能被丢弃，或者错误会被报告给上面的层，用于进一步错误校正。例如，错误检测机制的有循环冗余校验（CRC，Cyclic Redundancy Check）和帧校验序列（FCS，Frame Check Sequence）。从这里了解更多有关错误检测技术的信息。</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>帧的大小通常有一个最大值，这个值被称为最大传输单元（MTU，Maximum Transmission Unit）。巨型帧的大小超过了标准的 MTU，<a href="https://kb.netgear.com/25091/Guidance-on-the-use-of-jumbo-frames">从这里了解更多有关巨型帧的信息</a>。</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<ol start="3">
+<li>常见问题</li>
+</ol>
+<blockquote>
+<ul>
+<li>物理层上发生的所有问题</li>
+<li>两个节点间的连接（会话）不成功</li>
+<li>成功建立但又间歇性失败的会话</li>
+<li>帧冲突</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>PS:</p>
+<blockquote>
+<ul>
+<li><a href="https://www.pcmag.com/encyclopedia/term/mac-address">MAC</a></li>
+<li><a href="https://people.richland.edu/dkirby/141macaddress.htm">MAC地址</a></li>
+<li><a href="https://www.juniper.net/cn/zh/research-topics/what-is-a-network-switch.html">交换机</a></li>
+</ul>
+</blockquote>
+</blockquote>
+<h2 id="3-网络层">3. 网络层</h2>
+<blockquote>
+<p>这层作用是建立主机与主机的连接，是对端到端的包传输进行定义，它定义了能够标识所有节点的逻辑地址，还定义了路由实现的方式和学习的方式。为了适应最大传输单元长度小于包长度的传输介质，网络层还定义了如何将一个包分解成更小的包的分段方法。示例：IP，IPX等。在这一层，数据的单位称为数据包(packet)。路由器是网络层的主力——它们是在第三层中必不可少，路由器不仅通过连接到网络服务提供商（ISPs，Internet Service Providers）提供因特网访问，还跟踪着所在网络中的一切（记住交换机跟踪的是一个网络中所有的 MAC 地址），它所连接的其它网络，以及在这些网络中路由数据包的不同路径。路由器将所有的路径信息都保存在路由表中。</p>
+</blockquote>
+<blockquote>
+<ol>
+<li>技术分类</li>
+</ol>
+<blockquote>
+<ul>
+<li><strong>数据转发</strong>，当通过一条输入链路接收到一个数据包后，路由器需要决策通过哪条输出链路将数据包发送出去，并将数据包从输入端口转发到输出端口。</li>
+<li><strong>路由选择</strong>，当数据包从源主机流向目的主机是，必须通过某种方式决定数据包经过的路由或者路径，计算数据包所经过的路径的算法称为路由选择或者是路由选择算法。</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>数据格式</li>
+</ol>
+<blockquote>
+<p>第三层的数据单元是 数据包（data packet）。通常，每个数据包都包含一个帧 加上 一个 IP 地址信息的包装。换句话说，帧被第三层的地址信息封装了。数据包中传输的数据有时也被称为 负载（payload）。每个包都拥有到达目的地所需的一切，但是它能不能成功抵达就是另外一回事儿了。第三层上的传输是无连接的、尽力而为的——除了将流量发往它应该去的地方，它们不会做任何事。更多与数据传输有关的协议在第四层。节点一旦连接到因特网，它就会被赋予一个因特网协议（IP，Internet Protocol）地址，它看起来要么像 172.16.254.4（IPv4 地址），要么像 2001:0db8:85a3:0000:0000:8a2e:0370:7334（IPv6 地址）。路由器在它们的路由表中使用 IP 地址。IP 地址通过地址解析协议（ARP，Address Resolution Protocol）与物理节点的 MAC 地址相关联，ARP 用节点对应的 IP 地址解析 MAC 地址，ARP 通常被认为是第二层的一部分，但是由于 IP 地址在第三层以下都不存在，所以 ARP 也是第三层的一部分。</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<ol start="3">
+<li>常见问题</li>
+</ol>
+<blockquote>
+<ul>
+<li>物理层与数据链路层出现的问题</li>
+<li>路由器或其它节点故障或无功能</li>
+<li>IP 地址配置不正确
+很多第三层问题的答案都要求使用像 ping、trace、show ip route 或 show ip protocols 这样的命令行工具。</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>PS:</p>
+<blockquote>
+<ul>
+<li><a href="https://zh.wikipedia.org/wiki/%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE">ARP</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE">IP</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/IP%E5%9C%B0%E5%9D%80">IP地址</a></li>
+</ul>
+</blockquote>
+</blockquote>
 <h2 id="4-传输层">4. 传输层</h2>
-<p>这层的功能包括是否选择差错恢复协议还是无差错恢复协议，及在同一主机上对不同应用的数据流的输入进行复用，还包括对收到的顺序不对的数据包的重新排序功能。示例：TCP，UDP，SPX。这一层的数据单元也称作数据包(packets)。但是，当你谈论TCP等具体的协议时又有特殊的叫法，TCP的数据单元称为段 (segments)而UDP协议的数据单元称为“数据报(datagrams)”。</p>
-<h2 id="5-网络层">5. 网络层</h2>
-<p>这层对端到端的包传输进行定义，它定义了能够标识所有结点的逻辑地址，还定义了路由实现的方式和学习的方式。为了适应最大传输单元长度小于包长度的传输介质，网络层还定义了如何将一个包分解成更小的包的分段方法。示例：IP，IPX等。在这一层，数据的单位称为数据包(packet)。</p>
-<h2 id="6-数据链路层">6. 数据链路层</h2>
-<p>它定义了在单个链路上如何传输数据。这些协议与被讨论的各种介质有关。示例：ATM，FDDI等。在这一层，数据的单位称为帧(frame)。
-使用更加正式的技术术语描述如下：</p>
-<p>线路规划。 谁应该交流多久？节点传输信息的时间应该持续多久？
-流量控制。 应该传输的数据量是多少？
-错误控制-检测和校正。 从电尖峰脉冲到卑鄙的连接器，所有的数据传输方法都有可能出错。一旦第二层的技术告知网络管理员有关第二层或第一层的问题，系统管理员就能为后续几层纠正那些错误。第二层主要关心的是错误检测，而不是错误校正。（来源）
-第二层内有两个截然不同的子层：</p>
-<p>介质访问控制（MAC，Media Access Control）： MAC 子层负责分配硬件标识号，这个标识号被称为 MAC 地址，它能够唯一标识网络上的各个设备。两个设备不应该有相同的 MAC 地址。MAC 地址在硬件制造时就分配好了，位于网卡当中，大多数网络都会自动对其进行识别。交换机会跟踪网络上所有的 MAC 地址。在这里和这里了解更多有关 MAC 地址的信息，在这里进一步了解网络交换机。
-逻辑链路控制（LLC，Logical Link Control）: LLC 子层处理帧的寻址以及流量控制。速度取决于两个节点之间的链路，例如以太网或 Wifi。</p>
+<p>传输层提供了应用进程之间的端到端连接，其作用为网络应用程序提供接口；为端到端连接提供流量控制、差错控制、服务质量等管理服务；并提供多路复用、多路分解机制。</p>
+<blockquote>
+<ol>
+<li>技术分类</li>
+</ol>
+<blockquote>
+<ul>
+<li>传输协议，数据以什么样的格式、什么样的方式在网络上传输，传输协议有:TCP、UDP、DCCP、SCTP、RSVP、 DTLS、 TLS、RPL、CARP、 CORPL、QUIC、uIP、ROLL 、 Aeron、CCN (以内容为中心的网络)、 NanoIP、 TSMP (时间同步网格协议)。</li>
+<li>数据管理，传输过程中如何保障数据安全与准确。</li>
+</ul>
+</blockquote>
+<ol start="2">
+<li>数据格式</li>
+</ol>
+<blockquote>
+<p>数据单元有好几个不同的名字，对于 TCP 而言，数据单元是数据包。对于 UDP 而言，包被称为数据报（datagram）。
+TCP 是一个面向连接的协议，优先保证的是数据的质量而不是速度。显式地与目的节点建立连接，并要求在数据传输时进行源节点与目的节点之间的握手操作。握手能够确认数据已经被接收。如果目的节点没有收到所有的数据，TCP 就会要求进行重传。TCP 也会确保数据包以正确的顺序交付或者重组。从这里了解更多有关 TCP 的信息。
+UDP 是一个无连接的协议，优先保证速度而不是数据的质量。UDP 不要求进行握手，这也正是它被称为无连接的原因。因为 UDP 不必等待确认，所以它可以以更快的速度发送数据，但并非所有的数据都能成功传输，我们也不会知道哪些数据传输失败了。如果信息被拆分成多个数据报，除非这些数据报都包含一个序列号，否则 UDP 无法确保以正确的顺序重组数据包。从这里了解更多有关 UDP 的信息。
+TCP 和 UDP 都将数据发往网络设备上的特定端口，这些网络设备都有自己的 IP 地址。IP 地址和端口号的组合被称为套接字（socket）。</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<ol start="3">
+<li>常见问题</li>
+</ol>
+<blockquote>
+<ul>
+<li>基础层发生的故障</li>
+<li>被封锁的端口——检查你的访问控制列表（ACL，Access Control List）和防火墙</li>
+<li>服务质量（QoS，Quality of Service）设置。QoS 是路由器/交换机的一个功能，可以对流量进行优先级排序，并且它们真的可以把事情搞砸。</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>PS:</p>
+</blockquote>
+<p><a href="https://zh.wikipedia.org/zh-sg/%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE">TCP</a>
+<a href="https://zh.wikipedia.org/wiki/%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%8D%8F%E8%AE%AE">UDP</a></p>
+<h2 id="5--会话层">5.  会话层</h2>
+<p>它定义了如何开始、控制和结束一个会话，包括对多个双向消息的控制和管理，以便在只完成连续消息的一部分时可以通知应用，从而使表示层看到的数据是连续的，在某些情况下，如果表示层收到了所有的数据，则用数据代表表示层。示例：RPC，SQL等。在会话层及以上的高层次中，数据传送的单位不再另外命名，而是统称为报文。</p>
+<h2 id="6-表示层">6. 表示层</h2>
+<p>这一层的主要功能是定义数据格式及加密。例如，FTP允许你选择以二进制或ASCII格式传输。如果选择二进制，那么发送方和接收方不改变文件的内容。如果选择ASCII格式，发送方将把文本从发送方的字符集转换成标准的ASCII后发送数据。在接收方将标准的ASCII转换成接收方计算机的字符集。示例：加密，ASCII等。这一层，数据单位还是报文。</p>
+<h2 id="7-应用层">7. 应用层</h2>
+<p>与其它计算机进行通讯的一个应用，它是对应应用程序的通信服务的。例如，一个没有通信功能的字处理程序就不能执行通信的代码，从事字处理工作的程序员也不关心OSI的第7层。但是，如果添加了一个传输文件的选项，那么字处理器的程序员就需要实现OSI的第7层。示例：TELNET，HTTP，FTP，NFS，SMTP等。这一层，数据单位还是报文。</p>
 <h1 id="结束">结束</h1>
 <p>引用：</p>
 <ul>
@@ -283,12 +432,12 @@
         <nav id="TableOfContents">
   <ul>
     <li><a href="#1-物理层">1. 物理层</a></li>
-    <li><a href="#1-应用层">1. 应用层</a></li>
-    <li><a href="#2-表示层">2. 表示层</a></li>
-    <li><a href="#3--会话层">3.  会话层</a></li>
+    <li><a href="#2-数据链路层">2. 数据链路层</a></li>
+    <li><a href="#3-网络层">3. 网络层</a></li>
     <li><a href="#4-传输层">4. 传输层</a></li>
-    <li><a href="#5-网络层">5. 网络层</a></li>
-    <li><a href="#6-数据链路层">6. 数据链路层</a></li>
+    <li><a href="#5--会话层">5.  会话层</a></li>
+    <li><a href="#6-表示层">6. 表示层</a></li>
+    <li><a href="#7-应用层">7. 应用层</a></li>
   </ul>
 </nav>
 

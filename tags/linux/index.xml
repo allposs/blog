@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on allposs博客</title>
+    <link>https://blog.allposs.com/tags/linux/</link>
+    <description>Recent content in linux on allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 18 Aug 2020 14:20:23 +0800</lastBuildDate><atom:link href="https://blog.allposs.com/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux常用命令合集</title>
+      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
+      <pubDate>Tue, 18 Aug 2020 14:20:23 +0800</pubDate>
+      
+      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
+      <description>简介 本文是用来记录一些自己常用到的一些 linux 命令的合集文章,方便自己查询与记录。 正文 1. pstree 将正在运行的进程显示为树。它用作 ps 命令的更直观的替代方法</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -7,8 +7,8 @@
     <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
     
     
-    <title>Kubernetes问题合集 - allposs博客</title>
-    <meta property="og:title" content="Kubernetes问题合集 - allposs博客">
+    <title>网络问题合集 - allposs博客</title>
+    <meta property="og:title" content="网络问题合集 - allposs博客">
     
 
     
@@ -25,7 +25,7 @@
 <div class="intro-and-nav" role="banner">
     <div>
         <div class="intro">
-            <a class="logo" href="../../../../" aria-label="个人博客">
+            <a class="logo" href="../../../" aria-label="个人博客">
                 <img src="https://blog.allposs.com/logo.jpeg" alt="">
             </a>
             <p class="library-desc">
@@ -47,7 +47,7 @@
                         
                         
                         
-                        <a href="../../../../" >
+                        <a href="../../../" >
                             首页
                         </a>
                     </li>
@@ -56,7 +56,7 @@
                         
                         
                         
-                        <a href="../../../../docs/"  aria-current="page" >
+                        <a href="../../../docs/"  aria-current="page" >
                             文档
                         </a>
                     </li>
@@ -65,7 +65,7 @@
                         
                         
                         
-                        <a href="../../../../tags/" >
+                        <a href="../../../tags/" >
                             标签
                         </a>
                     </li>
@@ -74,7 +74,7 @@
                         
                         
                         
-                        <a href="../../../../archives/" >
+                        <a href="../../../archives/" >
                             归档
                         </a>
                     </li>
@@ -83,7 +83,7 @@
                         
                         
                         
-                        <a href="../../../../about/" >
+                        <a href="../../../about/" >
                             关于
                         </a>
                     </li>
@@ -116,17 +116,17 @@
         
 
 <div class="title">
-    <h1>Kubernetes问题合集</h1>
+    <h1>网络问题合集</h1>
     <div class="tags">
         <i class="fa fa-tags" aria-hidden="true">
             <span>
-                2023-05-17
+                2023-07-13
             </span>
         </i>
         
         <i class="fa fa-tags" aria-hidden="true">
             <span>
-                合集
+                网络
             </span>
         </i>
         
@@ -144,38 +144,6 @@
         
         <h1 id="简介">简介</h1>
 <h1 id="正文">正文</h1>
-<h2 id="1-替换容器entrypoint执行命令">1. 替换容器entrypoint执行命令</h2>
-<h3 id="说明">说明:</h3>
-<blockquote>
-<p>在生产上处理问题时，经常需要对异常容器进行排查，而往往异常容器会自动重启而无法进入容器，所以这里主要是用kubernetes方式替换容器entrypoint内容从而打断POD的重启。</p>
-</blockquote>
-<h3 id="处理">处理:</h3>
-<blockquote>
-<p>修改相应资源对象的内容，如POD对象：</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Pod</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">command-demo</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">labels</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">purpose</span>: <span style="color:#ae81ff">demonstrate-command</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">containers</span>:
-</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">command-demo-container</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">debian</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">command</span>: [<span style="color:#e6db74">&#34;/bin/sh&#34;</span>]
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">args</span>: [<span style="color:#e6db74">&#34;-c&#34;</span>, <span style="color:#e6db74">&#34;while true; do echo hello; sleep 10;done&#34;</span>]
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">restartPolicy</span>: <span style="color:#ae81ff">OnFailure</span>
-</span></span></code></pre></div><h2 id="2-endpoint一会消失一会出现的问题">2. Endpoint一会消失一会出现的问题</h2>
-<h3 id="说明-1">说明:</h3>
-<blockquote>
-<p>在使用K8s集群时遇到的问题：发现某个service的后端endpoint一会显示有后端，一会显示没有。显示没有后端，意味着后端的address被判定为notready。</p>
-</blockquote>
-<h3 id="处理-1">处理:</h3>
-<blockquote>
-<p>kubelet在准备上报信息时，需要收集容器、镜像等的信息。虽然kubelet默认是10秒上报一次，但是实际的上报周期约为20~50秒。而kube-controller-manager判断node上报心跳超时的时间为40秒。所以会有一定概率超时。一旦超时，kube-controller会将该node上的所有pod的conditions中type是Ready的字典中的status置为False。
-较为简单的方案是在kube-controller上配置这个超时时间node-monitor-grace-period长一些。建议配置为60 ~ 120s。</p>
-</blockquote>
 <h1 id="结束">结束</h1>
 
         
@@ -228,22 +196,7 @@
     </article>
     <aside class="aside">
         <h2>目录</h2>
-        <nav id="TableOfContents">
-  <ul>
-    <li><a href="#1-替换容器entrypoint执行命令">1. 替换容器entrypoint执行命令</a>
-      <ul>
-        <li><a href="#说明">说明:</a></li>
-        <li><a href="#处理">处理:</a></li>
-      </ul>
-    </li>
-    <li><a href="#2-endpoint一会消失一会出现的问题">2. Endpoint一会消失一会出现的问题</a>
-      <ul>
-        <li><a href="#说明-1">说明:</a></li>
-        <li><a href="#处理-1">处理:</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
+        <nav id="TableOfContents"></nav>
 
     </aside>
 </div>

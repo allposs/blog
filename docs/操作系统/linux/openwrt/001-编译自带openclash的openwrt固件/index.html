@@ -149,7 +149,7 @@
     <article class="article">
         
         <h1 id="简介">简介</h1>
-<p>本文为使用编译纯净的OpenWrt固件，并集成OpenClash。使用编译环境为ubuntu 22.04.2 LTS，如果是其他操作系统可以查看<a href="https://openwrt.org/zh-cn/doc/howto/build">openwrt官网</a></p>
+<p>本文为使用编译纯净的OpenWrt固件，并集成OpenClash。使用编译环境为ubuntu 22.04.2 LTS，如果是其他操作系统可以查看<a href="https://openwrt.org/zh-cn/doc/howto/build">openwrt官网</a><a href="https://openwrt.org/docs/guide-developer/toolchain/install-buildsystem">中文</a></p>
 <h1 id="环境">环境</h1>
 <ul>
 <li>操作系统: ubuntu 22.04.2 LTS</li>
@@ -160,27 +160,41 @@
 <p>主要是安装编译环境的依赖包，如果是其他操作系统可以访问<a href="https://openwrt.org/zh/docs/guide-user/additional-software/imagebuilder">openwrt官网</a>查看</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo apt update
 </span></span><span style="display:flex;"><span>sudo apt upgrade
-</span></span><span style="display:flex;"><span>sudo apt install build-essential libncurses5-dev libncursesw5-dev <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>zlib1g-dev gawk git gettext libssl-dev xsltproc rsync wget unzip python
+</span></span><span style="display:flex;"><span>sudo apt install build-essential ccache ecj fastjar file g++ gawk <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>gettext git java-propose-classpath libelf-dev libncurses5-dev <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>libncursesw5-dev libssl-dev python2.7-dev python3 unzip wget <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>python3-distutils python3-setuptools python3-dev rsync subversion <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>swig time xsltproc zlib1g-dev python-is-python3
 </span></span></code></pre></div><h3 id="2-拉取代码">2. 拉取代码</h3>
 <p>主要是拉取源码，并切换好相应固件版本版本。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 切换到用户根目录</span>
 </span></span><span style="display:flex;"><span>cd ~
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 拉取OpenWrt,下载指定分支的最后一次提交：</span>
-</span></span><span style="display:flex;"><span>git clone --depth <span style="color:#ae81ff">1</span> -b openwrt-22.03 https://github.com/openwrt/openwrt openwrt
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 拉取OpenWrt,切换分支&lt;git clone -b v22.03.4 --single-branch --depth=1 https://github.com/openwrt/openwrt.git&gt;</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/openwrt/openwrt openwrt
+</span></span><span style="display:flex;"><span>cd openwrt <span style="color:#f92672">&amp;&amp;</span> git checkout v22.03.4 --force <span style="color:#f92672">&amp;&amp;</span> cd ../
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 下载OpenClash</span>
 </span></span><span style="display:flex;"><span>wget https://github.com/vernesong/OpenClash/archive/master.zip
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 解压</span>
 </span></span><span style="display:flex;"><span>unzip master.zip
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 复制OpenClash软件包到OpenWrt</span>
 </span></span><span style="display:flex;"><span>cp -r OpenClash-master/luci-app-openclash openwrt/package
+</span></span><span style="display:flex;"><span>chmod -R <span style="color:#ae81ff">777</span> openwrt <span style="color:#f92672">&amp;&amp;</span> chmod -R +x openwrt <span style="color:#f92672">&amp;&amp;</span> cd openwrt
+</span></span></code></pre></div><p>PS</p>
+<blockquote>
+<p>科学上网配置:</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export http_proxy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://127.0.0.1:7890&#34;</span>
+</span></span><span style="display:flex;"><span>export https_proxy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://127.0.0.1:7890&#34;</span>
 </span></span></code></pre></div><h3 id="3-配置参数">3. 配置参数</h3>
 <p>此步骤主要配置编译参数。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cd ~/openwrt
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>./scripts/feeds update -a
 </span></span><span style="display:flex;"><span>./scripts/feeds install -a
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 进入交互式配置界面</span>
 </span></span><span style="display:flex;"><span>make menuconfig
+</span></span></code></pre></div><p>如果遇到报错，可尝试使用下面命令修复</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./scripts/feeds update -i -f 
+</span></span><span style="display:flex;"><span>./scripts/feeds install -a -f
 </span></span></code></pre></div><p>配置界面修改内容</p>
 <pre><code># 选择系统(以 x86_64 为例)
 Target System -&gt; x86
@@ -198,17 +212,17 @@ Target Images -&gt; GZip images
 # 修改软件包可用空间，默认安装会占用100M左右，建议修改扩大，为后续安装其他软件打基础
 Target Images -&gt; Root filesystem partition size
 
-# 添加web界面(
+# 添加web界面
 LuCI &gt; Collections -&gt; Luci
-
-# 添加兼容性依赖
-LuCI &gt; Modules -&gt; luci-compat
 
 # 添加中文
 LuCI &gt; Modules -&gt; Translations -&gt; Chinese Simplified
 
 # 添加openclash
 LuCI &gt; Applications -&gt; luci-app-openclash  
+
+# 添加兼容性依赖
+LuCI &gt; Modules -&gt; luci-compat
 
 # 添加主题
 LuCI -&gt; Themes
@@ -217,7 +231,7 @@ LuCI -&gt; Themes
 Nerwork -&gt; File Transfer -&gt; wget-ssl
 
 # 添加kmod-tun，TUN模式必须
-Kernel modules -&gt; Network Support -&gt; kmod-tun
+# Kernel modules -&gt; Network Support -&gt; kmod-tun
 
 # 排除dnsmasq，由于默认会安装dnsmasq-full，这里需要排除dnsmasq，否则会冲突报错。
 Base system -&gt; dnsmasq 
@@ -272,7 +286,7 @@ Base system -&gt; dnsmasq
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 开始编译，预计时间在30分钟以上,最终生成固件存放位置为openwrt/bin/targets/x86/64/目录下</span>
 </span></span><span style="display:flex;"><span>make -j4 V<span style="color:#f92672">=</span>s
 </span></span></code></pre></div><p>PS:</p>
-<pre><code>+ -j8: 使用8个内核，
+<pre><code>+ -j8: 为线程数，推荐第一次使用单线程编译，否则你编译错误，连调试信息都没有，根本不知道哪里错的。
 + V=s: 为故障排除目的提供更详细的信息
 </code></pre>
 <h3 id="2-再次编译">2. 再次编译</h3>
@@ -284,7 +298,7 @@ Base system -&gt; dnsmasq
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 更新openwrt</span>
 </span></span><span style="display:flex;"><span>git pull
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 切换版本</span>
-</span></span><span style="display:flex;"><span>git checkout v22.03.5
+</span></span><span style="display:flex;"><span>git checkout v22.03.4
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 回到上级目录</span>
 </span></span><span style="display:flex;"><span>cd ~
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 重新下载OpenClash</span>
@@ -313,11 +327,31 @@ Base system -&gt; dnsmasq
 </li>
 </ul>
 <h2 id="pve安装">PVE安装</h2>
-<p>新建虚拟机，记住VM ID，这里以101为例；操作系统选择不使用任何介质；硬盘默认，稍后需要手动删除的；CPU、内存、网络自行配置。然后将编译好的OpenWrt固件解压(gunzip -d openwrt-x86-64-generic-squashfs-combined.img.gz),并把解压后的img文件通过PVE网页上传功能上传到PVE。然后登陆PVE执行以下命令</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 转换成 PVE 磁盘格式，注意其中的101替换为你的VM ID，openwrt-x86-64-generic-squashfs-combined.img为你的镜像文件</span>
-</span></span><span style="display:flex;"><span>qm  importdisk <span style="color:#ae81ff">101</span> /var/lib/vz/template/iso/openwrt-x86-64-generic-squashfs-combined.img local-lvm
+<p>新建虚拟机，记住VM ID，这里以101为例；操作系统选择不使用任何介质；硬盘默认，稍后需要手动删除的；CPU、内存、网络自行配置。然后将编译好的OpenWrt固件解压(gunzip -d bin/targets/x86/64/openwrt-x86-64-generic-squashfs-combined-efi.img.gz),并把解压后的img文件通过PVE网页上传功能上传到PVE。然后登陆PVE执行以下命令</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 转换成 PVE 磁盘格式，注意其中的101替换为你的VM ID，openwrt-x86-64-generic-squashfs-combined-efi.img为你的镜像文件</span>
+</span></span><span style="display:flex;"><span>qm  importdisk <span style="color:#ae81ff">101</span> /var/lib/vz/template/iso/openwrt-x86-64-generic-squashfs-combined-efi.img local-lvm
 </span></span></code></pre></div><p>转换完，在虚拟机硬件界面应该会多出一个未使用磁盘。将创建虚拟机时分配的磁盘分离删除，选择转换的OpenWrt磁盘点击编辑添加,并在选项菜单选择启动项为添加的硬盘。</p>
+<h3 id="3-常见问题">3. 常见问题</h3>
+<blockquote>
+<ul>
+<li>报错bash: line 1: po2lmo: command not found
+make package/feeds/luci/luci-base/compile V=99</li>
+</ul>
+</blockquote>
 <h1 id="结束">结束</h1>
+<p>PS:</p>
+<blockquote>
+<p>openclash常用信息:</p>
+<ul>
+<li>项目地址：<a href="https://github.com/vernesong/OpenClash">OpenClash</a></li>
+<li>官方文档：<a href="https://github.com/vernesong/OpenClash/wiki">wiki</a></li>
+<li>Clash内核：<a href="https://github.com/vernesong/OpenClash/releases/tag/Clash">Clash</a></li>
+<li>TUN模式内核：<a href="https://github.com/vernesong/OpenClash/releases/tag/TUN-Premium">clash_tun</a></li>
+<li>TUN游戏模式内核：<a href="https://github.com/vernesong/OpenClash/releases/tag/TUN">clash_game</a> （移除游戏内核和模式，TUN内核功能更全）</li>
+<li>历史版本下载：<a href="https://github.com/vernesong/OpenClash/releases">下载</a>
+注意Clash最好用amd-v3版本的，amd-v4针对的老型号CPU</li>
+</ul>
+</blockquote>
 
         
         <hr />
@@ -384,7 +418,11 @@ Base system -&gt; dnsmasq
         <li><a href="#2-再次编译">2. 再次编译</a></li>
       </ul>
     </li>
-    <li><a href="#pve安装">PVE安装</a></li>
+    <li><a href="#pve安装">PVE安装</a>
+      <ul>
+        <li><a href="#3-常见问题">3. 常见问题</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 

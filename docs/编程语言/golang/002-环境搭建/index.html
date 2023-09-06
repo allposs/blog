@@ -306,7 +306,10 @@
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo apt-get install git
 </span></span></code></pre></div><p>git就安装完成了。</p>
 <h3 id="2-安装go-1">2. 安装Go</h3>
-<p>Ubuntu安装GO有两种方式,一种是使用编译好的二进制包安装,一种是直接使用Ubuntu的软件包安装,这里推荐使用二进制方式安装,原因是二进制可以下载最新版本安装。这里显示的是二进制安装方法。</p>
+<p>Ubuntu安装GO有两种方式,一种是使用编译好的二进制包安装,一种是直接使用Ubuntu的软件包安装,这里推荐使用二进制方式安装,原因是二进制可以下载最新版本安装。</p>
+<ul>
+<li>二进制安装方法。</li>
+</ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>wget https://dl.google.com/go/go1.12.5.linux-amd64.tar.gz
 </span></span><span style="display:flex;"><span>sudo tar xf go1.12.5.linux-amd64.tar.gz -C /usr/local/
 </span></span><span style="display:flex;"><span>sudo cat <span style="color:#e6db74">&lt;&lt;EOF &gt;&gt; ~/.bashrc
@@ -330,7 +333,14 @@
 </div>
 
 </p>
-<h3 id="3-安装vscode-1">3. 安装VSCode</h3>
+<ul>
+<li>apt安装</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install software-properties-common -y
+</span></span><span style="display:flex;"><span>sudo add-apt-repository ppa:longsleep/golang-backports
+</span></span><span style="display:flex;"><span>sudo apt update
+</span></span><span style="display:flex;"><span>sudo apt install golang-go -y
+</span></span></code></pre></div><h3 id="3-安装vscode-1">3. 安装VSCode</h3>
 <p>Ubuntu安装VSCode也很简单,在Ubuntu的软件商店里就有,当然也可以去官网下载最新的deb包安装。两种方式都可以,这里我就不过多说明安装了。</p>
 <h4 id="a-安装插件-1">a). 安装插件</h4>
 <ul>
@@ -425,7 +435,7 @@
 
 </p>
 <p>如果要修改GOPATH可以在~/.bash_profile里新增：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>export GOPATH<span style="color:#f92672">=</span>$HOME/Documents/Development/Golang/Projects
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>export GOPATH<span style="color:#f92672">=</span>$HOME/codes
 </span></span><span style="display:flex;"><span><span style="color:#75715e">#go mod开启</span>
 </span></span><span style="display:flex;"><span>export GO111MODULE<span style="color:#f92672">=</span>on
 </span></span><span style="display:flex;"><span>export GOPROXY<span style="color:#f92672">=</span>https://goproxy.cn

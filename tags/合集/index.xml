@@ -31,7 +31,7 @@
       <pubDate>Wed, 17 May 2023 10:27:02 +0800</pubDate>
       
       <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/003-kubernetes%E9%97%AE%E9%A2%98%E5%90%88%E9%9B%86/</guid>
-      <description>简介 正文 替换容器entrypoint执行命令 说明: 在生产上处理问题时，经常需要对异常容器进行排查，而往往异常容器会自动重启而无法进入容器，所</description>
+      <description>简介 正文 1. 替换容器entrypoint执行命令 说明: 在生产上处理问题时，经常需要对异常容器进行排查，而往往异常容器会自动重启而无法进入容器，</description>
     </item>
     
     <item>

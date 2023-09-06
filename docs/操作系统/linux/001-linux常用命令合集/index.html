@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://blog.allposs.com/img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>Linux常用命令合集 - allposs博客</title>
+    <meta property="og:title" content="Linux常用命令合集 - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://blog.allposs.com/css/style.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/fonts.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../../" aria-label="个人博客">
+                <img src="https://blog.allposs.com/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../docs/"  aria-current="page" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs/" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>Linux常用命令合集</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2020-08-18
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                linux
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                命令
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<blockquote>
+<p>本文是用来记录一些自己常用到的一些 linux 命令的合集文章,方便自己查询与记录。</p>
+</blockquote>
+<h1 id="正文">正文</h1>
+<h2 id="1-pstree">1. pstree</h2>
+<blockquote>
+<p>将正在运行的进程显示为树。它用作 ps 命令的更直观的替代方法。树的根是 init 或具有给定 pid 的进程。也可以将其安装在其他 Unix 系统中。在 BSD 系统中，使用创建类似的输出<code>ps -d</code>，在 Linux <code>ps axjf</code>中产生类似的输出</p>
+</blockquote>
+<h3 id="安装">安装</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># MAC OS</span>
+</span></span><span style="display:flex;"><span>brew install pstree
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Fedora/Red Hat/CentOS</span>
+</span></span><span style="display:flex;"><span>yum install psmisc
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Ubuntu/Debian</span>
+</span></span><span style="display:flex;"><span>apt-get install psmisc
+</span></span></code></pre></div><h3 id="语法">语法</h3>
+<blockquote>
+<p>pstree  [参数]</p>
+</blockquote>
+<ul>
+<li>参数</li>
+</ul>
+<blockquote>
+<ul>
+<li>-a 　显示每个程序的完整指令，包含路径，参数或是常驻服务的标示。</li>
+<li>-c 　不使用精简标示法。</li>
+<li>-G 　使用VT100终端机的列绘图字符。</li>
+<li>-h 　列出树状图时，特别标明执行的程序。</li>
+<li>-H&lt;程序识别码&gt; 　此参数的效果和指定&quot;-h&quot;参数类似，但特别标明指定的程序。</li>
+<li>-l 　采用长列格式显示树状图。</li>
+<li>-n 　用程序识别码排序。预设是以程序名称来排序。</li>
+<li>-p 　显示程序识别码。</li>
+<li>-u 　显示用户名称。</li>
+<li>-U 　使用UTF-8列绘图字符。</li>
+<li>-V 　显示版本信息。</li>
+</ul>
+</blockquote>
+<h3 id="实例">实例</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pstree
+</span></span></code></pre></div><h3 id="网址">网址</h3>
+<ul>
+<li><a href="https://linux.die.net/man/1/pstree">man1</a></li>
+</ul>
+<h2 id="2-strace">2. strace</h2>
+<blockquote>
+<p>strace 常用来跟踪进程执行时的系统调用和所接收的信号。 在 Linux 世界，进程不能直接访问硬件设备，当进程需要访问硬件设备(比如读取磁盘文件，接收网络数据等等)时，必须由用户态模式切换至内核态模式，通 过系统调用访问硬件设备。strace 可以跟踪到一个进程产生的系统调用,包括参数，返回值，执行消耗的时间。</p>
+</blockquote>
+<h3 id="安装-1">安装</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># MAC OS</span>
+</span></span><span style="display:flex;"><span>brew install strace
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Fedora/Red Hat/CentOS</span>
+</span></span><span style="display:flex;"><span>yum install strace
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Ubuntu/Debian</span>
+</span></span><span style="display:flex;"><span>apt-get install strace
+</span></span></code></pre></div><h3 id="语法-1">语法</h3>
+<blockquote>
+<p>strace [参数] [对象]</p>
+</blockquote>
+<ul>
+<li>参数</li>
+</ul>
+<blockquote>
+<ul>
+<li>-c 统计每一系统调用的所执行的时间,次数和出错的次数等.</li>
+<li>-d 输出strace关于标准错误的调试信息.</li>
+<li>-f 跟踪由fork调用所产生的子进程.</li>
+<li>-ff 如果提供-o filename,则所有进程的跟踪结果输出到相应的filename.pid中,pid是各进程的进程号.</li>
+<li>-F 尝试跟踪vfork调用.在-f时,vfork不被跟踪.</li>
+<li>-h 输出简要的帮助信息.</li>
+<li>-i 输出系统调用的入口指针.</li>
+<li>-q 禁止输出关于脱离的消息.</li>
+<li>-r 打印出相对时间关于,,每一个系统调用.</li>
+<li>-t 在输出中的每一行前加上时间信息.</li>
+<li>-tt 在输出中的每一行前加上时间信息,微秒级.</li>
+<li>-ttt 微秒级输出,以秒了表示时间.</li>
+<li>-T 显示每一调用所耗的时间.</li>
+<li>-v 输出所有的系统调用.一些调用关于环境变量,状态,输入输出等调用由于使用频繁,默认不输出.</li>
+<li>-V 输出strace的版本信息.</li>
+<li>-x 以十六进制形式输出非标准字符串</li>
+<li>-xx 所有字符串以十六进制形式输出.</li>
+<li>-a column 设置返回值的输出位置.默认 为40.</li>
+<li>-e expr 指定一个表达式,用来控制如何跟踪.格式如下: [qualifier=][!]value1[,value2]&hellip; qualifier只能是 trace,abbrev,verbose,raw,signal,read,write其中之一.value是用来限定的符号或数字.默认的 qualifier是 trace.感叹号是否定符号.例如:</li>
+<li>-eopen等价于 -e trace=open,表示只跟踪open调用.而-etrace!=open表示跟踪除了open以外的其他调用.有两个特殊的符号 all 和 none. 注意有些shell使用!来执行历史记录里的命令,所以要使用\.</li>
+<li>-e trace=set 只跟踪指定的系统 调用.例如:-e trace=open,close,rean,write表示只跟踪这四个系统调用.默认的为set=all.</li>
+<li>-e trace=file 只跟踪有关文件操作的系统调用.</li>
+<li>-e trace=process 只跟踪有关进程控制的系统调用.</li>
+<li>-e trace=network 跟踪与网络有关的所有系统调用.</li>
+<li>-e strace=signal 跟踪所有与系统信号有关的 系统调用</li>
+<li>-e trace=ipc 跟踪所有与进程通讯有关的系统调用</li>
+<li>-e abbrev=set 设定 strace输出的系统调用的结果集.-v 等与 abbrev=none.默认为abbrev=all.</li>
+<li>-e raw=set 将指 定的系统调用的参数以十六进制显示.</li>
+<li>-e signal=set 指定跟踪的系统信号.默认为all.如 signal=!SIGIO(或者signal=!io),表示不跟踪SIGIO信号.</li>
+<li>-e read=set 输出从指定文件中读出 的数据.例如:</li>
+<li>-e read=3,5</li>
+<li>-e write=set 输出写入到指定文件中的数据.</li>
+<li>-o filename 将strace的输出写入文件filename</li>
+<li>-p pid 跟踪指定的进程pid.</li>
+<li>-s strsize 指定输出的字符串的最大长度.默认为32.文件名一直全部输出.</li>
+<li>-u username 以username 的UID和GID执行被跟踪的命令</li>
+</ul>
+</blockquote>
+<h3 id="案例">案例</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 跟踪28979进程的所有系统调用（-e trace=all），并统计系统调用的花费时间，以及开始时间（并以可视化的时分秒格式显示），最后将记录结果存在output.txt文件里面。</span>
+</span></span><span style="display:flex;"><span>strace -o output.txt -T -tt -e trace<span style="color:#f92672">=</span>all -p <span style="color:#ae81ff">28979</span>
+</span></span></code></pre></div><h3 id="相关网站">相关网站</h3>
+<ul>
+<li><a href="https://strace.io/">官网</a></li>
+<li><a href="https://man.linuxde.net/strace">详细</a></li>
+</ul>
+<h2 id="3-sar">3. sar</h2>
+<blockquote>
+<p>sar 命令是 Linux 下系统运行状态统计工具，它将指定的操作系统状态计数器显示到标准输出设备。sar 工具将对系统当前的状态进行取样，然后通过计算数据和比例来表达系统的当前运行状态。它的特点是可以连续对系统取样，获得大量的取样数据。取样数据和分析的结果都可以存入文件，使用它时消耗的系统资源很小。
+CentOS/Red Hat/默认启动sa日志</p>
+</blockquote>
+<h3 id="安装-2">安装</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># MAC OS</span>
+</span></span><span style="display:flex;"><span>brew install sysstat
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Fedora/Red Hat/CentOS</span>
+</span></span><span style="display:flex;"><span>yum install sysstat
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Ubuntu/Debian</span>
+</span></span><span style="display:flex;"><span>apt-get install sysstat
+</span></span></code></pre></div><h3 id="语法-2">语法</h3>
+<blockquote>
+<p>sar [ 选项 ] [ &lt;时间间隔&gt; [ &lt;次数&gt; ] ]</p>
+</blockquote>
+<ul>
+<li>选项</li>
+</ul>
+<blockquote>
+<ul>
+<li>-A 汇总所有的报告</li>
+<li>-a 报告文件读写使用情况</li>
+<li>-B 报告附加的缓存的使用情况</li>
+<li>-b 报告缓存的使用情况</li>
+<li>-c 报告系统调用的使用情况</li>
+<li>-d 报告磁盘的使用情况</li>
+<li>-g 报告串口的使用情况</li>
+<li>-h 报告关于buffer使用的统计数据</li>
+<li>-m 报告IPC消息队列和信号量的使用情况</li>
+<li>-n 报告命名cache的使用情况</li>
+<li>-p 报告调页活动的使用情况</li>
+<li>-q 报告运行队列和交换队列的平均长度</li>
+</ul>
+<blockquote>
+<ul>
+<li>runq-sz：运行队列的长度（等待运行的进程数）</li>
+<li>plist-sz：进程列表中进程（processes）和线程（threads）的数量</li>
+<li>ldavg-1：最后1分钟的系统平均负载</li>
+<li>ldavg-5：过去5分钟的系统平均负载</li>
+<li>ldavg-15：过去15分钟的系统平均负载</li>
+</ul>
+</blockquote>
+<ul>
+<li>-R 报告进程的活动情况</li>
+<li>-r 报告没有使用的内存页面和硬盘块</li>
+</ul>
+<blockquote>
+<ul>
+<li>kbmemfree：这个值和free命令中的free值基本一致,所以它不包括buffer和cache的空间.</li>
+<li>kbmemused：这个值和free命令中的used值基本一致,所以它包括buffer和cache的空间.</li>
+<li>%memused：物理内存使用率，这个值是kbmemused和内存总量(不包括swap)的一个百分比.</li>
+<li>kbbuffers和kbcached：这两个值就是free命令中的buffer和cache.</li>
+<li>kbcommit：保证当前系统所需要的内存,即为了确保不溢出而需要的内存(RAM+swap).</li>
+<li>%commit：这个值是kbcommit与内存总量(包括swap)的一个百分比.</li>
+</ul>
+</blockquote>
+<ul>
+<li>-u 报告CPU的利用率</li>
+</ul>
+<blockquote>
+<ul>
+<li>%user 用户模式下消耗的CPU时间的比例；</li>
+<li>%nice 通过nice改变了进程调度优先级的进程，在用户模式下消耗的CPU时间的比例</li>
+<li>%system 系统模式下消耗的CPU时间的比例；</li>
+<li>%iowait CPU等待磁盘I/O导致空闲状态消耗的时间比例；</li>
+<li>%steal 利用Xen等操作系统虚拟化技术，等待其它虚拟CPU计算占用的时间比例；</li>
+<li>%idle CPU空闲时间比例；</li>
+</ul>
+</blockquote>
+<ul>
+<li>-v 报告进程、i节点、文件和锁表状态</li>
+<li>-w 报告系统交换活动状况</li>
+</ul>
+<blockquote>
+<ul>
+<li>pswpin/s：每秒系统换入的交换页面（swap page）数量</li>
+<li>pswpout/s：每秒系统换出的交换页面（swap page）数量</li>
+</ul>
+</blockquote>
+<ul>
+<li>-y 报告TTY设备活动状况</li>
+<li>-f 报告sa日志的相关性能记录</li>
+</ul>
+</blockquote>
+<ul>
+<li>&lt;间隔时间&gt; （可选）每次报告的间隔时间（秒）；</li>
+<li>&lt;次数&gt; （可选）显示报告的次数。</li>
+</ul>
+<h3 id="案例-1">案例</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 查看运行队列中的进程数、系统上的进程大小、平均负载等</span>
+</span></span><span style="display:flex;"><span>sar -q  <span style="color:#ae81ff">1</span>  <span style="color:#ae81ff">60</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看日志里运行队列中的进程数、系统上的进程大小、平均负载等</span>
+</span></span><span style="display:flex;"><span>sar -q -f /var/log/sa/sa20
+</span></span></code></pre></div><h3 id="网址-1">网址</h3>
+<ul>
+<li><a href="https://linux.die.net/man/1/sar">详细</a></li>
+</ul>
+<h2 id="4-apt-get">4. apt-get</h2>
+<blockquote>
+<p>apt-get命令是Debian Linux发行版中的APT软件包管理工具。所有基于Debian的发行都使用这个包管理系统。deb包可以把一个应用的文件包在一起，大体就如同Windows上的安装文件。</p>
+</blockquote>
+<h3 id="安装方式">安装方式:</h3>
+<blockquote>
+<p>一般Debian类发行版自带</p>
+</blockquote>
+<h3 id="语法-3">语法</h3>
+<blockquote>
+<p>apt-get [选项] [参数]</p>
+</blockquote>
+<ul>
+<li>选项</li>
+</ul>
+<blockquote>
+<ul>
+<li>update 获取需要更新的软件包的列表</li>
+<li>upgrade 升级软件包</li>
+<li>install 安装软件包，可多个软件包</li>
+<li>reinstall 重装软件包，可多个软件包</li>
+<li>remove  删除软件包，可多个软件包</li>
+<li>purge 删除软件包和配置文件</li>
+<li>autoremove 自动删除所有未使用的包</li>
+<li>dist-upgrade 类似upgrade，会处理依赖问题（有点风险的升级）
+dselect-upgrade 依照dselect 的选择更新
+build-dep - Configure build-dependencies for source packages
+satisfy - Satisfy dependency strings
+clean - Erase downloaded archive files
+autoclean - Erase old downloaded archive files
+check - Verify that there are no broken dependencies
+source - Download source archives
+download - Download the binary package into the current directory
+changelog - Download and display the changelog for the given package</li>
+</ul>
+</blockquote>
+<ul>
+<li>参数</li>
+</ul>
+<h3 id="案例-2">案例:</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 删除为了满足依赖而安装的，但现在不再需要的软件包（包括已安装包），保留配置文件。</span>
+</span></span><span style="display:flex;"><span>sudo apt-get autoremove
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使用代理</span>
+</span></span><span style="display:flex;"><span>sudo apt-get -o Acquire::http::proxy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://127.0.0.1:8000/&#34;</span> update
+</span></span></code></pre></div><h4 id="网址-2">网址:</h4>
+<blockquote>
+<p>无</p>
+</blockquote>
+<h3 id="5-ipvsadm">5. ipvsadm</h3>
+<h4 id="简介-1">简介:</h4>
+<p>ipvsadm 是用于设置、维护和检查 Linux 内核中虚拟服务器列表的命令。Linux 虚拟服务器可用于基于两个或更多个节点的集群构建可扩展的网络服务。群集的活动节点将服务请求重定向到真正执行服务的服务器主机上。支持 TCP 和 UDP 协议，支持三咱数据包转发方法（NAT、隧道、直接路径）以及八种负载均衡算法（轮询、加权轮询、最少连接、加权最少连接、基于位置的最小连接，基于位置的最小连接与复制，目标散列和源散列）。</p>
+<h4 id="安装方式-1">安装方式:</h4>
+<pre><code># cat &gt; /etc/sysconfig/modules/ipvs.modules &lt;&lt;EOF
+#!/bin/bash
+modprobe -- br_netfilter
+modprobe -- ip_vs
+modprobe -- ip_vs_rr
+modprobe -- ip_vs_wrr
+modprobe -- ip_vs_sh
+modprobe -- nf_conntrack_ipv4
+EOF
+# chmod 755 /etc/sysconfig/modules/ipvs.modules &amp;&amp; bash /etc/sysconfig/modules/ipvs.modules &amp;&amp; lsmod | grep -E &quot;ip_vs|nf_conntrack_ipv4&quot;
+//安装ipvs
+# yum install ipvsadm -y
+</code></pre>
+<h4 id="语法-4">语法:</h4>
+<h4 id="选项">选项：</h4>
+<h4 id="参数">参数:</h4>
+<h4 id="实例-1">实例:</h4>
+<h4 id="相关网站-1">相关网站:</h4>
+<h3 id="6-strace-运行追踪">6. strace 运行追踪</h3>
+<h4 id="简介-2">简介:</h4>
+<p>按照 strace 官网的描述, strace 是一个可用于诊断、调试和教学的 Linux 用户空间跟踪器。我们用它来监控用户空间进程和内核的交互，比如系统调用、信号传递、进程状态变更等。</p>
+<p>strace 底层使用内核的 ptrace 特性来实现其功能。</p>
+<p>在运维的日常工作中，故障处理和问题诊断是个主要的内容，也是必备的技能。strace 作为一种动态跟踪工具，能够帮助运维高效地定位进程和服务故障。它像是一个侦探，通过系统调用的蛛丝马迹，告诉你异常的真相。</p>
+<h4 id="安装方式-2">安装方式:</h4>
+<h4 id="语法-5">语法:</h4>
+<p>strace [ -dffhiqrtttTvxx ] [ -acolumn ] [ -eexpr ] &hellip;
+[ -ofile ] [-ppid ] &hellip; [ -sstrsize ] [ -uusername ]
+[ -Evar=val ] &hellip; [ -Evar ]&hellip;
+[command [ arg &hellip; ] ]</p>
+<p>strace -c [ -eexpr ] &hellip; [ -Ooverhead ] [ -Ssortby ]
+[ command [ arg&hellip; ] ]</p>
+<h4 id="选项-1">选项：</h4>
+<pre><code>-c 统计每一系统调用的所执行的时间,次数和出错的次数等.
+-d 输出strace关于标准错误的调试信息.
+-f 跟踪由fork调用所产生的子进程.
+-ff 如果提供-o filename,则所有进程的跟踪结果输出到相应的filename.pid中,pid是各进程的进程号.
+-F 尝试跟踪vfork调用.在-f时,vfork不被跟踪.
+-h 输出简要的帮助信息.
+-i 输出系统调用的入口指针.
+-q 禁止输出关于脱离的消息.
+-r 打印出相对时间关于,,每一个系统调用.
+-t 在输出中的每一行前加上时间信息.
+-tt 在输出中的每一行前加上时间信息,微秒级.
+-ttt 微秒级输出,以秒了表示时间.
+-T 显示每一调用所耗的时间.
+-v 输出所有的系统调用.一些调用关于环境变量,状态,输入输出等调用由于使用频繁,默认不输出.
+-V 输出strace的版本信息.
+-x 以十六进制形式输出非标准字符串
+-xx 所有字符串以十六进制形式输出.
+-a column 设置返回值的输出位置.默认 为40.
+-e expr 指定一个表达式,用来控制如何跟踪.格式：[qualifier=][!]value1[,value2]...
+qualifier只能是 trace,abbrev,verbose,raw,signal,read,write其中之一.value是用来限定的符号或数字.默认的 qualifier是 trace.感叹号是否定符号.例如:-eopen等价于 -e   trace=open,表示只跟踪open调用.而-etrace!=open 表示跟踪除了open以外的其他调用.有两个特殊的符号 all 和 none. 注意有些shell使用!来执行历史记录里的命令,所以要使用\\.
+-e trace=set 只跟踪指定的系统 调用.例如:-e trace=open,close,rean,write表示只跟踪这四个系统调用.默认的为set=all.
+-e trace=file 只跟踪有关文件操作的系统调用.
+-e trace=process 只跟踪有关进程控制的系统调用.
+-e trace=network 跟踪与网络有关的所有系统调用.
+-e strace=signal 跟踪所有与系统信号有关的 系统调用
+-e trace=ipc 跟踪所有与进程通讯有关的系统调用
+-e abbrev=set 设定strace输出的系统调用的结果集.-v 等与 abbrev=none.默认为abbrev=all.
+-e raw=set 将指定的系统调用的参数以十六进制显示.
+-e signal=set 指定跟踪的系统信号.默认为all.如 signal=!SIGIO(或者signal=!io),表示不跟踪SIGIO信号.
+-e read=set 输出从指定文件中读出 的数据.例如: -e read=3,5
+-e write=set 输出写入到指定文件中的数据.
+-o filename 将strace的输出写入文件filename
+-p pid 跟踪指定的进程pid.
+-s strsize 指定输出的字符串的最大长度.默认为32.文件名一直全部输出.
+-u username 以username的UID和GID执行被跟踪的命令
+</code></pre>
+<h4 id="参数-1">参数:</h4>
+<h4 id="实例-2">实例:</h4>
+<h4 id="相关网站-2">相关网站:</h4>
+<h3 id="7-fuser">7. fuser</h3>
+<h4 id="简介-3">简介:</h4>
+<p>fuser 可以显示出当前哪个程序在使用磁盘上的某个文件、挂载点、甚至网络端口，并给出程序进程的详细信息。
+fuser 显示使用指定文件或者文件系统的进程 ID。
+默认情况下每个文件名后面跟一个字母表示访问类型。</p>
+<h4 id="安装方式-3">安装方式:</h4>
+<pre><code>yum install psmisc
+</code></pre>
+<h4 id="语法-6">语法:</h4>
+<pre><code>fuser [ -c | -d | -f ] [ -k ] [ -u ] [ -x ] [ -V ]
+</code></pre>
+<h4 id="选项-2">选项：</h4>
+<pre><code>-a：显示所有命令行中指定的文件，默认情况下被访问的文件才会被显示。
+-c：和-m一样，用于POSIX兼容。
+-k：杀掉访问文件的进程。如果没有指定-signal就会发送SIGKILL信号。
+-i：杀掉进程之前询问用户，如果没有-k这个选项会被忽略。
+-l：列出所有已知的信号名称。
+-m：name 指定一个挂载文件系统上的文件或者被挂载的块设备（名称name）。这样所有访问这个文件或者文件系统的进程都会被列出来。如果指定的是一个目录会自动转换成&quot;name/&quot;,并使用所有挂载在那个目录下面的 文件系统。
+-n：space 指定一个不同的命名空间(space).这里支持不同的空间文件(文件名，此处默认)、tcp(本地tcp端口)、udp(本地udp端口)。对于端口， 可以指定端口号或者名称，如果不会引起歧义那么可以使用简单表 示的形式，例如：name/space (即形如:80/tcp之类的表示)。
+-s：静默模式，这时候-u,-v会被忽略。-a不能和-s一起使用。
+-signal：使用指定的信号，而不是用SIGKILL来杀掉进程。可以通过名称或者号码来表示信号(例如-HUP,-1),这个选项要和-k一起使用，否则会被忽略。
+-u：在每个PID后面添加进程拥有者的用户名称。
+-v：详细模式。输出似ps命令的输出，包含PID,USER,COMMAND等许多域,如果是内核访问的那么PID为kernel.  -V 输出版本号。
+-4：使用IPV4套接字,不能和-6一起应用，只在-n的tcp和udp的命名存在时不被忽略。
+-6：使用IPV6套接字,不能和-4一起应用，只在-n的tcp和udp的命名存在时不被忽略。
+- 重置所有的选项，把信号设置为SIGKILL.
+</code></pre>
+<h4 id="参数-2">参数:</h4>
+<h4 id="实例-3">实例:</h4>
+<pre><code>fuser -v 111/udp 111/tcp
+</code></pre>
+<h4 id="相关网站-3">相关网站:</h4>
+<pre><code>### &lt;序号&gt;. &lt;命令名称&gt;
+#### 简介:
+#### 安装方式:
+#### 语法:
+#### 选项：
+#### 参数:
+#### 实例:
+#### 相关网站:
+</code></pre>
+<hr>
+<h2 id="结束">结束</h2>
+<p>特殊内容：</p>
+<ul>
+<li>
+<p>查看内存布局</p>
+<p>cat /proc/pid/maps
+或
+cat /proc/self/mpas</p>
+</li>
+<li>
+<p>查看进程占用内存区域</p>
+<p>cat /proc/<!-- raw HTML omitted -->/maps</p>
+</li>
+<li>
+<p>获取 linux 内存占比</p>
+<p>awk &lsquo;/MemFree/{free=$2} /MemTotal/{total=$2} /Buffers/{buf=$2} /Cached/{cache=$2} END{print (free-buf-cached)/total*100}&rsquo; /proc/meminfo</p>
+</li>
+<li>
+<p>sudo lsof -i -P -n</p>
+</li>
+</ul>
+<p>PS:</p>
+<p>推荐一些命令信息查询网址：</p>
+<ul>
+<li>
+<p><a href="https://linux.die.net/man/">linux.die.net</a> &ndash; 官网</p>
+</li>
+<li>
+<p><a href="https://man.linuxde.net/strace">man.linuxde.net</a> &ndash; 相关数据较为不全</p>
+<p>1)顺序读（读数据块大小 1024k）：
+/usr/local/bin/fio -direct=1 -iodepth=32 -rw=write -ioengine=libaio -bs=1024k -size=5G -numjobs=1 -runtime=600 -group_reporting -name=mytest 2)随机写（写数据块大小 1024k）：
+/usr/local/bin/fio -direct=1 -iodepth=32 -rw=write -ioengine=libaio -bs=1024k -size=5G -numjobs=1 -runtime=600 -group_reporting -name=mytest
+3)iops（读数据块大小 4k）
+/usr/local/bin/fio -direct=1 -iodepth=128 -rw=randread -ioengine=libaio -bs=4k -size=3G -numjobs=1 -runtime=600 -group_reporting -name=mytest 1)随机读（读数据块大小 32k）：
+/usr/local/bin/fio -filename=rand.dat -direct=1 -iodepth 1 -thread -rw=randread -ioengine=psync -bs=32k -size=500M -numjobs=10 -runtime=1000 -group_reporting -name=mytest 2)随机写（写数据块大小 32k）：
+/usr/local/bin/fio -filename=ranw.dat -direct=1 -iodepth 1 -thread -rw=randwrite -ioengine=psync -bs=32k -size=200M -numjobs=10 -runtime=1000 -group_reporting -name=mytest 3)混合读写（读写数据块大小 32k、80%读 20%写）：
+/usr/local/bin/fio -filename=ranwd.dat -direct=1 -iodepth 1 -thread -rw=randrw -rwmixwrite=20 -ioengine=psync -bs=32k -size=200M -numjobs=10 -runtime=1000 -group_reporting -name=mytest</p>
+</li>
+</ul>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-pstree">1. pstree</a>
+      <ul>
+        <li><a href="#安装">安装</a></li>
+        <li><a href="#语法">语法</a></li>
+        <li><a href="#实例">实例</a></li>
+        <li><a href="#网址">网址</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-strace">2. strace</a>
+      <ul>
+        <li><a href="#安装-1">安装</a></li>
+        <li><a href="#语法-1">语法</a></li>
+        <li><a href="#案例">案例</a></li>
+        <li><a href="#相关网站">相关网站</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-sar">3. sar</a>
+      <ul>
+        <li><a href="#安装-2">安装</a></li>
+        <li><a href="#语法-2">语法</a></li>
+        <li><a href="#案例-1">案例</a></li>
+        <li><a href="#网址-1">网址</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-apt-get">4. apt-get</a>
+      <ul>
+        <li><a href="#安装方式">安装方式:</a></li>
+        <li><a href="#语法-3">语法</a></li>
+        <li><a href="#案例-2">案例:</a></li>
+        <li><a href="#5-ipvsadm">5. ipvsadm</a></li>
+        <li><a href="#6-strace-运行追踪">6. strace 运行追踪</a></li>
+        <li><a href="#7-fuser">7. fuser</a></li>
+      </ul>
+    </li>
+    <li><a href="#结束">结束</a></li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer class="footer">
+    <div class="copyright">
+        
+        
+        © Powered by <a href="https://github.com/allposs/Axis-Hugo-Theme.git">Axis-Hugo-Theme</a> and <a href="https://gohugo.io">Hugo</a> | 2022 - 2023
+        
+    </div>
+</footer>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NBF4J7F6RW"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-NBF4J7F6RW', { 'anonymize_ip': false });
+}
+</script>
+
+
+<script async src="https://blog.allposs.com/js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+</body>
+
+</html>

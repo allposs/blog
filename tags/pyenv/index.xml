@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>pyenv on allposs博客</title>
+    <link>https://blog.allposs.com/tags/pyenv/</link>
+    <description>Recent content in pyenv on allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 10 Jan 2020 10:20:23 +0800</lastBuildDate><atom:link href="https://blog.allposs.com/tags/pyenv/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>pyenv命令集</title>
+      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/003-pyenv%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
+      <pubDate>Fri, 10 Jan 2020 10:20:23 +0800</pubDate>
+      
+      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/003-pyenv%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
+      <description>简介 由于macOS 10.15.3默认使用的python版本是Python 2.7.16,但是系统本身内嵌了Python 3.7.3,导致在管理与</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -8,6 +8,24 @@
     <language>zh-cn</language>
     <lastBuildDate>Fri, 01 Nov 2019 16:10:12 +0800</lastBuildDate><atom:link href="https://blog.allposs.com/docs/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>AmazonLinux2 配置安装docker</title>
+      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/002-amazonlinux2-%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85docker/</link>
+      <pubDate>Mon, 23 Oct 2023 14:13:47 +0800</pubDate>
+      
+      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/002-amazonlinux2-%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85docker/</guid>
+      <description>简介 环境 正文 # 安装yum扩展包 sudo yum install -y yum-utils # 使用docker官方源 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo # 安装docker-ce sudo yum install docker-ce cat &amp;gt; /etc/docker/daemon.json &amp;lt;&amp;lt; EOF { &amp;#34;builder&amp;#34;: { &amp;#34;gc&amp;#34;: { &amp;#34;defaultKeepStorage&amp;#34;: &amp;#34;20GB&amp;#34;, &amp;#34;enabled&amp;#34;: true } }, &amp;#34;experimental&amp;#34;: false,</description>
+    </item>
+    
+    <item>
+      <title>brew命令合集</title>
+      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/002-brew%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
+      <pubDate>Mon, 23 Oct 2023 13:48:10 +0800</pubDate>
+      
+      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/002-brew%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
+      <description>简介 环境 正文 brew安装 /usr/bin/ruby -e &amp;#34;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&amp;#34; 常用示例 # 更新 Homebrew 自己 brew update # 查看哪些安装包需要更新 brew outdated # 更新所有的包 brew upgrade # 更新指定的包 brew upgrade $FORMULA # 清理所有包的旧</description>
+    </item>
+    
+    <item>
       <title>开源流程平台开发</title>
       <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/002-%E5%BC%80%E6%BA%90%E6%B5%81%E7%A8%8B%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91/</link>
       <pubDate>Fri, 14 Jul 2023 08:27:13 +0800</pubDate>
@@ -170,12 +188,48 @@
     </item>
     
     <item>
+      <title>mysql常用工具</title>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/mysql/001-mysql%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Thu, 30 Mar 2023 11:05:18 +0800</pubDate>
+      
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/mysql/001-mysql%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</guid>
+      <description>简介 正文 常用语句 # 查询是否锁表 show OPEN TABLES where In_use &amp;gt; 0; # 查询到相对应的进程===然后 killid show processlist; # 当前运行的所有事务 SELECT \* FROM INFORMATION_SCHEMA.innodb_trx; # 获取建表语句 show create table rk_goods_hot_list_month; 备份 mysqldump -uadmin -h</description>
+    </item>
+    
+    <item>
+      <title>clickhouse集群扩缩容</title>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/clickhouse/002-clickhouse%E9%9B%86%E7%BE%A4%E6%89%A9%E7%BC%A9%E5%AE%B9/</link>
+      <pubDate>Thu, 30 Mar 2023 09:54:43 +0800</pubDate>
+      
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/clickhouse/002-clickhouse%E9%9B%86%E7%BE%A4%E6%89%A9%E7%BC%A9%E5%AE%B9/</guid>
+      <description>简介 环境 这里使用上篇文章集群做示范: IP 地址 主机名称 CPU 内存 数据盘 172.20.0.201 zookeeper01 4 8G 100G 172.20.0.202 zookeeper02 4 8G 100G 172.20.0.203 zookeeper03 4 8G 100G 172.20.0.101 clickhouse01 8 16G 300G 172.20.0.102 clickhouse02 8 16G 300G 172.20.0.103 clickhouse03 8 16G 300G 172.20.0.104 clickhouse04 8 16G 300G 172.20.0.105 clickhouse05 8 16G</description>
+    </item>
+    
+    <item>
+      <title>clickhouse分片高可用集群安装</title>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/clickhouse/001-clickhouse%E5%88%86%E7%89%87%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</link>
+      <pubDate>Thu, 22 Sep 2022 09:34:23 +0800</pubDate>
+      
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/clickhouse/001-clickhouse%E5%88%86%E7%89%87%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</guid>
+      <description>简介 环境 这里使用 aws 的 EC2 做示范： IP 地址 主机名称 CPU 内存 数据盘 172.20.0.201 zookeeper01 4 8G 100G 172.20.0.202 zookeeper02 4 8G 100G 172.20.0.203 zookeeper03 4 8G 100G 172.20.0.101 clickhouse01 8 16G 300G 172.20.0.102 clickhouse02 8 16G 300G 172.20.0.103 clickhouse03 8 16G 300G 172.20.0.104 clickhouse04 8 16G 300G 172.20.0.105 clickhouse05 8 16G 300G 172.20.0.106 clickhouse06</description>
+    </item>
+    
+    <item>
       <title>Linux常用命令合集</title>
       <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
       <pubDate>Tue, 18 Aug 2020 14:20:23 +0800</pubDate>
       
       <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
       <description>简介 本文是用来记录一些自己常用到的一些 linux 命令的合集文章,方便自己查询与记录。 正文 1. pstree 将正在运行的进程显示为树。它用作 ps 命令的更直观的替代方法</description>
+    </item>
+    
+    <item>
+      <title>pyenv命令集</title>
+      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/003-pyenv%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
+      <pubDate>Fri, 10 Jan 2020 10:20:23 +0800</pubDate>
+      
+      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/003-pyenv%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
+      <description>简介 由于macOS 10.15.3默认使用的python版本是Python 2.7.16,但是系统本身内嵌了Python 3.7.3,导致在管理与</description>
     </item>
     
     <item>

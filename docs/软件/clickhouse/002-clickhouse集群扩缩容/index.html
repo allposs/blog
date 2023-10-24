@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://blog.allposs.com/img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>clickhouse集群扩缩容 - allposs博客</title>
+    <meta property="og:title" content="clickhouse集群扩缩容 - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://blog.allposs.com/css/style.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/fonts.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../../" aria-label="个人博客">
+                <img src="https://blog.allposs.com/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../docs/"  aria-current="page" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs/" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>clickhouse集群扩缩容</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2023-03-30
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                数据库
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                clickhouse
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<h1 id="环境">环境</h1>
+<p>这里使用上篇文章集群做示范:</p>
+<table>
+<thead>
+<tr>
+<th>IP 地址</th>
+<th>主机名称</th>
+<th>CPU</th>
+<th>内存</th>
+<th>数据盘</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>172.20.0.201</td>
+<td>zookeeper01</td>
+<td>4</td>
+<td>8G</td>
+<td>100G</td>
+</tr>
+<tr>
+<td>172.20.0.202</td>
+<td>zookeeper02</td>
+<td>4</td>
+<td>8G</td>
+<td>100G</td>
+</tr>
+<tr>
+<td>172.20.0.203</td>
+<td>zookeeper03</td>
+<td>4</td>
+<td>8G</td>
+<td>100G</td>
+</tr>
+<tr>
+<td>172.20.0.101</td>
+<td>clickhouse01</td>
+<td>8</td>
+<td>16G</td>
+<td>300G</td>
+</tr>
+<tr>
+<td>172.20.0.102</td>
+<td>clickhouse02</td>
+<td>8</td>
+<td>16G</td>
+<td>300G</td>
+</tr>
+<tr>
+<td>172.20.0.103</td>
+<td>clickhouse03</td>
+<td>8</td>
+<td>16G</td>
+<td>300G</td>
+</tr>
+<tr>
+<td>172.20.0.104</td>
+<td>clickhouse04</td>
+<td>8</td>
+<td>16G</td>
+<td>300G</td>
+</tr>
+<tr>
+<td>172.20.0.105</td>
+<td>clickhouse05</td>
+<td>8</td>
+<td>16G</td>
+<td>300G</td>
+</tr>
+<tr>
+<td>172.20.0.106</td>
+<td>clickhouse06</td>
+<td>8</td>
+<td>16G</td>
+<td>300G</td>
+</tr>
+</tbody>
+</table>
+<h1 id="正文">正文</h1>
+<h2 id="示例集群配置">示例集群配置：</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;remote_servers&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!-- 集群名称，可以修改 --&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;cluster01&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">&lt;!-- 配置两个分片，每个分片对应两台机器，为每个分片配置两个副本 --&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;shard&gt;</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#f92672">&lt;internal_replication&gt;</span>true<span style="color:#f92672">&lt;/internal_replication&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;replica&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;host&gt;</span>clickhouse01<span style="color:#f92672">&lt;/host&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;port&gt;</span>9000<span style="color:#f92672">&lt;/port&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;user&gt;</span>default<span style="color:#f92672">&lt;/user&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;password&gt;</span>cDT5wFrx<span style="color:#f92672">&lt;/password&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/replica&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;replica&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;host&gt;</span>clickhouse05<span style="color:#f92672">&lt;/host&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;port&gt;</span>9000<span style="color:#f92672">&lt;/port&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;user&gt;</span>default<span style="color:#f92672">&lt;/user&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;password&gt;</span>cDT5wFrx<span style="color:#f92672">&lt;/password&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/replica&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/shard&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;shard&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;internal_replication&gt;</span>true<span style="color:#f92672">&lt;/internal_replication&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;replica&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;host&gt;</span>clickhouse02<span style="color:#f92672">&lt;/host&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;port&gt;</span>9000<span style="color:#f92672">&lt;/port&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;user&gt;</span>default<span style="color:#f92672">&lt;/user&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;password&gt;</span>cDT5wFrx<span style="color:#f92672">&lt;/password&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/replica&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;replica&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;host&gt;</span>clickhouse06<span style="color:#f92672">&lt;/host&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;port&gt;</span>9000<span style="color:#f92672">&lt;/port&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;user&gt;</span>default<span style="color:#f92672">&lt;/user&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;password&gt;</span>cDT5wFrx<span style="color:#f92672">&lt;/password&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/replica&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/shard&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;shard&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;internal_replication&gt;</span>true<span style="color:#f92672">&lt;/internal_replication&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;replica&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;host&gt;</span>clickhouse03<span style="color:#f92672">&lt;/host&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;port&gt;</span>9000<span style="color:#f92672">&lt;/port&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;user&gt;</span>default<span style="color:#f92672">&lt;/user&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;password&gt;</span>cDT5wFrx<span style="color:#f92672">&lt;/password&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/replica&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;replica&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;host&gt;</span>clickhouse04<span style="color:#f92672">&lt;/host&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;port&gt;</span>9000<span style="color:#f92672">&lt;/port&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;user&gt;</span>default<span style="color:#f92672">&lt;/user&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;password&gt;</span>cDT5wFrx<span style="color:#f92672">&lt;/password&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/replica&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/shard&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/cluster01&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/remote_servers&gt;</span>
+</span></span></code></pre></div><h2 id="集群缩容">集群缩容</h2>
+<hr>
+<p>注意，以下 2 种方式在缩小容期间可能会导致集群对外服务暂停。</p>
+<h3 id="1-replica-副本下线"><strong>1. Replica 副本下线</strong></h3>
+<p>副本节点下线，主副本仍然保留相同的数据，因此不需要对副本节点数据进行备份。</p>
+<p>同时由于主副本和副本间是对等的，因此下线主副本和副本原理相同，下线主副本后，副本分片会选举成为主副本提供服务。</p>
+<p><strong>主要步骤（下线副本 A）：</strong></p>
+<ul>
+<li>所有节点配置中去除需要下线的副本 A 的 replica 配置；</li>
+<li>各节点轮流重启，下线副本 A 节点；</li>
+</ul>
+<p>以下示例下线分片 1 的 clickhouse05 分片。</p>
+<p><strong>1. 修改所有节点配置文件，移除clickhouse05 replica 配置信息。</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;remote_servers&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!-- 集群名称，可以修改 --&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;cluster01&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">&lt;!-- 配置两个分片，每个分片对应两台机器，为每个分片配置两个副本 --&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;shard&gt;</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#f92672">&lt;internal_replication&gt;</span>true<span style="color:#f92672">&lt;/internal_replication&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;replica&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;host&gt;</span>clickhouse01<span style="color:#f92672">&lt;/host&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;port&gt;</span>9000<span style="color:#f92672">&lt;/port&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;user&gt;</span>default<span style="color:#f92672">&lt;/user&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;password&gt;</span>cDT5wFrx<span style="color:#f92672">&lt;/password&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/replica&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/shard&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;shard&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;internal_replication&gt;</span>true<span style="color:#f92672">&lt;/internal_replication&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;replica&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;host&gt;</span>clickhouse02<span style="color:#f92672">&lt;/host&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;port&gt;</span>9000<span style="color:#f92672">&lt;/port&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;user&gt;</span>default<span style="color:#f92672">&lt;/user&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;password&gt;</span>cDT5wFrx<span style="color:#f92672">&lt;/password&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/replica&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;replica&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;host&gt;</span>clickhouse06<span style="color:#f92672">&lt;/host&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;port&gt;</span>9000<span style="color:#f92672">&lt;/port&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;user&gt;</span>default<span style="color:#f92672">&lt;/user&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;password&gt;</span>cDT5wFrx<span style="color:#f92672">&lt;/password&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/replica&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/shard&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;shard&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;internal_replication&gt;</span>true<span style="color:#f92672">&lt;/internal_replication&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;replica&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;host&gt;</span>clickhouse03<span style="color:#f92672">&lt;/host&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;port&gt;</span>9000<span style="color:#f92672">&lt;/port&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;user&gt;</span>default<span style="color:#f92672">&lt;/user&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;password&gt;</span>cDT5wFrx<span style="color:#f92672">&lt;/password&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/replica&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;replica&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;host&gt;</span>clickhouse04<span style="color:#f92672">&lt;/host&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;port&gt;</span>9000<span style="color:#f92672">&lt;/port&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;user&gt;</span>default<span style="color:#f92672">&lt;/user&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;password&gt;</span>cDT5wFrx<span style="color:#f92672">&lt;/password&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/replica&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/shard&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/cluster01&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/remote_servers&gt;</span>
+</span></span></code></pre></div><p><strong>2. 重启clickhouse 01、02、03、04、06节点，下线 clickhouse05 节点</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>01/02/03/04/06:<span style="color:#f92672">)</span> docker-compose restart
+</span></span><span style="display:flex;"><span>clickhouse05 :<span style="color:#f92672">)</span> docker-compose down
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 检查节点</span>
+</span></span><span style="display:flex;"><span>clickhouse :<span style="color:#f92672">)</span> <span style="color:#66d9ef">select</span> * from system.clusters
+</span></span></code></pre></div><h3 id="2-shard-分片下线"><strong>2. Shard 分片下线</strong></h3>
+<p>下线分片是指整个分片的全部数据下线，假设分片 1 有 3 个节点，那么下线分片 1 需要将主副本以及 2 个副本全部下线。</p>
+<p>分片下线后将不能提供服务，因此分片的数据需要迁移至其他节点。</p>
+<p><strong>有 2 种思路：</strong></p>
+<ol>
+<li>重建新表，全部数据重新导入。
+<ul>
+<li>建立新的分布表和本地表（缩容后集群规模）；</li>
+<li>从原分布式表导入数据到新分布式表；</li>
+<li>旧分布式表、本地表下线删除；</li>
+<li>新分布式表、本地表重命名；</li>
+</ul>
+</li>
+<li>剩余节点 fetch 下线节点分区。
+<ul>
+<li>在非下线节点 alter fetch 下线节点分区（需要规划分配各节点分区）；</li>
+<li>修改节点配置；</li>
+<li>重启非下线节点；</li>
+</ul>
+</li>
+</ol>
+<h2 id="clickhouse-集群扩容">ClickHouse 集群扩容</h2>
+<hr>
+<p>ClickHouse 集群扩容主要有 2 种情况：增加副本和增加分片</p>
+<h3 id="1-增加副本"><strong>1. 增加副本</strong></h3>
+<p>增加副本节点，仅需要修改新节点配置，然后执行建表语句，语句执行后会从 ZooKeeper 中获取主节点信息，然后同步数据。</p>
+<p>但是这样主节点没有副本节点信息，执行查询语句时只会选择主节点，而副本节点查询语句可以在主节点和副本节点间随机选择，建议主节点同样修改配置，使得主节点副本节点配置保持一致。</p>
+<p><strong>主要步骤：</strong></p>
+<ul>
+<li>修改配置，增加新副本配置；</li>
+<li>重启各节点；</li>
+</ul>
+<h3 id="2-增加分片"><strong>2. 增加分片</strong></h3>
+<p>由于 ClickHouse 在新增分片节点无法进行自动 Rebalance ，会比较麻烦，主要有 2 种思路：</p>
+<ol>
+<li><strong>新建集群，数据重新迁移</strong>
+<ul>
+<li>新建 CH 分布式集群；</li>
+<li>从旧集群迁移数据到新集群（可以通过 insert into select）；</li>
+<li>删除旧集群；</li>
+</ul>
+</li>
+<li><strong>增加新节点的权重，过一定时间后待数据均衡后，重新调整新增节点权重</strong>
+<ul>
+<li>配置文件设置新的 shard 有较高的权重（如 99）；</li>
+<li>新分片节点启动加入集群；</li>
+<li>一定时间后逐渐调整新分片节点权重，逐渐回到平衡；</li>
+</ul>
+</li>
+</ol>
+<h1 id="结束">结束</h1>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#示例集群配置">示例集群配置：</a></li>
+    <li><a href="#集群缩容">集群缩容</a>
+      <ul>
+        <li><a href="#1-replica-副本下线"><strong>1. Replica 副本下线</strong></a></li>
+        <li><a href="#2-shard-分片下线"><strong>2. Shard 分片下线</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#clickhouse-集群扩容">ClickHouse 集群扩容</a>
+      <ul>
+        <li><a href="#1-增加副本"><strong>1. 增加副本</strong></a></li>
+        <li><a href="#2-增加分片"><strong>2. 增加分片</strong></a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer class="footer">
+    <div class="copyright">
+        
+        
+        © Powered by <a href="https://github.com/allposs/Axis-Hugo-Theme.git">Axis-Hugo-Theme</a> and <a href="https://gohugo.io">Hugo</a> | 2022 - 2023
+        
+    </div>
+</footer>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NBF4J7F6RW"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-NBF4J7F6RW', { 'anonymize_ip': false });
+}
+</script>
+
+
+<script async src="https://blog.allposs.com/js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+</body>
+
+</html>

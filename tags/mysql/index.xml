@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mysql on allposs博客</title>
+    <link>https://blog.allposs.com/tags/mysql/</link>
+    <description>Recent content in mysql on allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 30 Mar 2023 11:05:18 +0800</lastBuildDate><atom:link href="https://blog.allposs.com/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>mysql常用工具</title>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/mysql/001-mysql%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Thu, 30 Mar 2023 11:05:18 +0800</pubDate>
+      
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/mysql/001-mysql%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</guid>
+      <description>简介 正文 常用语句 # 查询是否锁表 show OPEN TABLES where In_use &amp;gt; 0; # 查询到相对应的进程===然后 killid show processlist; # 当前运行的所有事务 SELECT \* FROM INFORMATION_SCHEMA.innodb_trx; # 获取建表语句 show create table rk_goods_hot_list_month; 备份 mysqldump -uadmin -h</description>
+    </item>
+    
+  </channel>
+</rss>

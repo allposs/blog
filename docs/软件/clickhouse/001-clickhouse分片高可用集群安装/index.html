@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://blog.allposs.com/img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>clickhouse分片高可用集群安装 - allposs博客</title>
+    <meta property="og:title" content="clickhouse分片高可用集群安装 - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://blog.allposs.com/css/style.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/fonts.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../../" aria-label="个人博客">
+                <img src="https://blog.allposs.com/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../docs/"  aria-current="page" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs/" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>clickhouse分片高可用集群安装</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2022-09-22
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                数据库
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                clickhouse
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<h1 id="环境">环境</h1>
+<p>这里使用 aws 的 EC2 做示范：</p>
+<table>
+<thead>
+<tr>
+<th>IP 地址</th>
+<th>主机名称</th>
+<th>CPU</th>
+<th>内存</th>
+<th>数据盘</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>172.20.0.201</td>
+<td>zookeeper01</td>
+<td>4</td>
+<td>8G</td>
+<td>100G</td>
+</tr>
+<tr>
+<td>172.20.0.202</td>
+<td>zookeeper02</td>
+<td>4</td>
+<td>8G</td>
+<td>100G</td>
+</tr>
+<tr>
+<td>172.20.0.203</td>
+<td>zookeeper03</td>
+<td>4</td>
+<td>8G</td>
+<td>100G</td>
+</tr>
+<tr>
+<td>172.20.0.101</td>
+<td>clickhouse01</td>
+<td>8</td>
+<td>16G</td>
+<td>300G</td>
+</tr>
+<tr>
+<td>172.20.0.102</td>
+<td>clickhouse02</td>
+<td>8</td>
+<td>16G</td>
+<td>300G</td>
+</tr>
+<tr>
+<td>172.20.0.103</td>
+<td>clickhouse03</td>
+<td>8</td>
+<td>16G</td>
+<td>300G</td>
+</tr>
+<tr>
+<td>172.20.0.104</td>
+<td>clickhouse04</td>
+<td>8</td>
+<td>16G</td>
+<td>300G</td>
+</tr>
+<tr>
+<td>172.20.0.105</td>
+<td>clickhouse05</td>
+<td>8</td>
+<td>16G</td>
+<td>300G</td>
+</tr>
+<tr>
+<td>172.20.0.106</td>
+<td>clickhouse06</td>
+<td>8</td>
+<td>16G</td>
+<td>300G</td>
+</tr>
+</tbody>
+</table>
+<h1 id="正文">正文</h1>
+<h2 id="1-主机配置-所有节点">1. 主机配置 [所有节点]</h2>
+<p>这里使用 AWS 的 EC2 主机，所以大家根据自己的实际情况进行操作。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>基础配置
+</span></span><span style="display:flex;"><span>$ sudo yum update -y <span style="color:#f92672">&amp;&amp;</span> sudo timedatectl set-timezone Asia/Shanghai <span style="color:#f92672">&amp;&amp;</span> sudo yum install nc iotop dstat -y
+</span></span><span style="display:flex;"><span>配置主机解析
+</span></span><span style="display:flex;"><span>$ sudo bash -c <span style="color:#e6db74">&#34;cat &gt;&gt; /etc/hosts&#34;</span> <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">172.20.0.201 zookeeper01
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">172.20.0.202 zookeeper02
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">172.20.0.203 zookeeper03
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">172.20.0.101 clickhouse01
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">172.20.0.102 clickhouse02
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">172.20.0.103 clickhouse03
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">172.20.0.104 clickhouse04
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">172.20.0.105 clickhouse05
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">172.20.0.106 clickhouse06
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>磁盘分区挂载
+</span></span><span style="display:flex;"><span>$ cfdisk
+</span></span><span style="display:flex;"><span>$ sudo cfdisk /dev/nvme1n1
+</span></span><span style="display:flex;"><span>$ sudo mkfs -t xfs /dev/nvme1n1p1
+</span></span><span style="display:flex;"><span>$ sudo cp /etc/fstab /etc/fstab.orig
+</span></span><span style="display:flex;"><span>$ sudo lsblk -lf
+</span></span><span style="display:flex;"><span>$ sudo bash -c <span style="color:#e6db74">&#34;cat &gt;&gt;  /etc/fstab&#34;</span> <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">UUID=1e7c2c75-a6b8-4060-94f1-15e5e1de8fe8  /data  xfs  defaults,nofail  0  2
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>$ sudo mkdir /data <span style="color:#f92672">&amp;&amp;</span> sudo mount -a <span style="color:#f92672">&amp;&amp;</span> sudo chown -R ec2-user. /data
+</span></span></code></pre></div><h3 id="2-配置-docker-可选">2. 配置 docker &lt;可选&gt;</h3>
+<p>此次集群搭建，使用 docker-compose 进行管控，当然也可以使用裸机进行部署，如果使用裸机部署这里可以忽略。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo amazon-linux-extras install docker -y <span style="color:#f92672">&amp;&amp;</span> sudo usermod -a -G docker ec2-user <span style="color:#f92672">&amp;&amp;</span> sudo systemctl start docker
+</span></span><span style="display:flex;"><span>$ sudo bash -c <span style="color:#e6db74">&#34;cat &gt;&gt; /etc/docker/daemon.json&#34;</span> <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &#34;builder&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;gc&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &#34;defaultKeepStorage&#34;: &#34;20GB&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &#34;enabled&#34;: true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  },
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &#34;experimental&#34;: false,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &#34;features&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;buildkit&#34;: false
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  },
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &#34;registry-mirrors&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;https://docker.mirrors.ustc.edu.cn&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  ],
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &#34;exec-opts&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;native.cgroupdriver=systemd&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  ],
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &#34;log-driver&#34;: &#34;json-file&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &#34;log-opts&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;max-size&#34;: &#34;100m&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;max-file&#34;: &#34;10&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  },
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &#34;max-concurrent-downloads&#34;: 20,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &#34;debug&#34;: false,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &#34;default-address-pools&#34; : [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &#34;base&#34; : &#34;192.168.224.0/20&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &#34;size&#34; : 24
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  ]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>$ sudo systemctl restart docker <span style="color:#f92672">&amp;&amp;</span> sudo chmod <span style="color:#ae81ff">666</span> /var/run/docker.sock <span style="color:#f92672">&amp;&amp;</span> sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-<span style="color:#66d9ef">$(</span>uname -s<span style="color:#66d9ef">)</span>-<span style="color:#66d9ef">$(</span>uname -m<span style="color:#66d9ef">)</span> -o /usr/local/bin/docker-compose <span style="color:#f92672">&amp;&amp;</span> sudo chmod +x /usr/local/bin/docker-compose <span style="color:#f92672">&amp;&amp;</span> sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose <span style="color:#f92672">&amp;&amp;</span> sudo chown -R ec2-user. /opt/
+</span></span></code></pre></div><h2 id="3-配置-zookeeper-zookeeper01zookeeper02zookeeper03">3. 配置 zookeeper [zookeeper01,zookeeper02,zookeeper03]</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ mkdir -p /data/zookeeper/<span style="color:#f92672">{</span>logs,conf,data<span style="color:#f92672">}</span> <span style="color:#f92672">&amp;&amp;</span> mkdir -p /data/zookeeper/data/<span style="color:#f92672">{</span>log,data<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>配置docker-compose文件
+</span></span><span style="display:flex;"><span>$ mkdir -p ~/data/zookeeper <span style="color:#f92672">&amp;&amp;</span> cat &gt; ~/data/zookeeper/docker-compose.yml <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">version: &#34;3&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">services:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  zookeeper:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    image: zookeeper:3.7.1-temurin
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    container_name: zookeeper
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    restart: unless-stopped
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    network_mode: &#34;host&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ports:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - 2181:2181
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - 2888-3888:2888-3888
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - 9070:9070
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    extra_hosts:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - &#34;zookeeper01:172.20.0.201&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - &#34;zookeeper02:172.20.0.202&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - &#34;zookeeper03:172.20.0.203&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    environment:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      #ZOO_MY_ID主机zookeeper01为1,主机zookeeper02为2,主机zookeeper03为3
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      ZOO_MY_ID: 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      ZOO_SERVERS: server.1=zookeeper01:2888:3888;2181 server.2=zookeeper02:2888:3888;2181 server.3=zookeeper03:2888:3888;2181
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      ZOO_LOG4J_PROP: INFO,ROLLINGFILE
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      JVMFLAGS: -Xms128M -Xmx5G
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      ZOO_CFG_EXTRA: metricsProvider.className=org.apache.zookeeper.metrics.prometheus.PrometheusMetricsProvider metricsProvider.httpPort=9070
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      TZ: Asia/Shanghai
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    volumes:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - /etc/localtime:/etc/localtime
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - /data/zookeeper/data/log:/datalog
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - /data/zookeeper/data/data:/data
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - /data/zookeeper/logs:/logs
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - /data/zookeeper/conf:/conf
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    deploy:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      replicas: 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      resources:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        limits:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          cpus: &#39;3&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          memory: 7G
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        reservations:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          cpus: &#39;2&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          memory: 5G
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ulimits:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     nproc: 65535
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     nofile:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      soft: 262144
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      hard: 262144
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>配置log4j参数文件
+</span></span><span style="display:flex;"><span>$ cat &gt; /data/zookeeper/conf/log4j.properties <span style="color:#e6db74">&lt;&lt; &#39;EOF&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># Define some default values that can be overridden by system properties
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">zookeeper.root.logger=INFO, CONSOLE, ROLLINGFILE
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">zookeeper.console.threshold=INFO
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">zookeeper.log.dir=/logs
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">zookeeper.log.file=zookeeper.log
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">zookeeper.log.threshold=INFO
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">zookeeper.tracelog.dir=/logs
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">zookeeper.tracelog.file=zookeeper_trace.log
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># ZooKeeper Logging Configuration
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># Format is &#34;&lt;default threshold&gt; (, &lt;appender&gt;)+
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># DEFAULT: console appender only
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.rootLogger=${zookeeper.root.logger}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># Example with rolling log file
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#log4j.rootLogger=DEBUG, CONSOLE, ROLLINGFILE
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># Example with rolling log file and tracing
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#log4j.rootLogger=TRACE, CONSOLE, ROLLINGFILE, TRACEFILE
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># Log INFO level and above messages to the console
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.appender.CONSOLE.Threshold=${zookeeper.console.threshold}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.appender.CONSOLE.layout=org.apache.log4j.PatternLayout
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.appender.CONSOLE.layout.ConversionPattern=%d{ISO8601} [myid:%X{myid}] - %-5p [%t:%C{1}@%L] - %m%n
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># Add ROLLINGFILE to rootLogger to get log file output
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># Log DEBUG level and above messages to a log file
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.appender.ROLLINGFILE=org.apache.log4j.RollingFileAppender
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.appender.ROLLINGFILE.Threshold=${zookeeper.log.threshold}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.appender.ROLLINGFILE.File=${zookeeper.log.dir}/${zookeeper.log.file}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># Max log file size of 10MB
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.appender.ROLLINGFILE.MaxFileSize=10MB
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># uncomment the next line to limit number of backup files
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.appender.ROLLINGFILE.MaxBackupIndex=5
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.appender.ROLLINGFILE.layout=org.apache.log4j.PatternLayout
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.appender.ROLLINGFILE.layout.ConversionPattern=%d{ISO8601} [myid:%X{myid}] - %-5p [%t:%C{1}@%L] - %m%n
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># Add TRACEFILE to rootLogger to get log file output
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># Log DEBUG level and above messages to a log file
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.appender.TRACEFILE=org.apache.log4j.FileAppender
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.appender.TRACEFILE.Threshold=TRACE
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.appender.TRACEFILE.File=${zookeeper.tracelog.dir}/${zookeeper.tracelog.file}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.appender.TRACEFILE.layout=org.apache.log4j.PatternLayout
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">### Notice we are including log4j&#39;s NDC here (%x)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log4j.appender.TRACEFILE.layout.ConversionPattern=%d{ISO8601} [myid:%X{myid}] - %-5p [%t:%C{1}@%L][%x] - %m%n
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>配置zk配置文件
+</span></span><span style="display:flex;"><span>$ mkdir -p /data/zookeeper/conf <span style="color:#f92672">&amp;&amp;</span> cat &gt; /data/zookeeper/conf/zoo.cfg <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">dataDir=/data
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">dataLogDir=/datalog
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">tickTime=2000
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">initLimit=30000
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">syncLimit=10
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">autopurge.snapRetainCount=10
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">autopurge.purgeInterval=1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">maxClientCnxns=2000
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">maxSessionTimeout=60000000
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">preAllocSize=131072
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">snapCount=3000000
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">admin.enableServer=true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">leaderServes=yes
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">standaloneEnabled=false
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">dynamicConfigFile=/conf/dynamic/dynamic.cfg
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>$ mkdir -p /data/zookeeper/conf/dynamic/ <span style="color:#f92672">&amp;&amp;</span> cat &gt; /data/zookeeper/conf/dynamic/dynamic.cfg <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">server.1=zookeeper01:2888:3888;2181
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">server.2=zookeeper02:2888:3888;2181
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">server.3=zookeeper03:2888:3888;2181
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h2 id="3-配置-clickhouse-clickhouse01clickhouse02clickhouse03clickhouse04clickhouse05clickhouse06">3. 配置 clickhouse [clickhouse01,clickhouse02,clickhouse03,clickhouse04,clickhouse05,clickhouse06]</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ mkdir -p /data/clickhouse/<span style="color:#f92672">{</span>logs,conf,data<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>$ mkdir -p /data/clickhouse/ <span style="color:#f92672">&amp;&amp;</span> cat &gt; /data/clickhouse/docker-compose.yml <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">version: &#39;3&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">services:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  clickhouse:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    image: clickhouse/clickhouse-server:22.6.8.35
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    container_name: clickhouse
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    network_mode: &#34;host&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    restart: unless-stopped
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    volumes:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - /etc/localtime:/etc/localtime
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - /data/clickhouse/config:/etc/clickhouse-server
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - /data/clickhouse/data:/var/lib/clickhouse:rw
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - /data/clickhouse/logs:/var/log/clickhouse-server/
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ports:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - &#34;8123:8123&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - &#34;9000:9000&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    extra_hosts:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - &#34;clickhouse01:172.20.0.101&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - &#34;clickhouse02:172.20.0.102&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - &#34;clickhouse03:172.20.0.103&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - &#34;clickhouse04:172.20.0.104&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - &#34;clickhouse05:172.20.0.105&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - &#34;clickhouse06:172.20.0.106&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    environment:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      TZ: Asia/Shanghai
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    deploy:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      replicas: 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      resources:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        limits:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          cpus: &#39;3&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          memory: 7G
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        reservations:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          cpus: &#39;2&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          memory: 5G
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ulimits:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     nproc: 65535
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     nofile:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      soft: 262144
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      hard: 262144
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>获取clickhouse初始配置文件
+</span></span><span style="display:flex;"><span>$ sed -i <span style="color:#e6db74">&#39;10,12s/^/#/g&#39;</span> /data/clickhouse/docker-compose.yml <span style="color:#f92672">&amp;&amp;</span> cd /data/clickhouse/ <span style="color:#f92672">&amp;&amp;</span> docker-compose up -d <span style="color:#f92672">&amp;&amp;</span> docker cp clickhouse:/etc/clickhouse-server /data/clickhouse/ <span style="color:#f92672">&amp;&amp;</span> cp -rf /data/clickhouse/clickhouse-server/* /data/clickhouse/conf/ <span style="color:#f92672">&amp;&amp;</span> sed -i <span style="color:#e6db74">&#39;10,12s/#//g&#39;</span> /data/clickhouse/docker-compose.yml <span style="color:#f92672">&amp;&amp;</span> mkdir -p /data/clickhouse/data/access
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>获取hash密码
+</span></span><span style="display:flex;"><span>$ PASSWORD<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>base64 &lt; /dev/urandom | head -c8<span style="color:#66d9ef">)</span>; echo <span style="color:#e6db74">&#34;</span>$PASSWORD<span style="color:#e6db74">&#34;</span>; echo -n <span style="color:#e6db74">&#34;</span>$PASSWORD<span style="color:#e6db74">&#34;</span> | sha1sum | tr -d <span style="color:#e6db74">&#39;-&#39;</span> | xxd -r -p | sha1sum | tr -d <span style="color:#e6db74">&#39;-&#39;</span>
+</span></span><span style="display:flex;"><span>    cDT5wFrx
+</span></span><span style="display:flex;"><span>    f6a392ac568149ec022d3660906492d520023e15
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ sed -i <span style="color:#e6db74">&#39;/&lt;remote_servers&gt;/i\    &lt;![CDATA[&#39;</span> /data/clickhouse/config/config.xml
+</span></span><span style="display:flex;"><span>$ sed -i <span style="color:#e6db74">&#39;/&lt;\/remote_servers&gt;/a\    ]]&gt;&#39;</span> /data/clickhouse/config/config.xml
+</span></span><span style="display:flex;"><span>$ sed -i <span style="color:#e6db74">&#39;s@&lt;password&gt;&lt;/password&gt;@&lt;password_double_sha1_hex&gt;f6a392ac568149ec022d3660906492d520023e15&lt;/password_double_sha1_hex&gt;@g&#39;</span> /data/clickhouse/config/users.xml
+</span></span><span style="display:flex;"><span>$ sed -i <span style="color:#e6db74">&#39;/&lt;timezone&gt;UTC&lt;\/timezone&gt;/i\    &lt;timezone&gt;Asia\/Shanghai&lt;\/timezone&gt;&#39;</span> /data/clickhouse/config/config.xml
+</span></span><span style="display:flex;"><span>$ sed -i <span style="color:#e6db74">&#39;/&lt;listen_host&gt;0.0.0.0&lt;\/listen_host&gt;/d&#39;</span> /data/clickhouse/config/config.d/docker_related_config.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ sed -i <span style="color:#e6db74">&#39;s@&lt;max_concurrent_queries&gt;100&lt;/max_concurrent_queries&gt;@&lt;max_concurrent_queries&gt;150&lt;/max_concurrent_queries&gt;@g&#39;</span> /data/clickhouse/config/config.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>日志级别，可以根据自己需要修改<span style="color:#f92672">[</span>none,fatal,critical,error,warning,notice,information,debug,trace,test<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>$ sed -i <span style="color:#e6db74">&#39;s@&lt;level&gt;trace&lt;/level&gt;@&lt;level&gt;notice&lt;/level&gt;@g&#39;</span> /data/clickhouse/config/config.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>zookeeper信息配置
+</span></span><span style="display:flex;"><span>$ cat &gt; /data/clickhouse/config/config.d/zookeeper.xml <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;!-- zookeeper相关配置 --&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;zookeeper&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;node index=&#34;1&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;host&gt;172.20.0.201&lt;/host&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;port&gt;2181&lt;/port&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;/node&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;node index=&#34;2&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;host&gt;172.20.0.202&lt;/host&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;port&gt;2181&lt;/port&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;/node&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;node index=&#34;3&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;host&gt;172.20.0.203&lt;/host&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;port&gt;2181&lt;/port&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;/node&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;session_timeout_ms&gt;30000&lt;/session_timeout_ms&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;operation_timeout_ms&gt;10000&lt;/operation_timeout_ms&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/zookeeper&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>集群配置
+</span></span><span style="display:flex;"><span>cat &gt; /data/clickhouse/config/config.d/cluster01.xml <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;!-- /etc/clickhouse-server/config.xml 中配置的remote_servers的incl属性值，--&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;remote_servers&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;!-- 集群名称，可以修改 --&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;cluster01&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          &lt;!-- 配置两个分片，每个分片对应两台机器，为每个分片配置两个副本 --&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          &lt;shard&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">               &lt;internal_replication&gt;true&lt;/internal_replication&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              &lt;replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;host&gt;clickhouse01&lt;/host&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;port&gt;9000&lt;/port&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;user&gt;default&lt;/user&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;password&gt;cDT5wFrx&lt;/password&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              &lt;/replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              &lt;replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;host&gt;clickhouse05&lt;/host&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;port&gt;9000&lt;/port&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;user&gt;default&lt;/user&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;password&gt;cDT5wFrx&lt;/password&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              &lt;/replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          &lt;/shard&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          &lt;shard&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              &lt;internal_replication&gt;true&lt;/internal_replication&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              &lt;replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;host&gt;clickhouse02&lt;/host&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;port&gt;9000&lt;/port&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;user&gt;default&lt;/user&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;password&gt;cDT5wFrx&lt;/password&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              &lt;/replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              &lt;replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;host&gt;clickhouse06&lt;/host&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;port&gt;9000&lt;/port&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;user&gt;default&lt;/user&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;password&gt;cDT5wFrx&lt;/password&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              &lt;/replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          &lt;/shard&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          &lt;shard&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              &lt;internal_replication&gt;true&lt;/internal_replication&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              &lt;replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;host&gt;clickhouse03&lt;/host&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;port&gt;9000&lt;/port&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;user&gt;default&lt;/user&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;password&gt;cDT5wFrx&lt;/password&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              &lt;/replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              &lt;replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;host&gt;clickhouse04&lt;/host&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;port&gt;9000&lt;/port&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;user&gt;default&lt;/user&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  &lt;password&gt;cDT5wFrx&lt;/password&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              &lt;/replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          &lt;/shard&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;/cluster01&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/remote_servers&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>新增用户ec2
+</span></span><span style="display:flex;"><span>$ PASSWORD<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>base64 &lt; /dev/urandom | head -c8<span style="color:#66d9ef">)</span>; echo <span style="color:#e6db74">&#34;</span>$PASSWORD<span style="color:#e6db74">&#34;</span>; echo -n <span style="color:#e6db74">&#34;</span>$PASSWORD<span style="color:#e6db74">&#34;</span> | sha1sum | tr -d <span style="color:#e6db74">&#39;-&#39;</span> | xxd -r -p | sha1sum | tr -d <span style="color:#e6db74">&#39;-&#39;</span>
+</span></span><span style="display:flex;"><span>    Wtk5nhfI
+</span></span><span style="display:flex;"><span>    3fc1db3fa96102d407b21270d7a21bdad6cec744
+</span></span><span style="display:flex;"><span>$ cat &gt; /data/clickhouse/config/users.d/ec2.xml <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;?xml version=&#34;1.0&#34;?&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;clickhouse&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;profiles&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;ec2&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;!-- 单次查询最大使用内存 Maximum memory usage for processing single query, in bytes. --&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;max_memory_usage&gt;10000000000&lt;/max_memory_usage&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;!-- 当分组操作占用超xx时,缓存到磁盘,建议内存一半--&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;max_bytes_before_external_group_by&gt;5000000000&lt;/max_bytes_before_external_group_by&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;!-- 当排序操作占用超xx时,缓存到磁盘,建议内存一半--&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;max_bytes_before_external_sort&gt;5000000000&lt;/max_bytes_before_external_sort&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;!-- 单个用户可用最大内存 --&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;max_memory_usage_for_user&gt;0&lt;/max_memory_usage_for_user&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;!-- 所有查询可用最大内存 --&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;max_memory_usage_for_all_queries&gt;0&lt;/max_memory_usage_for_all_queries&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;connections_with_failover_max_tries&gt;5&lt;/connections_with_failover_max_tries&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;connect_timeout_with_failover_ms&gt;1000&lt;/connect_timeout_with_failover_ms&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;max_concurrent_queries&gt;300&lt;/max_concurrent_queries&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;/ec2&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/profiles&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;quotas&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;ec2&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;interval&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &lt;duration&gt;3600&lt;/duration&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &lt;queries&gt;0&lt;/queries&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &lt;errors&gt;0&lt;/errors&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &lt;result_rows&gt;0&lt;/result_rows&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &lt;read_rows&gt;0&lt;/read_rows&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &lt;execution_time&gt;0&lt;/execution_time&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;/interval&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;/ec2&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/quotas&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;users&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;ec2&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;profile&gt;default&lt;/profile&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;networks incl=&#34;networks&#34; replace=&#34;replace&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &lt;ip&gt;::/0&lt;/ip&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;/networks&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;quota&gt;ec2&lt;/quota&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;allow_databases&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &lt;database&gt;ec2&lt;/database&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;/allow_databases&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;password_double_sha1_hex&gt;3fc1db3fa96102d407b21270d7a21bdad6cec744&lt;/password_double_sha1_hex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;access_management&gt;1&lt;/access_management&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;/ec2&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/users&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/clickhouse&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ cat &gt; /data/clickhouse/config/config.d/prometheus.xml <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;prometheus&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &lt;endpoint&gt;/metrics&lt;/endpoint&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &lt;port&gt;9363&lt;/port&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &lt;metrics&gt;true&lt;/metrics&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &lt;events&gt;true&lt;/events&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &lt;asynchronous_metrics&gt;true&lt;/asynchronous_metrics&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &lt;status_info&gt;true&lt;/status_info&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;/prometheus&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h2 id="4-主机差异配置-clickhouse01clickhouse02clickhouse03clickhouse04clickhouse05clickhouse06">4. 主机差异配置 [clickhouse01,clickhouse02,clickhouse03,clickhouse04,clickhouse05,clickhouse06]</h2>
+<p><strong>clickhouse01 配置</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sed -i <span style="color:#e6db74">&#39;s@&lt;interserver_http_host&gt;example.clickhouse.com&lt;/interserver_http_host&gt;@&lt;interserver_http_host&gt;clickhouse01&lt;/interserver_http_host&gt;@g&#39;</span> /data/clickhouse/config/config.xml
+</span></span><span style="display:flex;"><span>$ cat &gt; /data/clickhouse/config/config.d/node.xml <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;macros&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;layer&gt;01&lt;/layer&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;shard&gt;01&lt;/shard&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;replica&gt;cluster01-01-01&lt;/replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/macros&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;networks&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     &lt;ip&gt;::/0&lt;/ip&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/networks&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;clickhouse_compression&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;case&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;min_part_size&gt;10000000000&lt;/min_part_size&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;min_part_size_ratio&gt;0.01&lt;/min_part_size_ratio&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;method&gt;lz4&lt;/method&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;/case&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/clickhouse_compression&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><p><strong>clickhouse02 配置</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sed -i <span style="color:#e6db74">&#39;s@&lt;interserver_http_host&gt;example.clickhouse.com&lt;/interserver_http_host&gt;@&lt;interserver_http_host&gt;clickhouse02&lt;/interserver_http_host&gt;@g&#39;</span> /data/clickhouse/config/config.xml
+</span></span><span style="display:flex;"><span>$ cat &gt; /data/clickhouse/config/config.d/node.xml <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;macros&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;layer&gt;01&lt;/layer&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;shard&gt;02&lt;/shard&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;replica&gt;cluster01-02-01&lt;/replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/macros&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;networks&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     &lt;ip&gt;::/0&lt;/ip&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/networks&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;clickhouse_compression&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;case&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;min_part_size&gt;10000000000&lt;/min_part_size&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;min_part_size_ratio&gt;0.01&lt;/min_part_size_ratio&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;method&gt;lz4&lt;/method&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;/case&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/clickhouse_compression&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><p><strong>clickhouse03 配置</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sed -i <span style="color:#e6db74">&#39;s@&lt;interserver_http_host&gt;example.clickhouse.com&lt;/interserver_http_host&gt;@&lt;interserver_http_host&gt;clickhouse03&lt;/interserver_http_host&gt;@g&#39;</span> /data/clickhouse/config/config.xml
+</span></span><span style="display:flex;"><span>$ cat &gt; /data/clickhouse/config/config.d/node.xml <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;macros&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;layer&gt;01&lt;/layer&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;shard&gt;03&lt;/shard&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;replica&gt;cluster01-03-01&lt;/replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/macros&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;networks&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     &lt;ip&gt;::/0&lt;/ip&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/networks&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;clickhouse_compression&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;case&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;min_part_size&gt;10000000000&lt;/min_part_size&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;min_part_size_ratio&gt;0.01&lt;/min_part_size_ratio&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;method&gt;lz4&lt;/method&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;/case&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/clickhouse_compression&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><p><strong>clickhouse04 配置</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sed -i <span style="color:#e6db74">&#39;s@&lt;interserver_http_host&gt;example.clickhouse.com&lt;/interserver_http_host&gt;@&lt;interserver_http_host&gt;clickhouse04&lt;/interserver_http_host&gt;@g&#39;</span> /data/clickhouse/config/config.xml
+</span></span><span style="display:flex;"><span>$ cat &gt; /data/clickhouse/config/config.d/node.xml <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;macros&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;layer&gt;01&lt;/layer&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;shard&gt;03&lt;/shard&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;replica&gt;cluster01-03-02&lt;/replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/macros&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;networks&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     &lt;ip&gt;::/0&lt;/ip&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/networks&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;clickhouse_compression&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;case&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;min_part_size&gt;10000000000&lt;/min_part_size&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;min_part_size_ratio&gt;0.01&lt;/min_part_size_ratio&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;method&gt;lz4&lt;/method&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;/case&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/clickhouse_compression&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><p>clickhouse05 配置</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sed -i <span style="color:#e6db74">&#39;s@&lt;interserver_http_host&gt;example.clickhouse.com&lt;/interserver_http_host&gt;@&lt;interserver_http_host&gt;clickhouse05&lt;/interserver_http_host&gt;@g&#39;</span> /data/clickhouse/config/config.xml
+</span></span><span style="display:flex;"><span>$ cat &gt; /data/clickhouse/config/config.d/node.xml <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;macros&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;layer&gt;01&lt;/layer&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;shard&gt;01&lt;/shard&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;replica&gt;cluster01-01-02&lt;/replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/macros&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;networks&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     &lt;ip&gt;::/0&lt;/ip&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/networks&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;clickhouse_compression&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;case&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;min_part_size&gt;10000000000&lt;/min_part_size&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;min_part_size_ratio&gt;0.01&lt;/min_part_size_ratio&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;method&gt;lz4&lt;/method&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;/case&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/clickhouse_compression&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><p>clickhouse06 配置</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sed -i <span style="color:#e6db74">&#39;s@&lt;interserver_http_host&gt;example.clickhouse.com&lt;/interserver_http_host&gt;@&lt;interserver_http_host&gt;clickhouse06&lt;/interserver_http_host&gt;@g&#39;</span> /data/clickhouse/config/config.xml
+</span></span><span style="display:flex;"><span>$ cat &gt; /data/clickhouse/config/config.d/node.xml <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;macros&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;layer&gt;01&lt;/layer&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;shard&gt;02&lt;/shard&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;replica&gt;cluster01-02-02&lt;/replica&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/macros&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;networks&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">     &lt;ip&gt;::/0&lt;/ip&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/networks&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;clickhouse_compression&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;case&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;min_part_size&gt;10000000000&lt;/min_part_size&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;min_part_size_ratio&gt;0.01&lt;/min_part_size_ratio&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &lt;method&gt;lz4&lt;/method&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &lt;/case&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/clickhouse_compression&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/yandex&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h2 id="5-启动-zookeeper-zookeeper01zookeeper02zookeeper03">5. 启动 zookeeper [zookeeper01,zookeeper02,zookeeper03]</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ cd /data/zookeeper <span style="color:#f92672">&amp;&amp;</span> docker-compose up -d
+</span></span><span style="display:flex;"><span>查看节点角色
+</span></span><span style="display:flex;"><span>$ docker exec zookeeper zkServer.sh status
+</span></span></code></pre></div><h2 id="6-启动-clickhouse-clickhouse01clickhouse02clickhouse03clickhouse04clickhouse05clickhouse06">6. 启动 clickhouse [clickhouse01,clickhouse02,clickhouse03,clickhouse04,clickhouse05,clickhouse06]</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ cd /data/clickhouse <span style="color:#f92672">&amp;&amp;</span> docker-compose up -d
+</span></span><span style="display:flex;"><span>查看节点角色
+</span></span><span style="display:flex;"><span>$ docker exec clickhouse clickhouse-client -m --port <span style="color:#ae81ff">9000</span>  -u default --password cDT5wFrx --query  <span style="color:#e6db74">&#34;select * from system.clusters where cluster = &#39;cluster01&#39;;&#34;</span>
+</span></span><span style="display:flex;"><span>为集群添加数据库
+</span></span><span style="display:flex;"><span>$ docker exec clickhouse clickhouse-client -m --port <span style="color:#ae81ff">9000</span>  -u default --password UEXRrtUd --receive_timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>  --query <span style="color:#e6db74">&#34;create database allposs;&#34;</span>
+</span></span></code></pre></div><h1 id="结束">结束</h1>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-主机配置-所有节点">1. 主机配置 [所有节点]</a>
+      <ul>
+        <li><a href="#2-配置-docker-可选">2. 配置 docker &lt;可选&gt;</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-配置-zookeeper-zookeeper01zookeeper02zookeeper03">3. 配置 zookeeper [zookeeper01,zookeeper02,zookeeper03]</a></li>
+    <li><a href="#3-配置-clickhouse-clickhouse01clickhouse02clickhouse03clickhouse04clickhouse05clickhouse06">3. 配置 clickhouse [clickhouse01,clickhouse02,clickhouse03,clickhouse04,clickhouse05,clickhouse06]</a></li>
+    <li><a href="#4-主机差异配置-clickhouse01clickhouse02clickhouse03clickhouse04clickhouse05clickhouse06">4. 主机差异配置 [clickhouse01,clickhouse02,clickhouse03,clickhouse04,clickhouse05,clickhouse06]</a></li>
+    <li><a href="#5-启动-zookeeper-zookeeper01zookeeper02zookeeper03">5. 启动 zookeeper [zookeeper01,zookeeper02,zookeeper03]</a></li>
+    <li><a href="#6-启动-clickhouse-clickhouse01clickhouse02clickhouse03clickhouse04clickhouse05clickhouse06">6. 启动 clickhouse [clickhouse01,clickhouse02,clickhouse03,clickhouse04,clickhouse05,clickhouse06]</a></li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer class="footer">
+    <div class="copyright">
+        
+        
+        © Powered by <a href="https://github.com/allposs/Axis-Hugo-Theme.git">Axis-Hugo-Theme</a> and <a href="https://gohugo.io">Hugo</a> | 2022 - 2023
+        
+    </div>
+</footer>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NBF4J7F6RW"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-NBF4J7F6RW', { 'anonymize_ip': false });
+}
+</script>
+
+
+<script async src="https://blog.allposs.com/js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+</body>
+
+</html>

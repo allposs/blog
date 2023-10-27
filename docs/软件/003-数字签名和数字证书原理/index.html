@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://blog.allposs.com/img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>数字签名和数字证书原理 - allposs博客</title>
+    <meta property="og:title" content="数字签名和数字证书原理 - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://blog.allposs.com/css/style.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/fonts.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../" aria-label="个人博客">
+                <img src="https://blog.allposs.com/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../docs/"  aria-current="page" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs/" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>数字签名和数字证书原理</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2020-01-05
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                证书
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                安全
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                记录
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<h3 id="说明"><strong>说明</strong></h3>
+<pre><code>    在工作中，我们经常会遇到各种证书问题，如k8s,etcd,openstack等服务时，我们往往都要使用证书，本文将使用CFSSL工具快速简单的配置证书。这里将生成三种证书包含客户端证书，服务端证书，双向证书。
+</code></pre>
+<ul>
+<li>client certificate： 用于服务端认证客户端,例如etcdctl、etcd proxy、fleetctl、docker客户端</li>
+<li>server certificate: 服务端使用，客户端以此验证服务端身份,例如docker服务端、kube-apiserver</li>
+<li>peer certificate:   双向证书，用于etcd集群成员间通信
+在证书使用场景方面，双向证书一般使用server与client证书，而单向一般使用peer证书，不做校验的就也是使用peer证书。</li>
+</ul>
+<h3 id="引用"><strong>引用</strong></h3>
+<p><a href="https://www.ibm.com/support/knowledgecenter/zh/SSBLQQ_9.0.1/com.ibm.rational.test.lt.doc/topics/ccertcreate.html">《数字证书概述》</a></p>
+<h1 id="正文">正文</h1>
+<h2 id="1-概述">1. 概述</h2>
+<pre><code>    在密码学中，公用密钥证书是使用数字签名将公用密钥与物理身份绑定在一起的文档。 这些证书通常称为数字证书或客户机数字证书。数字证书最常用的标准为 X.509 标准。
+    在公用密钥密码学中，每个证书都有两个关联的密钥：公用密钥和专用密钥。公用密钥合并到 X.509 证书中，并且始终随证书本身一起提供。专用密钥始终由私人保管（这意味着它从不进行传输）。为了便于移植，这两个密钥（和证书）可包含在一个已加密并受口令保护的格式中，该格式称为 PKCS#12。
+    为了验证证书的真实性，它由另一个证书（称为认证中心 (CA)）进行数字签名。 该 CA 证书可以是由托管安全应用程序的公司创建（并确保安全）的证书，或者可由某个公司（例如 Verision）创建。
+    当 Web 应用程序需要数字证书时，管理员通常为每个授权用户创建数字证书。管理员使用系统 CA 证书以数字方式签署每个证书。这些证书以及公用密钥和专用密钥都将分发给用户。通常，这些密钥将以 PKCS#12 格式进行分发。然后，用户将这些证书导入到其 Web 浏览器中。当服务器质询浏览器时，浏览器将生成其证书。
+    为 Web 应用程序导入证书时，选择指示密钥应当可导出的复选框。通过该指示，可将证书导出为 PKCS#12 格式的文件，以便将来由其他程序使用。
+    请勿将分配给实际用户的证书用于执行性能测试。请使用不对应于实际用户的测试证书。
+    有四种类型的证书可在测试中使用：
+        + 自签名证书
+        + 签名证书
+        + 认证中心 (CA) 证书
+        + 未签名证书（很少使用）
+    当不需要任何实体为证书的真实性进行担保时，将使用自签名证书。这些是可创建和使用的最简单证书。但是，通常会使用签名证书来代表特定用户。
+    当需要为恰好一个用户创建证书并向其发放该证书时，将使用签名证书。签名证书由认证中心 (CA) 签署。
+    认证中心 (CA) 证书是用于签署（认证）证书的自签名证书。
+    未签名证书是既未由 CA 签署也不是自签署的证书。大多数 Web 应用程序都不使用未签名证书。
+    创建自签名或签名证书（包括 CA 证书）时，可指定主题。证书的主题是证书中编码的 X.500 专有名称的属性集合。该主题使证书的接收方能够查看关于证书所有者的信息。 主题描述了证书所有者，但不一定是唯一的。可将主题视为电话簿中的条目；对于 Patel Agrawal 可能会存在多个条目，但每个条目指的是不同的人。
+    主题可包含许多不同类型的识别数据。通常，主题包含以下内容：
+</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">属性</th>
+<th style="text-align:center">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">公共名称 (CN)</td>
+<td style="text-align:center">CN=Patel Agrawal</td>
+</tr>
+<tr>
+<td style="text-align:center">组织 (O)</td>
+<td style="text-align:center">O=IBM Corporation</td>
+</tr>
+<tr>
+<td style="text-align:center">组织单元 (OU)</td>
+<td style="text-align:center">OU=IBM Software Group</td>
+</tr>
+<tr>
+<td style="text-align:center">国家或地区 (C)</td>
+<td style="text-align:center">C=IN</td>
+</tr>
+<tr>
+<td style="text-align:center">区域 (L)</td>
+<td style="text-align:center">L=Bangalore</td>
+</tr>
+<tr>
+<td style="text-align:center">州或省 (ST)</td>
+<td style="text-align:center">ST=Kanataka</td>
+</tr>
+<tr>
+<td style="text-align:center">电子邮件地址 (emailAddress)</td>
+<td style="text-align:center"><a href="mailto:emailAddress=agrawal@abc.ibm.com">emailAddress=agrawal@abc.ibm.com</a></td>
+</tr>
+</tbody>
+</table>
+<pre><code>    该信息可以输入为一个字符串，并使用正斜杠来分隔数据。例如，上述主题将按如下所示输入：
+/CN=Patel Agrawal/O=IBM Corporation/OU=IBM Software Group/C=IN/L=Bangalore/ST=Karnataka/emailAddress=agrawal@abc.ibm.com
+</code></pre>
+<h2 id="2-什么是x509证书链">2. 什么是x509证书链</h2>
+<pre><code>    x509证书一般会用到三类文件，key，csr，crt。
+    Key是私用密钥，openssl格式，通常是rsa算法。
+    csr是证书请求文件，用于申请证书。在制作csr文件的时候，必须使用自己的私钥来签署申请，还可以设定一个密钥。
+    crt是CA认证后的证书文件（windows下面的csr，其实是crt），签署人用自己的key给你签署的凭证。
+</code></pre>
+<h2 id="3-概念">3. 概念</h2>
+<h3 id="1-双向认证"><strong>1. 双向认证</strong></h3>
+<pre><code>    客户端向服务器发送消息，首先把消息用客户端证书加密然后连同时把客户端证书一起发送到服务器端，服务器接到消息后用首先用客户端证书把消息解密，然后用服务器私钥把消息加密，把服务器证书和消息一起发送到客户端，客户端用发来的服务器证书对消息进行解密，然后用服务器的证书对消息加密，然后在用客户端的证书对消息在进行一次加密，连同加密消息和客户端证书一起发送到服务器端，到服务器端首先用客户端传来的证书对消息进行解密，确保消息是这个客户发来的，然后用服务器端的私钥对消息在进行解密这个便得到了明文数据。
+</code></pre>
+<p> </p>
+<h3 id="2-单向认证"><strong>2. 单向认证</strong></h3>
+<pre><code>    客户端向服务器发送消息，服务器接到消息后，用服务器端的密钥库中的私钥对数据进行加密，然后把加密后的数据和服务器端的公钥一起发送到客户端，客户端用服务器发送来的公钥对数据解密，然后在用传到客户端的服务器公钥对数据加密传给服务器端，服务器用私钥对数据进行解密，这就完成了客户端和服务器之间通信的安全问题，但是单向认证没有验证客户端的合法性。
+    首先要有一个CA根证书，然后用CA根证书来签发用户证书。
+    用户进行证书申请：一般先生成一个私钥，然后用私钥生成证书请求(证书请求里应含有公钥信息)，再利用证书服务器的CA根证书来签发证书。
+    特别说明:
+        +（1）自签名证书(一般用于顶级证书、根证书): 证书的名称和认证机构的名称相同.
+        +（2）根证书：根证书是CA认证中心给自己颁发的证书,是信任链的起始点。任何安装CA根证书的服务器都意味着对这个CA认证中心是信任的。
+    数字证书则是由证书认证机构（CA）对证书申请者真实身份验证之后，用CA的根证书对申请人的一些基本信息以及申请人的公钥进行签名（相当于加盖发证书机构的公章）后形成的一个数字文件。数字证书包含证书中所标识的实体的公钥（就是说你的证书里有你的公钥），由于证书将公钥与特定的个人匹配，并且该证书的真实性由颁发机构保证（就是说可以让大家相信你的证书是真的），因此，数字证书为如何找到用户的公钥并知道它是否有效这一问题提供了解决方案。
+    openssl中有如下后缀名的文件
+        + .key格式：私有的密钥
+        + .csr格式：证书签名请求（证书请求文件），含有公钥信息，certificate signing request的缩写
+        + .crt格式：证书文件，certificate的缩写
+        + .crl格式：证书吊销列表，Certificate Revocation List的缩写
+        + .pem格式：用于导出，导入证书时候的证书的格式，有证书开头，结尾的格式
+</code></pre>
+<h2 id="4-ca根证书的生成步骤">4. CA根证书的生成步骤</h2>
+<pre><code>    生成CA私钥（.key）--&gt;生成CA证书请求（.csr）--&gt;自签名得到根证书（.crt）（CA给自已颁发的证书）。
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Generate CA private key </span>
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> openssl genrsa -out ca.key <span style="color:#ae81ff">2048</span> 
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Generate CSR </span>
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> openssl req -new -key ca.key -out ca.csr -subj <span style="color:#e6db74">&#34;/C=CN/ST=SHL=ShangHai/O=allposs Personal /OU=allposs/CN=allposs PersonalTester CA/emailAddress=allposs@allposs.com&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Generate Self Signed certificate（CA 根证书）</span>
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> openssl x509 -req -days <span style="color:#ae81ff">365</span> -in ca.csr -signkey ca.key -out ca.crt
+</span></span></code></pre></div><pre><code>    在实际的软件开发工作中，往往服务器就采用这种自签名的方式，因为毕竟找第三方签名机构是要给钱的，也是需要花时间的。
+
+    选项说明：
+        + -new：生成新证书签署请求
+        + -x509：专用于CA生成自签证书
+        + -key：生成请求时用到的私钥文件
+        + -days n：证书的有效期限
+        + -out /PATH/TO/SOMECERTFILE: 证书的保存路径
+        + -subj: 主题描述了证书的用户,格式为：&quot;/C=US/ST=IL/L=Chicago/O=IBM Corporation/OU=IBM Software Group/CN=Rational Performance Tester CA/emailAddress=rpt@abc.ibm.com&quot; （其中C是Country Name，ST是State or Province Name，L是local，O是Organization Name，OU是Organizational Unit Name，CN是Common Name ）
+        + -passout pass:abcdefg: 证书的密码设置为 abcdefg
+</code></pre>
+<h2 id="5-用户证书的生成步骤">5. 用户证书的生成步骤</h2>
+<pre><code>    生成私钥（.key）--&gt;生成证书请求（.csr）--&gt;用CA根证书签名得到证书（.crt）
+</code></pre>
+<h3 id="51-服务器端用户证书"><strong>5.1 服务器端用户证书</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># private key</span>
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> openssl genrsa -des3 -out server.key <span style="color:#ae81ff">2048</span> 
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># generate csr</span>
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> openssl req -new -key server.key -out server.csr -subj <span style="color:#e6db74">&#34;/C=CNST=SH/L=ShangHai/O=allposs Personal/OU=allposs/CN=allpossPersonal Tester CA/emailAddress=allposs@allposs.com&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># generate certificate</span>
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> openssl ca -in server.csr -out server.crt -cert ca.crt -keyfile ca.key 
+</span></span></code></pre></div><h3 id="52-客户端用户证书"><strong>5.2 客户端用户证书</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> openssl genrsa -des3 -out client.key <span style="color:#ae81ff">1024</span> 
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> openssl req -new -key client.key -out client.csr
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> openssl ca -in client.csr -out client.crt -cert ca.crt -keyfile ca.key
+</span></span></code></pre></div><h3 id="53-生成pem格式证书"><strong>5.3 生成pem格式证书</strong></h3>
+<pre><code>    有时需要用到pem格式的证书，可以用以下方式合并证书文件（crt）和私钥文件（key）来生成
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cat client.crt client.key&gt; client.pem
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cat server.crt server.key &gt; server.pem
+</span></span></code></pre></div><pre><code>结果：
+    服务端证书：ca.crt, server.key, server.crt, server.pem
+    客户端证书：ca.crt, client.key, client.crt, client.pem
+</code></pre>
+<h1 id="结束">结束</h1>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#说明"><strong>说明</strong></a></li>
+        <li><a href="#引用"><strong>引用</strong></a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#1-概述">1. 概述</a></li>
+    <li><a href="#2-什么是x509证书链">2. 什么是x509证书链</a></li>
+    <li><a href="#3-概念">3. 概念</a>
+      <ul>
+        <li><a href="#1-双向认证"><strong>1. 双向认证</strong></a></li>
+        <li><a href="#2-单向认证"><strong>2. 单向认证</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#4-ca根证书的生成步骤">4. CA根证书的生成步骤</a></li>
+    <li><a href="#5-用户证书的生成步骤">5. 用户证书的生成步骤</a>
+      <ul>
+        <li><a href="#51-服务器端用户证书"><strong>5.1 服务器端用户证书</strong></a></li>
+        <li><a href="#52-客户端用户证书"><strong>5.2 客户端用户证书</strong></a></li>
+        <li><a href="#53-生成pem格式证书"><strong>5.3 生成pem格式证书</strong></a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer class="footer">
+    <div class="copyright">
+        
+        
+        © Powered by <a href="https://github.com/allposs/Axis-Hugo-Theme.git">Axis-Hugo-Theme</a> and <a href="https://gohugo.io">Hugo</a> | 2022 - 2023
+        
+    </div>
+</footer>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NBF4J7F6RW"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-NBF4J7F6RW', { 'anonymize_ip': false });
+}
+</script>
+
+
+<script async src="https://blog.allposs.com/js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+</body>
+
+</html>

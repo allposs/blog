@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://blog.allposs.com/img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>MAC搭建容器开发环境 - allposs博客</title>
+    <meta property="og:title" content="MAC搭建容器开发环境 - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://blog.allposs.com/css/style.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/fonts.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../../" aria-label="个人博客">
+                <img src="https://blog.allposs.com/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../docs/"  aria-current="page" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs/" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>MAC搭建容器开发环境</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2020-11-13
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                MAC
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                开发环境
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<blockquote>
+<p>在工作中我们往往需要使用容器的相关环境进行测试与开发，这篇文档主要记录了我这边设置容器相关开发的方法，主要使用minikube,docker,vagrant,virtualbox,vscode,brew等软件</p>
+</blockquote>
+<h1 id="环境">环境</h1>
+<pre><code>操作系统:  macOS Catalina
+</code></pre>
+<h1 id="正文">正文</h1>
+<h2 id="1安装xcode-command-line-tools">1.安装Xcode Command Line Tools</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>xcode-select --install
+</span></span></code></pre></div><h2 id="2安装homebrew">2.安装Homebrew</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 安装brew</span>
+</span></span><span style="display:flex;"><span>/bin/bash -c <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 国内用户可以使用gitee加速</span>
+</span></span><span style="display:flex;"><span>/bin/zsh -c <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 卸载方法</span>
+</span></span><span style="display:flex;"><span>/bin/bash -c <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 国内用户</span>
+</span></span><span style="display:flex;"><span>/bin/zsh -c <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/HomebrewUninstall.sh<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><h2 id="3安装相关软件">3.安装相关软件</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew cask install virtualbox
+</span></span><span style="display:flex;"><span>brew cask install vagrant
+</span></span><span style="display:flex;"><span>brew cask install vagrant-manager
+</span></span></code></pre></div><h2 id="4-安装minikube">4. 安装minikube</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Homebrew安装</span>
+</span></span><span style="display:flex;"><span>brew install kubernetes-cli
+</span></span><span style="display:flex;"><span>brew cask install minikube
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 二进制安装</span>
+</span></span><span style="display:flex;"><span>curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64
+</span></span><span style="display:flex;"><span>sudo install minikube-darwin-amd64 /usr/local/bin/minikube
+</span></span></code></pre></div><p>Ps:</p>
+<p>minikube初始化kubernetes集群</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>minikube start --network-plugin<span style="color:#f92672">=</span>cni --driver<span style="color:#f92672">=</span>virtualbox --cni<span style="color:#f92672">=</span>calico --cpus<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>  --memory<span style="color:#f92672">=</span>8g --image-mirror-country cn --docker-env http_proxy<span style="color:#f92672">=</span>http://192.168.99.1:8000 --docker-env https_proxy<span style="color:#f92672">=</span>http://192.168.99.1:8000 --docker-env no_proxy<span style="color:#f92672">=</span>localhost,127.0.0.1,::1,192.168.99.0/24
+</span></span></code></pre></div><h2 id="5-安装golang">5. 安装Golang</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew install go
+</span></span><span style="display:flex;"><span>mkdir -p ~/development/golang/<span style="color:#f92672">{</span>src,bin,pkg<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使用zsh的shell</span>
+</span></span><span style="display:flex;"><span>cat &gt;~/.zshrc<span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#golang
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">export GOPATH=~/development/golang
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">export GO111MODULE=on
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">export GOPROXY=https://goproxy.cn
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h2 id="6-安装kubebuilder">6. 安装kubebuilder</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 可以使用Homebrew安装，但是不建议，因为kubebuilder需要依赖etcd,kube-apiserver,kubectl</span>
+</span></span><span style="display:flex;"><span>brew install kubebuilder
+</span></span><span style="display:flex;"><span>wget https://github.com/kubernetes-sigs/kubebuilder/releases/download/v2.3.1/kubebuilder_2.3.1_darwin_amd64.tar.gz
+</span></span><span style="display:flex;"><span>mkdir -p /usr/local/kubebuilder/2.3.1
+</span></span><span style="display:flex;"><span>tar xf kubebuilder_2.3.1_darwin_amd64.tar.gz -C /usr/local/kubebuilder/2.3.1/
+</span></span><span style="display:flex;"><span>cat &gt;~/.zshrc<span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#kubebuilder
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">export PATH=$PATH:/usr/local/kubebuilder/2.3.1/bin
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h2 id="7安装docker">7.安装docker</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew install cask docker
+</span></span><span style="display:flex;"><span>或
+</span></span><span style="display:flex;"><span>brew install --cask orbstack
+</span></span></code></pre></div><h2 id="8安装vscode">8.安装vscode</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew cask install visual-studio-code
+</span></span></code></pre></div><p>vscode推荐插件：</p>
+<ol>
+<li><code>Beautify</code></li>
+<li><code>Chinese (Simplified) Language Pack for Visual Studio Code</code></li>
+<li><code>Code Runner</code></li>
+<li><code>Comment Translate</code></li>
+<li><code>Docker</code></li>
+<li><code>Docker Compose</code></li>
+<li><code>Docker Explorer</code></li>
+<li><code>ESLint</code></li>
+<li><code>Git History</code></li>
+<li><code>Go</code></li>
+<li><code>Hugo Language and Syntax Support</code></li>
+<li><code>Image preview</code></li>
+<li><code>Insert Date String</code></li>
+<li><code>Jupyter</code></li>
+<li><code>Kubernetes</code></li>
+<li><code>Markdown All in One</code></li>
+<li><code>Markdown Preview Enhanced</code></li>
+<li><code>Monokai++</code></li>
+<li><code>python</code></li>
+<li><code>Vetur</code></li>
+<li><code>Remote Development</code></li>
+<li><code>vscode-icons</code></li>
+<li><code>vue</code></li>
+<li><code>YAML</code></li>
+</ol>
+<p>我的vscode的settings.json
+~/Library/Application Support/Code/User/settings.json</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Editor
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// 字体
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//&#34;editor.fontFamily&#34;: &#34;Menlo, Monaco, &#39;Courier New&#39;, monospace&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;editor.fontFamily&#34;</span>: <span style="color:#e6db74">&#34;&#39;Cascadia Code&#39;, Consolas, &#39;Courier New&#39;, monospace, &#39;苹方-简&#39;, &#39;Sarasa Gothic SC&#39;&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;editor.fontLigatures&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;editor.fontSize&#34;</span>: <span style="color:#ae81ff">16</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//&#34;editor.fontWeight&#34;: &#34;500&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;editor.tabSize&#34;</span>: <span style="color:#ae81ff">4</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//超链接下划线
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;editor.links&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;window.zoomLevel&#34;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;editor.minimap.enabled&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;editor.minimap.maxColumn&#34;</span>: <span style="color:#ae81ff">100</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;editor.detectIndentation&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;editor.wordWrap&#34;</span>: <span style="color:#e6db74">&#34;on&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;editor.renderWhitespace&#34;</span>: <span style="color:#e6db74">&#34;none&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;editor.snippetSuggestions&#34;</span>: <span style="color:#e6db74">&#34;top&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;editor.suggestSelection&#34;</span>: <span style="color:#e6db74">&#34;first&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;editor.renderLineHighlight&#34;</span>: <span style="color:#e6db74">&#34;all&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;editor.quickSuggestions&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;other&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;comments&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;strings&#34;</span>: <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Workbench
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;workbench.statusBar.visible&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;workbench.activityBar.visible&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;workbench.editor.highlightModifiedTabs&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;workbench.sideBar.location&#34;</span>: <span style="color:#e6db74">&#34;right&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;workbench.startupEditor&#34;</span>: <span style="color:#e6db74">&#34;none&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//1.40.0+，自定义 activeBar 颜色
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;workbench.colorCustomizations&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;activityBar.activeBorder&#34;</span>: <span style="color:#e6db74">&#34;#f8bf02&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;activityBar.activeBackground&#34;</span>: <span style="color:#e6db74">&#34;#2f88b4&#34;</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;workbench.colorTheme&#34;</span>: <span style="color:#e6db74">&#34;Monokai&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;workbench.iconTheme&#34;</span>: <span style="color:#e6db74">&#34;vscode-icons&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Window
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;window.titleBarStyle&#34;</span>: <span style="color:#e6db74">&#34;custom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 面包屑导航
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;breadcrumbs.enabled&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;explorer.confirmDelete&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;explorer.confirmDragAndDrop&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;vsicons.dontShowNewVersionMessage&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;files.associations&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;*.vue&#34;</span>: <span style="color:#e6db74">&#34;vue&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;*.wxss&#34;</span>: <span style="color:#e6db74">&#34;css&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;*.wxml&#34;</span>: <span style="color:#e6db74">&#34;html&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;*.ts&#34;</span>: <span style="color:#e6db74">&#34;javascript&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Markdown
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;[markdown]&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;editor.wordWrap&#34;</span>: <span style="color:#e6db74">&#34;on&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;editor.renderWhitespace&#34;</span>: <span style="color:#e6db74">&#34;all&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;editor.quickSuggestions&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;others&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;comments&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;strings&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;editor.acceptSuggestionOnEnter&#34;</span>: <span style="color:#e6db74">&#34;on&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Markdown All in One
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;markdown.extension.toc.updateOnSave&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;markdown.extension.toc.levels&#34;</span>: <span style="color:#e6db74">&#34;2..3&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Markdown Preview Enhanced
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;markdown-preview-enhanced.mermaidTheme&#34;</span>: <span style="color:#e6db74">&#34;default&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;markdown-preview-enhanced.previewTheme&#34;</span>: <span style="color:#e6db74">&#34;atom-dark.css&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;markdown-preview-enhanced.codeBlockTheme&#34;</span>: <span style="color:#e6db74">&#34;monokai.css&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Search
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;search.showLineNumbers&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Go
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;go.goroot&#34;</span>: <span style="color:#e6db74">&#34;/usr/local/Cellar/go/1.15.3/libexec&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.gopath&#34;</span>: <span style="color:#e6db74">&#34;~/development/golang&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 使用 Go Modules 时无需 inferGopath
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;go.inferGopath&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.useLanguageServer&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//自动完成未导入的包
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;go.autocompleteUnimportedPackages&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.gotoSymbol.includeImports&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.gotoSymbol.includeGoroot&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.useCodeSnippetsOnFunctionSuggest&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.useCodeSnippetsOnFunctionSuggestWithoutType&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.lintOnSave&#34;</span>: <span style="color:#e6db74">&#34;file&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.buildOnSave&#34;</span>: <span style="color:#e6db74">&#34;off&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.formatTool&#34;</span>: <span style="color:#e6db74">&#34;goreturns&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.docsTool&#34;</span>: <span style="color:#e6db74">&#34;gogetdoc&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.testFlags&#34;</span>: [
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;-v&#34;</span>
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;go.languageServerExperimentalFeatures&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;diagnostics&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// python
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;python.pythonPath&#34;</span>: <span style="color:#e6db74">&#34;~/.pyenv/versions/3.8.1/bin/python&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Terminal
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//终端
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//&#34;terminal.external.osxExec&#34;: &#34;iTerm.app&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//终端shell
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;terminal.integrated.shell.osx&#34;</span>: <span style="color:#e6db74">&#34;zsh&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//终端字体
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;terminal.integrated.fontFamily&#34;</span>: <span style="color:#e6db74">&#34;Hack Nerd Font&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 代理
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;http.proxyStrictSSL&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;http.proxy&#34;</span>: <span style="color:#e6db74">&#34;http://127.0.0.1:8000&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Git
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;git.ignoreLegacyWarning&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;git.autofetch&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;git.enableSmartCommit&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//dart
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;[dart]&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;editor.formatOnSave&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;editor.formatOnType&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;editor.rulers&#34;</span>: [
+</span></span><span style="display:flex;"><span>            <span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;editor.selectionHighlight&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;editor.suggest.snippetsPreventQuickSuggestions&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;editor.suggestSelection&#34;</span>: <span style="color:#e6db74">&#34;first&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;editor.tabCompletion&#34;</span>: <span style="color:#e6db74">&#34;onlySnippets&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;editor.wordBasedSuggestions&#34;</span>: <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;dart.openDevTools&#34;</span>: <span style="color:#e6db74">&#34;flutter&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;[json]&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;editor.defaultFormatter&#34;</span>: <span style="color:#e6db74">&#34;vscode.json-language-features&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;editor.codeActionsOnSave&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;source.fixAll.eslint&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;vs-kubernetes&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;vs-kubernetes.draft-path.mac&#34;</span>: <span style="color:#e6db74">&#34;~/.vs-kubernetes/tools/draft/darwin-amd64/draft&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;vs-kubernetes.minikube-path.mac&#34;</span>: <span style="color:#e6db74">&#34;~/.vs-kubernetes/tools/minikube/darwin-amd64/minikube&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;vs-kubernetes.helm-path.mac&#34;</span>: <span style="color:#e6db74">&#34;~/.vs-kubernetes/tools/helm/darwin-amd64/helm&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;C_Cpp.updateChannel&#34;</span>: <span style="color:#e6db74">&#34;Insiders&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;code-runner.runInTerminal&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// InsertDateString插件时间格式设置
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;insertDateString.format&#34;</span>: <span style="color:#e6db74">&#34;YYYY-MM-DDThh:mm:ssZZZ&#34;</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="结束">结束</h1>
+<p><a href="https://www.vagrantup.com/docs">vagrant文档</a>
+<a href="https://github.com/kubernetes/minikube">minikube的github</a></p>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1安装xcode-command-line-tools">1.安装Xcode Command Line Tools</a></li>
+    <li><a href="#2安装homebrew">2.安装Homebrew</a></li>
+    <li><a href="#3安装相关软件">3.安装相关软件</a></li>
+    <li><a href="#4-安装minikube">4. 安装minikube</a></li>
+    <li><a href="#5-安装golang">5. 安装Golang</a></li>
+    <li><a href="#6-安装kubebuilder">6. 安装kubebuilder</a></li>
+    <li><a href="#7安装docker">7.安装docker</a></li>
+    <li><a href="#8安装vscode">8.安装vscode</a></li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer class="footer">
+    <div class="copyright">
+        
+        
+        © Powered by <a href="https://github.com/allposs/Axis-Hugo-Theme.git">Axis-Hugo-Theme</a> and <a href="https://gohugo.io">Hugo</a> | 2022 - 2023
+        
+    </div>
+</footer>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NBF4J7F6RW"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-NBF4J7F6RW', { 'anonymize_ip': false });
+}
+</script>
+
+
+<script async src="https://blog.allposs.com/js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+</body>
+
+</html>

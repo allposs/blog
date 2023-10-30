@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://blog.allposs.com/img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>CFSSL制作证书 - allposs博客</title>
+    <meta property="og:title" content="CFSSL制作证书 - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://blog.allposs.com/css/style.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/fonts.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../" aria-label="个人博客">
+                <img src="https://blog.allposs.com/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../docs/"  aria-current="page" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs/" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>CFSSL制作证书</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2020-01-08
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                证书
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                开发
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                搭建
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<blockquote>
+<p>在工作中，我们经常会遇到各种证书问题，如k8s,etcd,openstack等服务时，我们往往都要使用证书，本文将使用CFSSL工具快速简单的配置证书。这里将生成三种证书包含客户端证书，服务端证书，双向证书。</p>
+<ul>
+<li>client certificate： 用于服务端认证客户端,例如etcdctl、etcd proxy、fleetctl、docker客户端</li>
+<li>server certificate: 服务端使用，客户端以此验证服务端身份,例如docker服务端、kube-apiserver</li>
+<li>peer certificate:   双向证书，用于etcd集群成员间通信</li>
+</ul>
+</blockquote>
+<h1 id="环境">环境</h1>
+<pre><code>无
+</code></pre>
+<h1 id="正文">正文</h1>
+<h2 id="1-cfssl安装及基础知识">1. CFSSL安装及基础知识　</h2>
+<pre><code>项目地址： https://github.com/cloudflare/cfssl
+下载地址： https://pkg.cfssl.org/
+CFSSL是CloudFlare开源的一款PKI/TLS工具。 CFSSL 包含一个命令行工具 和一个用于 签名，验证并且捆绑TLS证书的 HTTP API 服务。 使用Go语言编写。
+</code></pre>
+<h2 id="2-安装cfssl">2. 安装cfssl</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$<span style="color:#f92672">)</span>: export CFSSL_URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://pkg.cfssl.org/R1.2&#34;</span>
+</span></span><span style="display:flex;"><span>$<span style="color:#f92672">)</span>: wget <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>CFSSL_URL<span style="color:#e6db74">}</span><span style="color:#e6db74">/cfssl_linux-amd64&#34;</span> -O /usr/bin/cfssl
+</span></span><span style="display:flex;"><span>$<span style="color:#f92672">)</span>: wget <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>CFSSL_URL<span style="color:#e6db74">}</span><span style="color:#e6db74">/cfssljson_linux-amd64&#34;</span> -O /usr/bin/cfssljson
+</span></span><span style="display:flex;"><span>$<span style="color:#f92672">)</span>: wget <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>CFSSL_URL<span style="color:#e6db74">}</span><span style="color:#e6db74">/cfssl-certinfo_linux-amd64&#34;</span> -O /usr/bin/cfssl-certinfo
+</span></span><span style="display:flex;"><span>$<span style="color:#f92672">)</span>: chmod +x /usr/bin/cfssl /usr/bin/cfssljson /usr/bin/cfssl-certinfo <span style="color:#f92672">&amp;&amp;</span> mkdir -p /etc/etcd/ssl <span style="color:#f92672">&amp;&amp;</span> cd /etc/etcd/ssl
+</span></span></code></pre></div><h2 id="3-cfssl常用命令">3. cfssl常用命令：</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">## 初始化ca</span>
+</span></span><span style="display:flex;"><span>$<span style="color:#f92672">)</span>: cfssl gencert -initca ca-csr.json | cfssljson -bare ca 
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## 使用现有私钥, 重新生成</span>
+</span></span><span style="display:flex;"><span>$<span style="color:#f92672">)</span>: cfssl gencert -initca -ca-key key.pem ca-csr.json | cfssljson -bare ca
+</span></span><span style="display:flex;"><span>$<span style="color:#f92672">)</span>: cfssl certinfo -cert ca.pem
+</span></span><span style="display:flex;"><span>$<span style="color:#f92672">)</span>: cfssl certinfo -csr ca.csr
+</span></span></code></pre></div><h2 id="4-创建ca证书">4. 创建CA证书</h2>
+<h3 id="1-输出默认证书配置模板"><strong>1. 输出默认证书配置模板</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cfssl print-defaults config &gt; ca-config.json
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cat ca-config.json
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;signing&#34;</span>: <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;default&#34;</span>: <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;expiry&#34;</span>: <span style="color:#e6db74">&#34;168h&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;profiles&#34;</span>: <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;www&#34;</span>: <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;expiry&#34;</span>: <span style="color:#e6db74">&#34;8760h&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;usages&#34;</span>: <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;signing&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;key encipherment&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;server auth&#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;client&#34;</span>: <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;expiry&#34;</span>: <span style="color:#e6db74">&#34;8760h&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;usages&#34;</span>: <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;signing&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;key encipherment&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;client auth&#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="2-修改证书配置模板"><strong>2. 修改证书配置模板</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#分别配置针对三种不同证书类型的profile,其中有效期43800h为5年</span>
+</span></span><span style="display:flex;"><span>$<span style="color:#f92672">)</span>: cat <span style="color:#e6db74">&lt;&lt;EOF &gt; ca-config.json
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;signing&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;default&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;expiry&#34;: &#34;43800h&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        },
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;profiles&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;server&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &#34;expiry&#34;: &#34;43800h&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &#34;usages&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;signing&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;key encipherment&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;server auth&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                ]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            },
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;client&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &#34;expiry&#34;: &#34;43800h&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &#34;usages&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;signing&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;key encipherment&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;client auth&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                ]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            },
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;peer&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &#34;expiry&#34;: &#34;43800h&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                &#34;usages&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;signing&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;key encipherment&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;server auth&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                    &#34;client auth&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                ]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><p><strong>知识点</strong>:</p>
+<ul>
+<li>ca-config.json：可以定义多个 profiles，如server,client,peer，分别定义不同的过期时间、使用场景等参数；后续在签名证书时使用某个 profile。</li>
+<li>default默认策略，指定了证书的默认有效期是5年(43800h)</li>
+<li>signing：表示该证书可用于签名其它证书；生成的 ca.pem 证书中 CA=TRUE；</li>
+<li>server auth：表示client可以用该CA对server提供的证书进行验证；</li>
+<li>client auth：表示server可以用该CA对client提供的证书进行验证；</li>
+<li>expiry：也表示过期时间，如果不写以default中的为准;</li>
+<li>注意标点符号,标点符号只支持英文，最后一个字段一般是没有逗号（,）的;</li>
+</ul>
+<h3 id="3-输出默认csr请求模板"><strong>3. 输出默认csr请求模板</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cfssl print-defaults csr &gt; ca-csr.json 
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cat ca-csr.json
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;CN&#34;</span>: <span style="color:#e6db74">&#34;example.net&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;hosts&#34;</span>: <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;example.net&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;www.example.net&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;key&#34;</span>: <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;algo&#34;</span>: <span style="color:#e6db74">&#34;ecdsa&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;size&#34;</span>: <span style="color:#ae81ff">256</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;names&#34;</span>: <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;C&#34;</span>: <span style="color:#e6db74">&#34;US&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;L&#34;</span>: <span style="color:#e6db74">&#34;CA&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;ST&#34;</span>: <span style="color:#e6db74">&#34;San Francisco&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="4-修改csr请求模板"><strong>4. 修改csr请求模板</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cat <span style="color:#e6db74">&lt;&lt;EOF &gt; ca-csr.json
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;CN&#34;: &#34;Self Signed CA&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;key&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;algo&#34;: &#34;rsa&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;size&#34;: 2048
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    },
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;names&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;C&#34;: &#34;CN&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;L&#34;: &#34;SH&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;O&#34;: &#34;Netease&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;ST&#34;: &#34;SH&#34;,            
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;OU&#34;: &#34;OT&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        }    ]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><p><strong>知识点</strong></p>
+<ul>
+<li>&ldquo;key&rdquo;：生成证书的算法</li>
+<li>&ldquo;CN&rdquo;：Common Name，kube-apiserver 从证书中提取该字段作为请求的用户名 (User Name),注意浏览器使用该字段验证网站是否合法，一般写的是域名。非常重要。浏览器使用该字段验证网站是否合法</li>
+<li>names：一些其它的属性</li>
+<li>&ldquo;C&rdquo;: Country， 国家</li>
+<li>&ldquo;L&rdquo;: Locality，地区，城市</li>
+<li>&ldquo;O&rdquo;: Organization Name，组织名称，公司名称(在k8s中常用于指定Group，进行RBAC绑定)</li>
+<li>&ldquo;OU&rdquo;&quot;: Organization Unit Name，组织单位名称，公司部门</li>
+<li>&ldquo;ST&rdquo;: State，州，省</li>
+</ul>
+<h3 id="4-生成ca证书和私钥"><strong>4. 生成CA证书和私钥</strong></h3>
+<p>该命令会生成运行CA所必需的文件ca-key.pem（私钥）和ca.pem（证书），还会生成ca.csr（证书签名请求），用于交叉签名或重新签名。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
+</span></span></code></pre></div><h3 id="5-其他"><strong>5. 其他</strong></h3>
+<p>如果CA证书过期，则可以使用下面方法重新生成CA证书</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 使用现有的CA私钥，重新生成： </span>
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cfssl gencert -initca -ca-key ca-key.pem ca-csr.json | cfssljson -bare ca
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使用现有的CA私钥和CA证书，重新生成：</span>
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cfssl gencert -renewca -ca-key ca-key.pem -ca ca.pem  | cfssljson -bare ca
+</span></span></code></pre></div><h2 id="5-签发server证书">5. 签发Server证书</h2>
+<h3 id="1-打印csr模版"><strong>1. 打印csr模版</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cfssl print-defaults csr &gt; server-csr.json
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cat server-csr.json
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;CN&#34;</span>: <span style="color:#e6db74">&#34;example.net&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;hosts&#34;</span>: <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;example.net&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;www.example.net&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;key&#34;</span>: <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;algo&#34;</span>: <span style="color:#e6db74">&#34;ecdsa&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;size&#34;</span>: <span style="color:#ae81ff">256</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;names&#34;</span>: <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;C&#34;</span>: <span style="color:#e6db74">&#34;US&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;L&#34;</span>: <span style="color:#e6db74">&#34;CA&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;ST&#34;</span>: <span style="color:#e6db74">&#34;San Francisco&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="2-修改csr请求模板"><strong>2. 修改csr请求模板</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cat <span style="color:#e6db74">&lt;&lt;EOF &gt; server-csr.json
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;CN&#34;: &#34;Server&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;hosts&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;127.0.0.1&#34;,&#34;172.20.0.201&#34;,&#34;172.20.0.202&#34;,&#34;172.20.0.203&#34;,&#34;172.20.0.2&#34;,&#34;10.0.2.2&#34;,&#34;172.20.0.1&#34;,&#34;10.0.2.1&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ],
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;key&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;algo&#34;: &#34;ecdsa&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;size&#34;: 256
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    },
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;names&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;C&#34;: &#34;CN&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;L&#34;: &#34;SH&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;ST&#34;: &#34;SH&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><p><strong>知识点</strong>:</p>
+<ul>
+<li><code>hosts</code>:表示哪些主机名(域名)或者IP可以使用此csr申请的证书，为空或者&quot;&ldquo;表示所有的都可以使用(本例中没有hosts字段)
+ps</li>
+<li><code>CN</code>字段 kube-apiserver 从证书中提取该字段作为请求的用户名 (User Name)；浏览器使用该字段验证网站是否合法</li>
+<li><code>hosts</code>字段不为空则需要指定授权使用该证书的 IP 或域名列表，如果该证书后续被etcd集群和kubernetes集群使用，则需要分别指定etcd集群、kubernetes集群master的主机IP和kubernetes服务的服务IP（一般是 kue-apiserver 指定的service-cluster-ip-range网段的第一个IP，如 10.254.0.1。方法如：cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=server -hostname=172.20.0.201,172.20.0.202,172.20.0.203 server-csr.json | cfssljson -bare server</li>
+</ul>
+<h3 id="3-生成服务端证书和私钥"><strong>3. 生成服务端证书和私钥</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cfssl gencert -ca<span style="color:#f92672">=</span>ca.pem -ca-key<span style="color:#f92672">=</span>ca-key.pem -config<span style="color:#f92672">=</span>ca-config.json -profile<span style="color:#f92672">=</span>server server-csr.json | cfssljson -bare server
+</span></span></code></pre></div><p>知识点：</p>
+<ul>
+<li>-config 引用的是模板中的默认配置文件;</li>
+<li>-profiles是指定特定的使用场景，比如ca-config.json中的server区域;</li>
+</ul>
+<h2 id="6-签发client-certificate">6. 签发Client Certificate</h2>
+<h3 id="1-打印csr模版-1"><strong>1. 打印csr模版</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cfssl print-defaults csr &gt; client-csr.json
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cat client-csr.json
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;CN&#34;</span>: <span style="color:#e6db74">&#34;example.net&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;hosts&#34;</span>: <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;example.net&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;www.example.net&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;key&#34;</span>: <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;algo&#34;</span>: <span style="color:#e6db74">&#34;ecdsa&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;size&#34;</span>: <span style="color:#ae81ff">256</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;names&#34;</span>: <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;C&#34;</span>: <span style="color:#e6db74">&#34;US&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;L&#34;</span>: <span style="color:#e6db74">&#34;CA&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;ST&#34;</span>: <span style="color:#e6db74">&#34;San Francisco&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="2-修改csr请求模板-1"><strong>2. 修改csr请求模板</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cat <span style="color:#e6db74">&lt;&lt;EOF &gt; client-csr.json
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;CN&#34;: &#34;Client&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;hosts&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ],
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;key&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;algo&#34;: &#34;ecdsa&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;size&#34;: 256
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    },
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;names&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;C&#34;: &#34;CN&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;L&#34;: &#34;SH&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;ST&#34;: &#34;SH&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h3 id="3-生成客户端证书和私钥"><strong>3. 生成客户端证书和私钥</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cfssl gencert -ca<span style="color:#f92672">=</span>ca.pem -ca-key<span style="color:#f92672">=</span>ca-key.pem -config<span style="color:#f92672">=</span>ca-config.json -profile<span style="color:#f92672">=</span>client client-csr.json | cfssljson -bare client
+</span></span></code></pre></div><h2 id="7-签发peer-certificate">7. 签发peer certificate</h2>
+<h3 id="1-打印csr模版-2"><strong>1. 打印csr模版</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cfssl print-defaults csr &gt; peer-csr.json
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cat peer-csr.json
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;CN&#34;</span>: <span style="color:#e6db74">&#34;example.net&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;hosts&#34;</span>: <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;example.net&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;www.example.net&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;key&#34;</span>: <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;algo&#34;</span>: <span style="color:#e6db74">&#34;ecdsa&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;size&#34;</span>: <span style="color:#ae81ff">256</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;names&#34;</span>: <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;C&#34;</span>: <span style="color:#e6db74">&#34;US&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;L&#34;</span>: <span style="color:#e6db74">&#34;CA&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;ST&#34;</span>: <span style="color:#e6db74">&#34;San Francisco&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="2-修改csr请求模板-2"><strong>2. 修改csr请求模板</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cat <span style="color:#e6db74">&lt;&lt;EOF &gt; peer-csr.json
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;CN&#34;: &#34;Peer&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;hosts&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;127.0.0.1&#34;,&#34;172.20.0.201&#34;,&#34;172.20.0.202&#34;,&#34;172.20.0.203&#34;,&#34;172.20.0.2&#34;,&#34;10.0.2.2&#34;,&#34;172.20.0.1&#34;,&#34;10.0.2.1&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ],
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;key&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;algo&#34;: &#34;ecdsa&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;size&#34;: 256
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    },
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;names&#34;: [
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;C&#34;: &#34;CN&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;L&#34;: &#34;SH&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &#34;ST&#34;: &#34;SH&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h4 id="3生成peer证书和私钥">3).生成peer证书和私钥</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> cfssl gencert -ca<span style="color:#f92672">=</span>ca.pem -ca-key<span style="color:#f92672">=</span>ca-key.pem -config<span style="color:#f92672">=</span>ca-config.json -profile<span style="color:#f92672">=</span>peer peer-csr.json | cfssljson -bare peer
+</span></span></code></pre></div><h3 id="8校验证书">8.校验证书</h3>
+<p>校验生成的证书是否和配置相符</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> openssl x509 -in ca.pem -text -noout
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> openssl x509 -in server.pem -text -noout
+</span></span><span style="display:flex;"><span>$:<span style="color:#f92672">)</span> openssl x509 -in client.pem -text -noout
+</span></span></code></pre></div><h1 id="结束">结束</h1>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-cfssl安装及基础知识">1. CFSSL安装及基础知识　</a></li>
+    <li><a href="#2-安装cfssl">2. 安装cfssl</a></li>
+    <li><a href="#3-cfssl常用命令">3. cfssl常用命令：</a></li>
+    <li><a href="#4-创建ca证书">4. 创建CA证书</a>
+      <ul>
+        <li><a href="#1-输出默认证书配置模板"><strong>1. 输出默认证书配置模板</strong></a></li>
+        <li><a href="#2-修改证书配置模板"><strong>2. 修改证书配置模板</strong></a></li>
+        <li><a href="#3-输出默认csr请求模板"><strong>3. 输出默认csr请求模板</strong></a></li>
+        <li><a href="#4-修改csr请求模板"><strong>4. 修改csr请求模板</strong></a></li>
+        <li><a href="#4-生成ca证书和私钥"><strong>4. 生成CA证书和私钥</strong></a></li>
+        <li><a href="#5-其他"><strong>5. 其他</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#5-签发server证书">5. 签发Server证书</a>
+      <ul>
+        <li><a href="#1-打印csr模版"><strong>1. 打印csr模版</strong></a></li>
+        <li><a href="#2-修改csr请求模板"><strong>2. 修改csr请求模板</strong></a></li>
+        <li><a href="#3-生成服务端证书和私钥"><strong>3. 生成服务端证书和私钥</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#6-签发client-certificate">6. 签发Client Certificate</a>
+      <ul>
+        <li><a href="#1-打印csr模版-1"><strong>1. 打印csr模版</strong></a></li>
+        <li><a href="#2-修改csr请求模板-1"><strong>2. 修改csr请求模板</strong></a></li>
+        <li><a href="#3-生成客户端证书和私钥"><strong>3. 生成客户端证书和私钥</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#7-签发peer-certificate">7. 签发peer certificate</a>
+      <ul>
+        <li><a href="#1-打印csr模版-2"><strong>1. 打印csr模版</strong></a></li>
+        <li><a href="#2-修改csr请求模板-2"><strong>2. 修改csr请求模板</strong></a></li>
+        <li><a href="#8校验证书">8.校验证书</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer class="footer">
+    <div class="copyright">
+        
+        
+        © Powered by <a href="https://github.com/allposs/Axis-Hugo-Theme.git">Axis-Hugo-Theme</a> and <a href="https://gohugo.io">Hugo</a> | 2022 - 2023
+        
+    </div>
+</footer>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NBF4J7F6RW"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-NBF4J7F6RW', { 'anonymize_ip': false });
+}
+</script>
+
+
+<script async src="https://blog.allposs.com/js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+</body>
+
+</html>

@@ -16,5 +16,14 @@
       <description>简介 自己最近在构思一个流程平台，平台只支持流程相关功能。自带一种类似k8s的rbac权限，并通过GRPC接口调用其他模块实现流程处理与信息共</description>
     </item>
     
+    <item>
+      <title>CFSSL制作证书</title>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/004-cfssl%E5%88%B6%E4%BD%9C%E8%AF%81%E4%B9%A6/</link>
+      <pubDate>Wed, 08 Jan 2020 10:20:23 +0800</pubDate>
+      
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/004-cfssl%E5%88%B6%E4%BD%9C%E8%AF%81%E4%B9%A6/</guid>
+      <description>简介 在工作中，我们经常会遇到各种证书问题，如k8s,etcd,openstack等服务时，我们往往都要使用证书，本文将使用CFSSL工具快速</description>
+    </item>
+    
   </channel>
 </rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>npm on allposs博客</title>
+    <link>https://blog.allposs.com/tags/npm/</link>
+    <description>Recent content in npm on allposs博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 22 Dec 2020 09:59:17 +0800</lastBuildDate><atom:link href="https://blog.allposs.com/tags/npm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>nvm管理node版本</title>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/005-nvm%E7%AE%A1%E7%90%86node%E7%89%88%E6%9C%AC/</link>
+      <pubDate>Tue, 22 Dec 2020 09:59:17 +0800</pubDate>
+      
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/005-nvm%E7%AE%A1%E7%90%86node%E7%89%88%E6%9C%AC/</guid>
+      <description>简介 通过使用nvm更好的管理npm版本，在开发项目遇到只支持lts版本或者更老版本的npm时就能使用nvm很好的解决问题。 环境 无 正文 MAC安</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,8 +1,7 @@
 /* Micro Reset */
 
 html {
-  font-family: 'Noto Serif', 'Noto Serif CJK SC', 'Noto Serif CJK', 'Source Han Serif SC', 'Source Han Serif CN',
-    'Source Han Serif', 'source-han-serif-sc', serif;
+  font-family: 'Noto Serif', 'Noto Serif CJK SC', 'Noto Serif CJK', 'Source Han Serif SC', 'Source Han Serif CN', 'Source Han Serif', 'source-han-serif-sc', serif;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   box-sizing: border-box;
@@ -163,7 +162,8 @@ hr {
 .content {
   width: calc(100%);
   padding: 10px;
-  min-height: calc(100vh - 60px);
+  display: flex;
+  flex-wrap: wrap;
 }
 
 /* Menu */
@@ -189,6 +189,9 @@ hr {
 }
 
 /* Content */
+.content .title {
+  flex: auto;
+}
 
 .content .title h1 {
   text-align: center;
@@ -283,6 +286,7 @@ hr {
 .content .article .list .group {
   margin: 20px;
   float: left;
+  width: 320px;
 }
 
 .content .article .title h2 {

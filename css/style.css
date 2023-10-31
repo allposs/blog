@@ -225,20 +225,28 @@ hr {
   width: calc(100% - 250px);
 }
 
+.content .docs .aside li {
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .content .docs .aside {
   font-size: 1rem;
   border: 1px solid;
   position: fixed;
   left: calc(100% - 250px);
-  right: 0px;
+  right: 5px;
   top: 180px;
   bottom: 80px;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 #TableOfContents {
   max-width: 250px;
-  padding: 0 10px 0 10px;
+
+  /* padding: 0 10px 0 10px; */
 }
 
 .content .docs .aside h2 {

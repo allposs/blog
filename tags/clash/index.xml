@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>clash on allposs博客</title>
+    <title>Clash on allposs博客</title>
     <link>https://blog.allposs.com/tags/clash/</link>
-    <description>Recent content in clash on allposs博客</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Clash on allposs博客</description>
+    <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 30 May 2023 15:51:51 +0800</lastBuildDate><atom:link href="https://blog.allposs.com/tags/clash/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 30 May 2023 15:51:51 +0800</lastBuildDate>
+    <atom:link href="https://blog.allposs.com/tags/clash/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>编译自带OpenClash的OpenWrt固件</title>
       <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/openwrt/001-%E7%BC%96%E8%AF%91%E8%87%AA%E5%B8%A6openclash%E7%9A%84openwrt%E5%9B%BA%E4%BB%B6/</link>
       <pubDate>Tue, 30 May 2023 15:51:51 +0800</pubDate>
-      
       <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/openwrt/001-%E7%BC%96%E8%AF%91%E8%87%AA%E5%B8%A6openclash%E7%9A%84openwrt%E5%9B%BA%E4%BB%B6/</guid>
       <description>简介 本文为使用编译纯净的OpenWrt固件，并集成OpenClash。使用编译环境为ubuntu 22.04.2 LTS，如果是其他操作系统可以查看open</description>
     </item>
-    
   </channel>
 </rss>

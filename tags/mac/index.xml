@@ -4,35 +4,30 @@
     <title>MAC on allposs博客</title>
     <link>https://blog.allposs.com/tags/mac/</link>
     <description>Recent content in MAC on allposs博客</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 23 Oct 2023 13:48:10 +0800</lastBuildDate><atom:link href="https://blog.allposs.com/tags/mac/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 23 Oct 2023 13:48:10 +0800</lastBuildDate>
+    <atom:link href="https://blog.allposs.com/tags/mac/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>brew命令合集</title>
       <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/002-brew%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
       <pubDate>Mon, 23 Oct 2023 13:48:10 +0800</pubDate>
-      
       <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/002-brew%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
       <description>简介 环境 正文 brew安装 /usr/bin/ruby -e &amp;#34;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&amp;#34; 常用示例 # 更新 Homebrew 自己 brew update # 查看哪些安装包需要更新 brew outdated # 更新所有的包 brew upgrade # 更新指定的包 brew upgrade $FORMULA # 清理所有包的旧</description>
     </item>
-    
     <item>
       <title>MAC搭建容器开发环境</title>
       <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/001-%E6%90%AD%E5%BB%BA%E5%AE%B9%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
       <pubDate>Fri, 13 Nov 2020 09:44:30 +0800</pubDate>
-      
       <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/001-%E6%90%AD%E5%BB%BA%E5%AE%B9%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
       <description>简介 在工作中我们往往需要使用容器的相关环境进行测试与开发，这篇文档主要记录了我这边设置容器相关开发的方法，主要使用minikube,dock</description>
     </item>
-    
     <item>
       <title>pyenv命令集</title>
       <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/003-pyenv%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
       <pubDate>Fri, 10 Jan 2020 10:20:23 +0800</pubDate>
-      
       <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/003-pyenv%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
       <description>简介 由于macOS 10.15.3默认使用的python版本是Python 2.7.16,但是系统本身内嵌了Python 3.7.3,导致在管理与</description>
     </item>
-    
   </channel>
 </rss>

@@ -4,17 +4,16 @@
     <title>KVM on allposs博客</title>
     <link>https://blog.allposs.com/tags/kvm/</link>
     <description>Recent content in KVM on allposs博客</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 04 May 2016 14:20:23 +0800</lastBuildDate><atom:link href="https://blog.allposs.com/tags/kvm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 04 May 2016 14:20:23 +0800</lastBuildDate>
+    <atom:link href="https://blog.allposs.com/tags/kvm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CentOS7.2安装KVM</title>
       <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/002-centos7.2%E5%AE%89%E8%A3%85kvm/</link>
       <pubDate>Wed, 04 May 2016 14:20:23 +0800</pubDate>
-      
       <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/002-centos7.2%E5%AE%89%E8%A3%85kvm/</guid>
       <description>简介 Kernel-based Virtual Machine的简称，是一个开源的系统虚拟化模块，自Linux 2.6.20之后集成在Linux的各个主要发行版本中。它使用Linux</description>
     </item>
-    
   </channel>
 </rss>

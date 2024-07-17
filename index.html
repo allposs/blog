@@ -125,14 +125,25 @@
 <p>学习方法则是先确定学习目标,然后在本文档编写学习规划，再然后实践并达成目标，输出内容则存放在此项目内，最后进行总结规划并输出知识脑图。</p>
 <h1 id="知识图谱">知识图谱</h1>
 <h2 id="脑图">脑图</h2>
-<p>
-<div class="post-img-view">
-<a data-fancybox="gallery" href="./images/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1.png">
-<img src="./images/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1.png" alt="知识图谱"  />
-</a>
-</div>
+<div class="mermaid">
+    
+flowchart LR;
+    A[知识]
+    A --> B[编程语言];
+    A --> C[操作系统];
+    A --> D[嵌入式];
+    A --> E[软件];
+    A --> F[网络];
+    B --> B1[Go]
+    B --> B2[Python]
+    B --> B3[C/C++]
+    B --> B4[Zig]
+    C --> C1[Darwin]
+    C --> C2[Linux]
+    D --> D1[树莓派]
+    E --> E1[Kubernetes]
 
-</p>
+</div>
 <h2 id="1kubernetes熟练">1.Kubernetes[熟练]</h2>
 <h3 id="脑图-1">脑图</h3>
 <p>
@@ -174,25 +185,6 @@
 <li>规划: 1.梳理现有文档并重写 -&gt; 2.实践并更新文档 -&gt; 3. 拓展知识 -&gt; 4. 参与开源项目</li>
 <li>输出: [Python开发姿势合集]、[Python原理详解]</li>
 </ul>
-<div class="mermaid">
-    
-flowchart LR;
-    A[知识]
-    A --> B[编程语言];
-    A --> C[操作系统];
-    A --> D[嵌入式];
-    A --> E[软件];
-    A --> F[网络];
-    B --> B1[Go]
-    B --> B2[Python]
-    B --> B3[C/C++]
-    B --> B4[Zig]
-    C --> C1[Darwin]
-    C --> C2[Linux]
-    D --> D1[树莓派]
-    E --> E1[Kubernetes]
-
-</div>
 <hr>
 <h2 id="结束">结束</h2>
 

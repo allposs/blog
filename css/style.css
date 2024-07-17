@@ -1,7 +1,8 @@
 /* Micro Reset */
 
 html {
-  font-family: 'Noto Serif', 'Noto Serif CJK SC', 'Noto Serif CJK', 'Source Han Serif SC', 'Source Han Serif CN', 'Source Han Serif', 'source-han-serif-sc', serif;
+  font-family: 'Noto Serif', 'Noto Serif CJK SC', 'Noto Serif CJK', 'Source Han Serif SC', 'Source Han Serif CN',
+    'Source Han Serif', 'source-han-serif-sc', serif;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   box-sizing: border-box;
@@ -162,8 +163,7 @@ hr {
 .content {
   width: calc(100%);
   padding: 10px;
-  display: flex;
-  flex-wrap: wrap;
+  min-height: calc(100vh - 60px);
 }
 
 /* Menu */
@@ -189,9 +189,6 @@ hr {
 }
 
 /* Content */
-.content .title {
-  flex: auto;
-}
 
 .content .title h1 {
   text-align: center;
@@ -225,28 +222,20 @@ hr {
   width: calc(100% - 250px);
 }
 
-.content .docs .aside li {
-  width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .content .docs .aside {
   font-size: 1rem;
   border: 1px solid;
   position: fixed;
   left: calc(100% - 250px);
-  right: 5px;
+  right: 0px;
   top: 180px;
   bottom: 80px;
-  overflow-y: auto;
+  overflow: auto;
 }
 
 #TableOfContents {
   max-width: 250px;
-
-  /* padding: 0 10px 0 10px; */
+  padding: 0 10px 0 10px;
 }
 
 .content .docs .aside h2 {
@@ -294,7 +283,6 @@ hr {
 .content .article .list .group {
   margin: 20px;
   float: left;
-  width: 320px;
 }
 
 .content .article .title h2 {

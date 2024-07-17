@@ -6,8 +6,43 @@
     <description>Recent content in 文档 on allposs博客</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 26 Dec 2023 17:48:29 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 05 Jun 2024 10:45:17 +0800</lastBuildDate>
     <atom:link href="https://blog.allposs.com/docs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Clang代码片段</title>
+      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/clang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</link>
+      <pubDate>Wed, 05 Jun 2024 10:45:17 +0800</pubDate>
+      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/clang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</guid>
+      <description>简介 环境 正文 结束</description>
+    </item>
+    <item>
+      <title>Clang开发环境搭建</title>
+      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/clang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Wed, 05 Jun 2024 10:45:07 +0800</pubDate>
+      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/clang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <description>简介 环境 正文 结束</description>
+    </item>
+    <item>
+      <title>pigpio库使用</title>
+      <link>https://blog.allposs.com/docs/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A0%91%E8%8E%93%E6%B4%BE/003-pigpio%E5%BA%93%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Wed, 05 Jun 2024 10:45:07 +0800</pubDate>
+      <guid>https://blog.allposs.com/docs/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A0%91%E8%8E%93%E6%B4%BE/003-pigpio%E5%BA%93%E4%BD%BF%E7%94%A8/</guid>
+      <description>简介 pigpio 是一个流行的用于树莓派的GPIO控制库，它支持广泛的功能，包括精确的时间控制以及同时处理多个GPIO引脚。pigpio特别适合于需要精</description>
+    </item>
+    <item>
+      <title>开发环境搭建</title>
+      <link>https://blog.allposs.com/docs/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A0%91%E8%8E%93%E6%B4%BE/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Wed, 05 Jun 2024 10:45:07 +0800</pubDate>
+      <guid>https://blog.allposs.com/docs/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A0%91%E8%8E%93%E6%B4%BE/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <description>简介 环境 正文 结束</description>
+    </item>
+    <item>
+      <title>周末周庄古镇攻略</title>
+      <link>https://blog.allposs.com/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/004-%E5%91%A8%E6%9C%AB%E5%91%A8%E5%BA%84%E5%8F%A4%E9%95%87%E6%94%BB%E7%95%A5/</link>
+      <pubDate>Fri, 24 May 2024 10:33:48 +0800</pubDate>
+      <guid>https://blog.allposs.com/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/004-%E5%91%A8%E6%9C%AB%E5%91%A8%E5%BA%84%E5%8F%A4%E9%95%87%E6%94%BB%E7%95%A5/</guid>
+      <description>正文 ⏰时间（二天） 5月25日 08:00 - 5月26日 21:00 ☁️天气（⛅1°-12°）: 时间⏰ 地点🌍 天气☁️ 温度🌡️ 5月25号 周六 苏州 ⛅晴转多云 20°-27</description>
+    </item>
     <item>
       <title>杭州大禹谷娘娘山</title>
       <link>https://blog.allposs.com/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/003-%E6%9D%AD%E5%B7%9E%E5%A4%A7%E7%A6%B9%E8%B0%B7%E5%A8%98%E5%A8%98%E5%B1%B1/</link>
@@ -62,7 +97,7 @@
       <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/002-%E5%BC%80%E6%BA%90%E6%B5%81%E7%A8%8B%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91/</link>
       <pubDate>Fri, 14 Jul 2023 08:27:13 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/002-%E5%BC%80%E6%BA%90%E6%B5%81%E7%A8%8B%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91/</guid>
-      <description>简介 自己最近在构思一个流程平台，平台只支持流程相关功能。自带一种类似k8s的rbac权限，并通过GRPC接口调用其他模块实现流程处理与信息共</description>
+      <description>简介 环境 正文 结束</description>
     </item>
     <item>
       <title>网络问题合集</title>

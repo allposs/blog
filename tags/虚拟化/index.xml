@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>虚拟化 on allposs博客</title>
-    <link>https://blog.allposs.com/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/</link>
+    <link>http://localhost:1313/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/</link>
     <description>Recent content in 虚拟化 on allposs博客</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <lastBuildDate>Fri, 17 Jun 2016 14:20:23 +0800</lastBuildDate>
-    <atom:link href="https://blog.allposs.com/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Mitaka版openstack三节点安装</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/openstack/001-mitaka%E7%89%88openstack%E4%B8%89%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/openstack/001-mitaka%E7%89%88openstack%E4%B8%89%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85/</link>
       <pubDate>Fri, 17 Jun 2016 14:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/openstack/001-mitaka%E7%89%88openstack%E4%B8%89%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/openstack/001-mitaka%E7%89%88openstack%E4%B8%89%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85/</guid>
       <description>简介 Mitaka版openstack三节点安装文档。 环境 操作系统：CentOS7.1 X86_64 Yum源：163源 IP地址：略 DNS：略 主机名：ops</description>
     </item>
     <item>
       <title>CentOS7.2安装KVM</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/002-centos7.2%E5%AE%89%E8%A3%85kvm/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/002-centos7.2%E5%AE%89%E8%A3%85kvm/</link>
       <pubDate>Wed, 04 May 2016 14:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/002-centos7.2%E5%AE%89%E8%A3%85kvm/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/002-centos7.2%E5%AE%89%E8%A3%85kvm/</guid>
       <description>简介 Kernel-based Virtual Machine的简称，是一个开源的系统虚拟化模块，自Linux 2.6.20之后集成在Linux的各个主要发行版本中。它使用Linux</description>
     </item>
   </channel>

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://blog.allposs.com//img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>007-frp安装与配置 - allposs博客</title>
+    <meta property="og:title" content="007-frp安装与配置 - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://blog.allposs.com//css/style.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com//css/fonts.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com//css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../" aria-label="个人博客">
+                <img src="https://blog.allposs.com/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../docs/"  aria-current="page" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs/" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>007-frp安装与配置</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2020-08-25
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                软件
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                frp
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<h3 id="说明"><strong>说明</strong></h3>
+<blockquote>
+<p>由于本人是个上班族,所以在某些加班时刻需要把自己的文档或个人代码上传到自己家里的gitlab服务器,所以就有这篇穿透内网代理配置的文档。
+frp的文档是这样介绍自己的：frp 是一个专注于内网穿透的高性能的反向代理应用，支持 TCP、UDP、HTTP、HTTPS 等多种协议。可以将内网服务以安全、便捷的方式通过具有公网 IP 节点的中转暴露到公网。而我选择frp的原因是配置简单,golang开发,支持协议多.<a href="https://github.com/fatedier/frp">Github地址</a></p>
+</blockquote>
+<h3 id="环境"><strong>环境</strong></h3>
+<blockquote>
+<p>需要一台外网服务器，建议是阿里或者aws这类云主机，然后家里需要一台常开的电脑，软件包地址为:<a href="https://github.com/fatedier/frp">frp</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>服务器</th>
+<th>数量</th>
+<th>网络类型</th>
+<th>操作系统</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VPS服务器</td>
+<td>1台</td>
+<td>外部网络</td>
+<td>Centos7.X</td>
+</tr>
+<tr>
+<td>Linux服务器</td>
+<td>1台</td>
+<td>家庭网络</td>
+<td>Linux各种发布版本</td>
+</tr>
+</tbody>
+</table>
+<h1 id="正文">正文</h1>
+<h2 id="1-服务端配置外部网络">1. 服务端配置(外部网络)</h2>
+<h3 id="11-配置服务端配置文件"><strong>1.1 配置服务端配置文件</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ wget https://github.com/fatedier/frp/releases/download/v0.33.0/frp_0.33.0_linux_amd64.tar.gz
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ mkdir /opt/proxy -p <span style="color:#f92672">&amp;&amp;</span> tar xf frp_0.33.0_linux_amd64.tar.gz -C /opt/proxy <span style="color:#f92672">&amp;&amp;</span> mv /opt/proxy/frp_0.33.0_linux_amd64 /opt/proxy/frp <span style="color:#f92672">&amp;&amp;</span> cd /opt/proxy/frp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ cat &gt; /opt/proxy/frp/frps.ini <span style="color:#e6db74">&lt;&lt;EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[common]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#frp 监听地址
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">bind_addr = 0.0.0.0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">bind_port = 8000
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 如果需要代理web(http) 服务，则开启此端口
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">vhost_http_port = 8080
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">vhost_https_port = 8443
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># frp 控制面板
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">dashboard_port = 8100
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">dashboard_user = admin
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">dashboard_pwd = admin123
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 默认日志输出位置(这里输出到标准输出)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log_file = /blog/proxy/frp/logs/frps.log
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 日志级别，支持: debug, info, warn, error
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log_level = info
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log_max_days = 3
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 是否开启特权模式(特权模式下，客户端更改配置无需更新服务端)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">privilege_mode = true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 授权 token 建议随机生成
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">privilege_token = HE7qTtW8Lg83UDKY
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 特权模式下允许分配的端口(避免端口滥用)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">privilege_allow_ports = 10000-50000
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 后端连接池最大连接数量
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">max_pool_count = 100
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 口令超时时间
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">authentication_timeout = 900
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 子域名(特权模式下将 *.xxxx.com 解析到公网服务器)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">subdomain_host = baidu.xl
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h3 id="12-配置服务端systemd启动文件"><strong>1.2 配置服务端systemd启动文件</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ cat &gt; /usr/lib/systemd/system/frps.service <span style="color:#e6db74">&lt;&lt;EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[Unit]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Description=Frp Server Service
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">After=network.target
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[Service]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Type=simple
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">User=nobody
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Restart=on-failure
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">RestartSec=5s
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ExecStart=/blog/proxy/frp/frps -c /blog/proxy/frp/frps.ini
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[Install]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">WantedBy=multi-user.target
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h3 id="13-启动"><strong>1.3 启动</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ systemctl start frps.service <span style="color:#f92672">&amp;&amp;</span> systemctl enable frps.service
+</span></span></code></pre></div><h2 id="2-配置客户端家庭网络">2. 配置客户端(家庭网络)</h2>
+<h3 id="21-配置客户端配置文件"><strong>2.1 配置客户端配置文件</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ wget https://github.com/fatedier/frp/releases/download/v0.33.0/frp_0.33.0_linux_amd64.tar.gz
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ mkdir /opt/proxy -p <span style="color:#f92672">&amp;&amp;</span> tar xf frp_0.33.0_linux_amd64.tar.gz -C /opt/proxy <span style="color:#f92672">&amp;&amp;</span> mv /opt/proxy/frp_0.33.0_linux_amd64 /opt/proxy/frp <span style="color:#f92672">&amp;&amp;</span> cd /opt/proxy/frp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ cat &gt; /opt/proxy/frp/frpc.ini <span style="color:#e6db74">&lt;&lt;EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[common]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 服务端地址,这里是我阿里云服务器的外网IP
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">server_addr = 16.42.52.89
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 服务端端口
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">server_port = 8000
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 日志路径
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log_file = /opt/proxy/frp/logs/frpc.log
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 日志级别
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log_level = debug
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 日志存放天数
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">log_max_days = 3
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 特权模式，要和服务器端的配置一致
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">privilege_token = HE7qTtW8Lg83UDKY
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[gitlab]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">type = http
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">local_port = 80
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 这样只要访问http://gitlab.baidu.xl:8080即可访问到该客户端的gitlab服务
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">subdomain = git  
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">use_gzip = true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[nas]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">type = http
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">local_port = 80
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"># 这样只要访问http://nas.baidu.xl:8080即可访问到该客户端的nas服务
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">subdomain = nas
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">use_gzip = true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><blockquote>
+<p>PS</p>
+<blockquote>
+<p>其他配置详细请看[官方文档]https://gofrp.org/</p>
+</blockquote>
+</blockquote>
+<h3 id="22-配置客户端systemd启动文件"><strong>2.2 配置客户端systemd启动文件</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ cat &gt; /usr/lib/systemd/system/frpc.service <span style="color:#e6db74">&lt;&lt;EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[Unit]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Description=Frp Server Service
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">After=network.target
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[Service]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Type=simple
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">User=nobody
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Restart=on-failure
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">RestartSec=5s
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">ExecStart=/blog/proxy/frp/frpc -c /blog/proxy/frp/frpc.ini
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">[Install]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">WantedBy=multi-user.target
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h3 id="23-启动"><strong>2.3 启动</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ systemctl start frpc.service <span style="color:#f92672">&amp;&amp;</span> systemctl enable frpc.service
+</span></span></code></pre></div><h1 id="结束">结束</h1>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#说明"><strong>说明</strong></a></li>
+        <li><a href="#环境"><strong>环境</strong></a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#1-服务端配置外部网络">1. 服务端配置(外部网络)</a>
+      <ul>
+        <li><a href="#11-配置服务端配置文件"><strong>1.1 配置服务端配置文件</strong></a></li>
+        <li><a href="#12-配置服务端systemd启动文件"><strong>1.2 配置服务端systemd启动文件</strong></a></li>
+        <li><a href="#13-启动"><strong>1.3 启动</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#2-配置客户端家庭网络">2. 配置客户端(家庭网络)</a>
+      <ul>
+        <li><a href="#21-配置客户端配置文件"><strong>2.1 配置客户端配置文件</strong></a></li>
+        <li><a href="#22-配置客户端systemd启动文件"><strong>2.2 配置客户端systemd启动文件</strong></a></li>
+        <li><a href="#23-启动"><strong>2.3 启动</strong></a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer class="footer">
+    <div class="copyright">
+        
+        
+        © Powered by <a href="https://github.com/allposs/Axis-Hugo-Theme.git">Axis-Hugo-Theme</a> and <a href="https://gohugo.io">Hugo</a> | 2022 - 2024
+        
+    </div>
+</footer>
+
+  
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBF4J7F6RW"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-NBF4J7F6RW');
+        }
+      </script>
+    
+  
+
+
+
+<script async src="https://blog.allposs.com//js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+</body>
+
+</html>

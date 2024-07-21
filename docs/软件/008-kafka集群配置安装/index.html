@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://blog.allposs.com//img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>008-kafka集群配置安装 - allposs博客</title>
+    <meta property="og:title" content="008-kafka集群配置安装 - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://blog.allposs.com//css/style.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com//css/fonts.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com//css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../" aria-label="个人博客">
+                <img src="https://blog.allposs.com/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../docs/"  aria-current="page" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs/" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>008-kafka集群配置安装</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2016-08-16
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                软件
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                frp
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<blockquote>
+<p>Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者规模的网站中的所有动作流数据。 这种动作（网页浏览，搜索和其他用户的行动）是在现代网络上的许多社会功能的一个关键因素。 这些数据通常是由于吞吐量的要求而通过处理日志和日志聚合来解决。 对于像Hadoop的一样的日志数据和离线分析系统，但又要求实时处理的限制，这是一个可行的解决方案。Kafka的目的是通过Hadoop的并行加载机制来统一线上和离线的消息处理，也是为了通过集群机来提供实时的消费。</p>
+</blockquote>
+<h1 id="环境">环境</h1>
+<ul>
+<li>操作系统：CentOS 7.2 x64</li>
+<li>Yum源：163源</li>
+<li>IP地址：</li>
+</ul>
+<blockquote>
+<ul>
+<li>node1 10.199.200.101</li>
+<li>node2 10.199.200.102</li>
+<li>node3 10.199.200.103</li>
+</ul>
+</blockquote>
+<ul>
+<li>DNS：</li>
+<li>主机名：</li>
+</ul>
+<blockquote>
+<ul>
+<li>node1.example.com</li>
+<li>node2.example.com</li>
+<li>node3.example.com</li>
+</ul>
+</blockquote>
+<ul>
+<li>源码包</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ wget http://apache.fayea.com/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz
+</span></span><span style="display:flex;"><span>$ wget http://mirrors.cnnic.cn/apache/kafka/0.8.2.2/kafka_2.11-0.8.2.2.tgz
+</span></span></code></pre></div><h1 id="正文">正文</h1>
+<hr>
+<h2 id="1-准备配置所有节点">1. 准备配置（所有节点）</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ yum localinstall jdk-8u101-linux-x64.rpm
+</span></span><span style="display:flex;"><span>$ sudo bash -c <span style="color:#e6db74">&#34;cat &gt;&gt; /etc/hosts&#34;</span> <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">10.199.200.101   node1 node1.example.com
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">10.199.200.102   node2 node2.example.com
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">10.199.200.102   node2 node2.example.com
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h2 id="2-安装zookeeper集群">2. 安装zookeeper集群</h2>
+<h3 id="21-安装配置zookeeper">2.1 安装配置zookeeper</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ wget http://apache.fayea.com/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz
+</span></span><span style="display:flex;"><span>$ tar xf zookeeper-3.4.6.tar.gz 
+</span></span><span style="display:flex;"><span>$ cd zookeeper-3.4.6/
+</span></span><span style="display:flex;"><span>$ cp conf/zoo_sample.cfg conf/zoo.cfg 
+</span></span><span style="display:flex;"><span>$ vim conf/zoo.cfg
+</span></span><span style="display:flex;"><span>    tickTime<span style="color:#f92672">=</span><span style="color:#ae81ff">2000</span>
+</span></span><span style="display:flex;"><span>    initLimit<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>    syncLimit<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>    dataDir<span style="color:#f92672">=</span>/opt/zookeeper/data
+</span></span><span style="display:flex;"><span>    dataLogDir<span style="color:#f92672">=</span>/opt/zookeeper/logdata
+</span></span><span style="display:flex;"><span>    clientPort<span style="color:#f92672">=</span><span style="color:#ae81ff">2181</span>
+</span></span><span style="display:flex;"><span>    globalOutstandingLimit<span style="color:#f92672">=</span><span style="color:#ae81ff">100000</span>
+</span></span><span style="display:flex;"><span>    autopurge.snapRetainCount<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>    autopurge.purgeInterval<span style="color:#f92672">=</span><span style="color:#ae81ff">24</span>
+</span></span><span style="display:flex;"><span>    server.1 <span style="color:#f92672">=</span> node1:2888:3888
+</span></span><span style="display:flex;"><span>    server.2 <span style="color:#f92672">=</span> node2:2888:3888
+</span></span><span style="display:flex;"><span>    server.3 <span style="color:#f92672">=</span> node3:2888:3888
+</span></span><span style="display:flex;"><span>$ mkdir data
+</span></span><span style="display:flex;"><span>$ mv zookeeper-3.4.6 /opt/zookeeper
+</span></span><span style="display:flex;"><span>$ vim /opt/zookeeper/data/myid
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>$ cd /opt/
+</span></span><span style="display:flex;"><span>$ scp -r zookeeper root@node2:/opt/
+</span></span><span style="display:flex;"><span>$ scp -r zookeeper root@node3:/opt/
+</span></span></code></pre></div><blockquote>
+<p>PS</p>
+<blockquote>
+<ul>
+<li>tickTime：这个时间是作为 Zookeeper 服务器之间或客户端与服务器之间维持心跳的时间间隔，也就是每个 tickTime 时间就会发送一个心跳。</li>
+<li>dataDir：顾名思义就是 Zookeeper 保存数据的目录，默认情况下，Zookeeper 将写数据的日志文件也保存在这个目录里。</li>
+<li>clientPort：这个端口就是客户端连接 Zookeeper 服务器的端口，Zookeeper 会监听这个端口，接受客户端的访问请求。</li>
+<li>initLimit：这个配置项是用来配置 Zookeeper 接受客户端（这里所说的客户端不是用户连接 Zookeeper 服务器的客户端，而是 Zookeeper 服务器集群中连接到 Leader 的 Follower 服务器）初始化连接时最长能忍受多少个心跳时间间隔数。当已经超过 5个心跳的时间（也就是 tickTime）长度后 Zookeeper 服务器还没有收到客户端的返回信息，那么表明这个客户端连接失败。总的时间长度就是 5*2000=10 秒</li>
+<li>syncLimit：这个配置项标识 Leader 与Follower 之间发送消息，请求和应答时间长度，最长不能超过多少个 tickTime 的时间长度，总的时间长度就是2*2000=4 秒</li>
+<li>server.A=B：C：D：其中 A 是一个数字，表示这个是第几号服务器；B 是这个服务器的 ip 地址；C 表示的是这个服务器与集群中的 Leader 服务器交换信息的端口；D 表示的是万一集群中的 Leader 服务器挂了，需要一个端口来重新进行选举，选出一个新的 Leader，而这个端口就是用来执行选举时服务器相互通信的端口。如果是伪集群的配置方式，由于 B 都是一样，所以不同的 Zookeeper 实例通信端口号不能一样，所以要给它们分配不同的端口号</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>注意: dataDir,dataLogDir中的wwb是当前登录用户名，data，logs目录开始是不存在，需要使用mkdir命令创建相应的目录。并且在该目录下创建文件myid,serve1,server2,server3该文件内容分别为1,2,3。</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>针对服务器server2,server3可以将server1复制到相应的目录，不过需要注意dataDir,dataLogDir目录,并且文件myid内容分别为2,3</p>
+</blockquote>
+</blockquote>
+<h3 id="22-启动zookeeper集群">2.2 启动Zookeeper集群</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$  /opt/zookeeper/bin/zkServer.sh start
+</span></span><span style="display:flex;"><span>	JMX enabled by default
+</span></span><span style="display:flex;"><span>	Using config: /opt/zookeeper/bin/../conf/zoo.cfg
+</span></span><span style="display:flex;"><span>	Starting zookeeper ... STARTED
+</span></span><span style="display:flex;"><span>$ /opt/zookeeper/bin/zkServer.sh status
+</span></span><span style="display:flex;"><span>	JMX enabled by default
+</span></span><span style="display:flex;"><span>	Using config: /opt/zookeeper/bin/../conf/zoo.cfg
+</span></span><span style="display:flex;"><span>	Mode: follower
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ vim /opt/zookeeper/data/myid
+</span></span><span style="display:flex;"><span>	<span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>$ /opt/zookeeper/bin/zkServer.sh start
+</span></span><span style="display:flex;"><span>	JMX enabled by default
+</span></span><span style="display:flex;"><span>	Using config: /opt/zookeeper/bin/../conf/zoo.cfg
+</span></span><span style="display:flex;"><span>	Starting zookeeper ... STARTED
+</span></span><span style="display:flex;"><span>$ /opt/zookeeper/bin/zkServer.sh status
+</span></span><span style="display:flex;"><span>	JMX enabled by default
+</span></span><span style="display:flex;"><span>	Using config: /opt/zookeeper/bin/../conf/zoo.cfg
+</span></span><span style="display:flex;"><span>	Mode: leader
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ vim /opt/zookeeper/data/myid
+</span></span><span style="display:flex;"><span>	<span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>$ /opt/zookeeper/bin/zkServer.sh start
+</span></span><span style="display:flex;"><span>	JMX enabled by default
+</span></span><span style="display:flex;"><span>	Using config: /opt/zookeeper/bin/../conf/zoo.cfg
+</span></span><span style="display:flex;"><span>	Starting zookeeper ... STARTED
+</span></span><span style="display:flex;"><span>$ /opt/zookeeper/bin/zkServer.sh status
+</span></span><span style="display:flex;"><span>	JMX enabled by default
+</span></span><span style="display:flex;"><span>	Using config: /opt/zookeeper/bin/../conf/zoo.cfg
+</span></span><span style="display:flex;"><span>	Mode: follower
+</span></span></code></pre></div><h3 id="23-测试zookeeper集群">2.3 测试Zookeeper集群</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ /opt/zookeeper/bin/zkCli.sh -server10.199.200.101:2181
+</span></span></code></pre></div><h2 id="3-安装配置kafka集群">3. 安装配置kafka集群</h2>
+<h3 id="31-安装kafka">3.1 安装kafka</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ wget http://mirrors.cnnic.cn/apache/kafka/0.8.2.2/kafka_2.11-0.8.2.2.tgz
+</span></span><span style="display:flex;"><span>$ tar xf kafka_2.11-0.8.2.2.tgz
+</span></span><span style="display:flex;"><span>$ mv kafka_2.11-0.8.2.2 /opt/kafka
+</span></span><span style="display:flex;"><span>$ cd /opt/kafka/
+</span></span></code></pre></div><h3 id="32-配置kafka">3.2 配置kafka</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ vim config/server.properties 
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># Licensed to the Apache Software Foundation (ASF) under one or more</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># contributor license agreements.  See the NOTICE file distributed with</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># this work for additional information regarding copyright ownership.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The ASF licenses this file to You under the Apache License, Version 2.0</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># (the &#34;License&#34;); you may not use this file except in compliance with</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># the License.  You may obtain a copy of the License at</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># </span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#    http://www.apache.org/licenses/LICENSE-2.0</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># </span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># Unless required by applicable law or agreed to in writing, software</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># distributed under the License is distributed on an &#34;AS IS&#34; BASIS,</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># See the License for the specific language governing permissions and</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># limitations under the License.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># see kafka.server.KafkaConfig for additional details and defaults</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">############################# Server Basics #############################</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The id of the broker. This must be set to a unique integer for each broker.</span>
+</span></span><span style="display:flex;"><span>	broker.id<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">############################# Socket Server Settings #############################</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The port the socket server listens on</span>
+</span></span><span style="display:flex;"><span>	port<span style="color:#f92672">=</span><span style="color:#ae81ff">9092</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># Hostname the broker will bind to. If not set, the server will bind to all interfaces</span>
+</span></span><span style="display:flex;"><span>	host.name<span style="color:#f92672">=</span>10.199.200.101
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># Hostname the broker will advertise to producers and consumers. If not set, it uses the</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># value for &#34;host.name&#34; if configured.  Otherwise, it will use the value returned from</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># java.net.InetAddress.getCanonicalHostName().</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#advertised.host.name=&lt;hostname routable by clients&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The port to publish to ZooKeeper for clients to use. If this is not set,</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># it will publish the same port that the broker binds to.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#advertised.port=&lt;port accessible by clients&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The number of threads handling network requests</span>
+</span></span><span style="display:flex;"><span>	num.network.threads<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The number of threads doing disk I/O</span>
+</span></span><span style="display:flex;"><span>	num.io.threads<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The send buffer (SO_SNDBUF) used by the socket server</span>
+</span></span><span style="display:flex;"><span>	socket.send.buffer.bytes<span style="color:#f92672">=</span><span style="color:#ae81ff">102400</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The receive buffer (SO_RCVBUF) used by the socket server</span>
+</span></span><span style="display:flex;"><span>	socket.receive.buffer.bytes<span style="color:#f92672">=</span><span style="color:#ae81ff">102400</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The maximum size of a request that the socket server will accept (protection against OOM)</span>
+</span></span><span style="display:flex;"><span>	socket.request.max.bytes<span style="color:#f92672">=</span><span style="color:#ae81ff">104857600</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">############################# Log Basics #############################</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># A comma seperated list of directories under which to store log files</span>
+</span></span><span style="display:flex;"><span>	log.dirs<span style="color:#f92672">=</span>/opt/kafka/data/kafka-logs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The default number of log partitions per topic. More partitions allow greater</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># parallelism for consumption, but this will also result in more files across</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># the brokers.</span>
+</span></span><span style="display:flex;"><span>	num.partitions<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The number of threads per data directory to be used for log recovery at startup and flushing at shutdown.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># This value is recommended to be increased for installations with data dirs located in RAID array.</span>
+</span></span><span style="display:flex;"><span>	num.recovery.threads.per.data.dir<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">############################# Log Flush Policy #############################</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># Messages are immediately written to the filesystem but by default we only fsync() to sync</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># the OS cache lazily. The following configurations control the flush of data to disk. </span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># There are a few important trade-offs here:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#    1. Durability: Unflushed data may be lost if you are not using replication.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#    2. Latency: Very large flush intervals may lead to latency spikes when the flush does occur as there will be a lot of data to flush.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#    3. Throughput: The flush is generally the most expensive operation, and a small flush interval may lead to exceessive seeks. </span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The settings below allow one to configure the flush policy to flush data after a period of time or</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># every N messages (or both). This can be done globally and overridden on a per-topic basis.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The number of messages to accept before forcing a flush of data to disk</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#log.flush.interval.messages=10000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The maximum amount of time a message can sit in a log before we force a flush</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#log.flush.interval.ms=1000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">############################# Log Retention Policy #############################</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The following configurations control the disposal of log segments. The policy can</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># be set to delete segments after a period of time, or after a given size has accumulated.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># A segment will be deleted whenever *either* of these criteria are met. Deletion always happens</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># from the end of the log.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The minimum age of a log file to be eligible for deletion</span>
+</span></span><span style="display:flex;"><span>	log.retention.hours<span style="color:#f92672">=</span><span style="color:#ae81ff">168</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># A size-based retention policy for logs. Segments are pruned from the log as long as the remaining</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># segments don&#39;t drop below log.retention.bytes.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#log.retention.bytes=1073741824</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The maximum size of a log segment file. When this size is reached a new log segment will be created.</span>
+</span></span><span style="display:flex;"><span>	log.segment.bytes<span style="color:#f92672">=</span><span style="color:#ae81ff">1073741824</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># The interval at which log segments are checked to see if they can be deleted according </span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># to the retention policies</span>
+</span></span><span style="display:flex;"><span>	log.retention.check.interval.ms<span style="color:#f92672">=</span><span style="color:#ae81ff">300000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># By default the log cleaner is disabled and the log retention policy will default to just delete segments after their retention expires.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># If log.cleaner.enable=true is set the cleaner will be enabled and individual logs can then be marked for log compaction.</span>
+</span></span><span style="display:flex;"><span>	log.cleaner.enable<span style="color:#f92672">=</span>false
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">############################# Zookeeper #############################</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># Zookeeper connection string (see zookeeper docs for details).</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># This is a comma separated host:port pairs, each corresponding to a zk</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># server. e.g. &#34;127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002&#34;.</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># You can also append an optional chroot string to the urls to specify the</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># root directory for all kafka znodes.</span>
+</span></span><span style="display:flex;"><span>	zookeeper.connect<span style="color:#f92672">=</span>node01:2181,node02:2181,node03:2181
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># Timeout in ms for connecting to zookeeper</span>
+</span></span><span style="display:flex;"><span>	zookeeper.connection.timeout.ms<span style="color:#f92672">=</span><span style="color:#ae81ff">6000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ scp -r /opt/kafka root@node2:/opt/
+</span></span><span style="display:flex;"><span>$ vim /opt/kafka/config/server.properties 
+</span></span><span style="display:flex;"><span>	修改：
+</span></span><span style="display:flex;"><span>	broker.id<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>	host.name<span style="color:#f92672">=</span>10.199.200.102
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ scp -r /opt/kafka root@node3:/opt/
+</span></span><span style="display:flex;"><span>$ vim /opt/kafka/config/server.properties 
+</span></span><span style="display:flex;"><span>	修改：
+</span></span><span style="display:flex;"><span>	broker.id<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>	host.name<span style="color:#f92672">=</span>10.199.200.103
+</span></span></code></pre></div><h3 id="33-启动kafka">3.3 启动kafka</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$  bin/kafka-server-start.sh config/server.properties
+</span></span><span style="display:flex;"><span>$  bin/kafka-server-start.sh config/server.properties
+</span></span><span style="display:flex;"><span>$  bin/kafka-server-start.sh config/server.properties
+</span></span></code></pre></div><h3 id="34-配置启动脚本">3.4 配置启动脚本</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ vim /opt/startKafka.sh
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#!/bin/bash</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#pkill -9 kafka</span>
+</span></span><span style="display:flex;"><span>    /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties &amp;&gt; /opt/kafka/logs/kafka.logs &amp;
+</span></span><span style="display:flex;"><span>    tail -500f /opt/kafka/logs/kafka.logs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ vim /opt/startKafka.sh
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#!/bin/bash</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#pkill -9 kafka</span>
+</span></span><span style="display:flex;"><span>	/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties &amp;&gt; /opt/kafka/logs/kafka.logs &amp;
+</span></span><span style="display:flex;"><span>	tail -500f /opt/kafka/logs/kafka.logs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ vim /opt/startKafka.sh
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#!/bin/bash</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#pkill -9 kafka</span>
+</span></span><span style="display:flex;"><span>	/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties &amp;&gt; /opt/kafka/logs/kafka.logs &amp;
+</span></span><span style="display:flex;"><span>	tail -500f /opt/kafka/logs/kafka.logs
+</span></span></code></pre></div><h3 id="35-测试集群">3.5 测试集群</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#建立一个topic为summer</span>
+</span></span><span style="display:flex;"><span>$ /opt/kafka/bin/kafka-topics.sh --create --zookeeper 10.199.200.101:2181 --replication-factor <span style="color:#ae81ff">3</span> --partitions <span style="color:#ae81ff">1</span> --topic summer
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#列出集群中所有的topic</span>
+</span></span><span style="display:flex;"><span>$ /opt/kafka/bin/kafka-topics.sh --list --zookeeper 10.199.200.102:2181 
+</span></span><span style="display:flex;"><span>	summer
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#查看summer这个主题的详情</span>
+</span></span><span style="display:flex;"><span>$ /opt/kafka/bin/kafka-topics.sh --describe --zookeeper 10.199.200.103:2181 --topic summer 
+</span></span><span style="display:flex;"><span>	Topic:summer	PartitionCount:1	ReplicationFactor:3	Configs:
+</span></span><span style="display:flex;"><span>	Topic: summer	Partition: 0	Leader: 2	Replicas: 2,3,1	Isr: 2,3,1
+</span></span></code></pre></div><blockquote>
+<p>PS：</p>
+<ul>
+<li>Topic主题名称：summer</li>
+<li>Partition:只有一个，从0开始</li>
+<li>leader ：id为2的broker</li>
+<li>Replicas 副本存在于broker id为2,3,4的上面</li>
+<li>Isr:活跃状态的broker</li>
+</ul>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 使用node1发送一条消息，这里的node1为生产者角色</span>
+</span></span><span style="display:flex;"><span>$ /opt/kafka/bin/kafka-console-producer.sh --broker-list 10.199.200.101:2181 --topic summer
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">[</span>2016-08-16 17:29:07,225<span style="color:#f92672">]</span> WARN Property topic is not valid <span style="color:#f92672">(</span>kafka.utils.VerifiableProperties<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>	tis
+</span></span><span style="display:flex;"><span>	kisyys
+</span></span><span style="display:flex;"><span>	paut
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使用node3接收消息</span>
+</span></span><span style="display:flex;"><span>$ /opt/kafka/bin/kafka-console-consumer.sh --zookeeper  10.199.200.103:2181 --topic summer --from-beginning
+</span></span><span style="display:flex;"><span>	tis
+</span></span><span style="display:flex;"><span>	kisyys
+</span></span><span style="display:flex;"><span>	paut
+</span></span></code></pre></div><h3 id="4-kafka常用命令">4. kafka常用命令</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 列出集群中所有的topic</span>
+</span></span><span style="display:flex;"><span>$ /opt/kafka/bin/kafka-topics.sh --list --zookeeper 10.199.200.102:2181 
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建名为test的topic， 8个分区分别存放数据，数据备份总共2份</span>
+</span></span><span style="display:flex;"><span>$ kafka-topics.sh --create --topic summer --replication-factor <span style="color:#ae81ff">2</span> --partitions <span style="color:#ae81ff">8</span> --zookeeper 10.199.200.101:2181
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 重新分配分区kafka-reassign-partitions.sh,这个命令可以分区指定到想要的--broker-list上，broker-list是指节点id列表</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># json文件内容：</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">{</span> <span style="color:#e6db74">&#34;topics&#34;</span>: <span style="color:#f92672">[{</span><span style="color:#e6db74">&#34;topic&#34;</span>: <span style="color:#e6db74">&#34;summer&#34;</span><span style="color:#f92672">}]</span>,<span style="color:#e6db74">&#34;version&#34;</span>:1 <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span>$ ./bin/kafka-reassign-partitions.sh --zookeeper 10.199.200.101:2181 --topics-to-move-json-file  1.json  --broker-list  <span style="color:#e6db74">&#34;3,4,5&#34;</span>  --generate  
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 这表示如果我要把summer迁移到3,4,5节点上kafka-reassign-partitions.sh所要出的方案，执行成功会显示两段json，一段为原来的json（可以用来备份数据），一段为迁移后的json(用来迁移)，然后把迁移的json脚本保存为2.json</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 执行迁移任务：</span>
+</span></span><span style="display:flex;"><span>$ bin/kafka-reassign-partitions.sh --zookeeper 10.199.200.101:2181 --reassignment-json-file 2.json --execute 
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查询迁移状态：</span>
+</span></span><span style="display:flex;"><span>$ bin/kafka-reassign-partitions.sh --zookeeper 10.199.200.101:2181 --reassignment-json-file 2.json --verify 
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 为Topic增加 partition数目kafka-add-partitions.sh</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>$ ./kafka-topics.sh -alter --topic test --partition <span style="color:#ae81ff">2</span>  --zookeeper  192.168.197.170:2181,192.168.197.171:2181 （为topic test增加2个分区）
+</span></span></code></pre></div><h3 id="5-优化">5. 优化</h3>
+<blockquote>
+<p>1.zookeeper优化</p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>1.1. 快照文件和事务日志文件分别挂在不同磁盘。zoo.cfg文件中，dataDir是存放快照数据的，dataLogDir是存放事务日志的。zookeeper更新操作过程：先写事务日志，再写内存，周期性落到磁盘（刷新内存到快照文件）。事务日志的对写请求的性能影响很大，保证dataLogDir所在磁盘性能良好、没有竞争者</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>1.2. 默认jvm没有配置Xmx、Xms等信息，可以在conf目录下创建Java.env文件（内存堆空间一定要小于机器内存，避免使用swap）</p>
+</blockquote>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ vim conf/java.env
+</span></span><span style="display:flex;"><span>	JAVA_OPTS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;-Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=172.17.117.116 -Dcom.sun.management.jmxremote.port=10001 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false&#34;</span>
+</span></span><span style="display:flex;"><span>$ export JVMFLAGS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;-Xms5120m -Xmx5120m </span>$JVMFLAGS<span style="color:#e6db74"> </span>$JAVA_OPTS<span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><blockquote>
+<blockquote>
+<p>1.3. 按天出zookeeper日志，避免zookeeper.out文件过大。kEnv.sh文件日志输出方式从CONSOLE改为ROLLINGFILE；</p>
+</blockquote>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ vim zkEnv.sh
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;x</span><span style="color:#e6db74">${</span>ZOO_LOG_DIR<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;x&#34;</span> <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">#ZOO_LOG_DIR=&#34;.&#34;</span>
+</span></span><span style="display:flex;"><span>		ZOO_LOG_DIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>ZOOKEEPER_PREFIX<span style="color:#e6db74">}</span><span style="color:#e6db74">/logs&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;x</span><span style="color:#e6db74">${</span>ZOO_LOG4J_PROP<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;x&#34;</span> <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">#ZOO_LOG4J_PROP=&#34;INFO,CONSOLE&#34;</span>
+</span></span><span style="display:flex;"><span>		ZOO_LOG4J_PROP<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;INFO,ROLLINGFILE&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">fi</span>
+</span></span></code></pre></div><p>conf/log4j.properties设置为按天生成文件DailyRollingFileAppender</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ vim conf/log4j.properties
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#zookeeper.root.logger=INFO, CONSOLE</span>
+</span></span><span style="display:flex;"><span>	zookeeper.root.logger<span style="color:#f92672">=</span>INFO, ROLLINGFIL
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	log4j.appender.ROLLINGFILE<span style="color:#f92672">=</span>org.apache.log4j.DailyRollingFileAppender
+</span></span><span style="display:flex;"><span>	log4j.appender.ROLLINGFILE.Threshold<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>zookeeper.log.threshold<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span>	log4j.appender.ROLLINGFILE.File<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>zookeeper.log.dir<span style="color:#e6db74">}</span>/<span style="color:#e6db74">${</span>zookeeper.log.file<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span>	log4j.appender.ROLLINGFILE.DatePattern<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;.&#39;</span>yyyy-MM-dd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e"># Max log file size of 10MB</span>
+</span></span></code></pre></div><blockquote>
+<blockquote>
+<p>1.4. zoo.cfg文件中skipACL=yes，忽略ACL验证，可以减少权限验证的相关操作，提升一点性能。</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>1.5. zoo.cfg文件中forceSync=no，这个对写请求的性能提升很有帮助，是指每次写请求的数据都要从pagecache中固化到磁盘上，才算是写成功返回。当写请求数量到达一定程度的时候，后续写请求会等待前面写请求的forceSync操作，造成一定延时。如果追求低延时的写请求，配置forceSync=no，数据写到pagecache后就返回。但是机器断电的时候，pagecache中的数据有可能丢失。默认为forceSync=yes，为yes可以设置fsync.warningthresholdms=50 如果数据固化到磁盘的操作fsync超过50ms的时候，将会在zookeeper.out中输出一条warn日志（forceSync=yes有效）。</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>1.6. globalOutstandingLimit=100000 客户端连接过多，限制客户端请求，避免OOM</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>1.7. zoo.cfg文件中preAllocSize=64M 日志文件预分配大小; snapCount=100,000 多少次写事务，生成一个快照如果快照生成频繁可适当调大该参数。一般zk的应用提倡读大于写，性能较好（10:1），存储元数据用来协调分布式数据最终一致。写过于频繁使用缓存更好</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>1.8. 日志文件自动清除（如果追求性能，可手动清除）</p>
+</blockquote>
+</blockquote>
+<pre><code>autopurge.snapRetainCount=3 # The number of snapshots to retain in dataDir
+autopurge.purgeInterval=1 # Purge task interval in hours Set to &quot;0&quot; to disable auto purge feature
+</code></pre>
+<blockquote>
+<p>2.kafka优化</p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>2.1 JVM参数配置优化</p>
+<blockquote>
+<p>如果使用的CMS GC算法，建议JVM Heap不要太大，在4GB以内就可以。JVM太大，导致Major GC或者Full GC产生的“stop the world”时间过长，导致broker和zk之间的session超时，比如重现选举controller节点和提升follow replica为leader replica。</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>JVM也不能过小，否则会导致频繁地触发gc操作，也影响Kafka的吞吐量。另外，需要避免CMS GC过程中的发生promotion failure和concurrent failure问题。CMSInitiatingOccupancyFraction=70可以预防concurrent failure问题，提前出发Major GC。</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Kafka JVM参数可以直接修改启动脚本bin/kafka-server-start.sh 中的变量值。下面是一些基本参数，也可以根据实际的gc状况和调试GC需要增加一些相关的参数。</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<pre><code>export KAFKA_HEAP_OPTS=&quot;-Xmx4G -Xms4G -Xmn2G -XX:PermSize=64m -XX:MaxPermSize=128m  -XX:SurvivorRatio=6  -XX:CMSInitiatingOccupancyFraction=70 -XX:+UseCMSInitiatingOccupancyOnly&quot;
+</code></pre>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>需要关注gc日志中的YGC时间以及CMS GC里面的CMS-initial-mark和CMS-remark两个阶段的时间，这些GC过程是“stop the world”方式完成的。</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>2.2 打开JMX端口</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>主要是为了通过JMX端口监控Kafka Broker信息。可以在bin/kafka-server-start.sh中打开JMX端口变量。</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<pre><code>	export JMX_PORT=9999
+</code></pre>
+<blockquote>
+<blockquote>
+<p>调整log4j的日志级别</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>如果集群中topic和partition数量较大时，因为log4j的日志级别太低，导致进程持续很长的时间在打印日志。日志量巨大，导致很多额外的性能开销。特别是contoller日志级别为trace级别，这点比较坑。Tips通过JMX端口设置log4j日志级别，不用重启broker节点,设置日志级别：</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<pre><code>	java -jar cmdline-jmxclient-0.10.3.jar - localhost:9999 kafka:type=kafka.Log4jController setLogLevel=kafka.controller,INFO
+	java -jar cmdline-jmxclient-0.10.3.jar - localhost:9999 kafka:type=kafka.Log4jController setLogLevel=state.change.logger,INFO
+
+	检查日志级别：
+	java -jar cmdline-jmxclient-0.10.3.jar - localhost:9999 kafka:type=kafka.Log4jController getLogLevel=kafka.controller
+	java -jar cmdline-jmxclient-0.10.3.jar - localhost:9999 kafka:type=kafka.Log4jController 	
+</code></pre>
+<hr>
+<h2 id="结束">结束</h2>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-准备配置所有节点">1. 准备配置（所有节点）</a></li>
+    <li><a href="#2-安装zookeeper集群">2. 安装zookeeper集群</a>
+      <ul>
+        <li><a href="#21-安装配置zookeeper">2.1 安装配置zookeeper</a></li>
+        <li><a href="#22-启动zookeeper集群">2.2 启动Zookeeper集群</a></li>
+        <li><a href="#23-测试zookeeper集群">2.3 测试Zookeeper集群</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-安装配置kafka集群">3. 安装配置kafka集群</a>
+      <ul>
+        <li><a href="#31-安装kafka">3.1 安装kafka</a></li>
+        <li><a href="#32-配置kafka">3.2 配置kafka</a></li>
+        <li><a href="#33-启动kafka">3.3 启动kafka</a></li>
+        <li><a href="#34-配置启动脚本">3.4 配置启动脚本</a></li>
+        <li><a href="#35-测试集群">3.5 测试集群</a></li>
+        <li><a href="#4-kafka常用命令">4. kafka常用命令</a></li>
+        <li><a href="#5-优化">5. 优化</a></li>
+      </ul>
+    </li>
+    <li><a href="#结束">结束</a></li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer class="footer">
+    <div class="copyright">
+        
+        
+        © Powered by <a href="https://github.com/allposs/Axis-Hugo-Theme.git">Axis-Hugo-Theme</a> and <a href="https://gohugo.io">Hugo</a> | 2022 - 2024
+        
+    </div>
+</footer>
+
+  
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBF4J7F6RW"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-NBF4J7F6RW');
+        }
+      </script>
+    
+  
+
+
+
+<script async src="https://blog.allposs.com//js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+</body>
+
+</html>

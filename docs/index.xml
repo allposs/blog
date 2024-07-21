@@ -2,325 +2,325 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>文档 on allposs博客</title>
-    <link>https://blog.allposs.com/docs/</link>
+    <link>http://localhost:1313/docs/</link>
     <description>Recent content in 文档 on allposs博客</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 05 Jun 2024 10:45:17 +0800</lastBuildDate>
-    <atom:link href="https://blog.allposs.com/docs/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/docs/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Clang代码片段</title>
-      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/clang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</link>
+      <link>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/clang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</link>
       <pubDate>Wed, 05 Jun 2024 10:45:17 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/clang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</guid>
+      <guid>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/clang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</guid>
       <description>简介 环境 正文 结束</description>
     </item>
     <item>
       <title>Clang开发环境搭建</title>
-      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/clang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <link>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/clang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
       <pubDate>Wed, 05 Jun 2024 10:45:07 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/clang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <guid>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/clang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
       <description>简介 环境 正文 结束</description>
     </item>
     <item>
       <title>pigpio库使用</title>
-      <link>https://blog.allposs.com/docs/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A0%91%E8%8E%93%E6%B4%BE/003-pigpio%E5%BA%93%E4%BD%BF%E7%94%A8/</link>
+      <link>http://localhost:1313/docs/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A0%91%E8%8E%93%E6%B4%BE/003-pigpio%E5%BA%93%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Wed, 05 Jun 2024 10:45:07 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A0%91%E8%8E%93%E6%B4%BE/003-pigpio%E5%BA%93%E4%BD%BF%E7%94%A8/</guid>
+      <guid>http://localhost:1313/docs/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A0%91%E8%8E%93%E6%B4%BE/003-pigpio%E5%BA%93%E4%BD%BF%E7%94%A8/</guid>
       <description>简介 pigpio 是一个流行的用于树莓派的GPIO控制库，它支持广泛的功能，包括精确的时间控制以及同时处理多个GPIO引脚。pigpio特别适合于需要精</description>
     </item>
     <item>
       <title>开发环境搭建</title>
-      <link>https://blog.allposs.com/docs/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A0%91%E8%8E%93%E6%B4%BE/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <link>http://localhost:1313/docs/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A0%91%E8%8E%93%E6%B4%BE/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
       <pubDate>Wed, 05 Jun 2024 10:45:07 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A0%91%E8%8E%93%E6%B4%BE/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <guid>http://localhost:1313/docs/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A0%91%E8%8E%93%E6%B4%BE/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
       <description>简介 环境 正文 结束</description>
     </item>
     <item>
       <title>周末周庄古镇攻略</title>
-      <link>https://blog.allposs.com/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/004-%E5%91%A8%E6%9C%AB%E5%91%A8%E5%BA%84%E5%8F%A4%E9%95%87%E6%94%BB%E7%95%A5/</link>
+      <link>http://localhost:1313/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/004-%E5%91%A8%E6%9C%AB%E5%91%A8%E5%BA%84%E5%8F%A4%E9%95%87%E6%94%BB%E7%95%A5/</link>
       <pubDate>Fri, 24 May 2024 10:33:48 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/004-%E5%91%A8%E6%9C%AB%E5%91%A8%E5%BA%84%E5%8F%A4%E9%95%87%E6%94%BB%E7%95%A5/</guid>
+      <guid>http://localhost:1313/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/004-%E5%91%A8%E6%9C%AB%E5%91%A8%E5%BA%84%E5%8F%A4%E9%95%87%E6%94%BB%E7%95%A5/</guid>
       <description>正文 ⏰时间（二天） 5月25日 08:00 - 5月26日 21:00 ☁️天气（⛅1°-12°）: 时间⏰ 地点🌍 天气☁️ 温度🌡️ 5月25号 周六 苏州 ⛅晴转多云 20°-27</description>
     </item>
     <item>
       <title>杭州大禹谷娘娘山</title>
-      <link>https://blog.allposs.com/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/003-%E6%9D%AD%E5%B7%9E%E5%A4%A7%E7%A6%B9%E8%B0%B7%E5%A8%98%E5%A8%98%E5%B1%B1/</link>
+      <link>http://localhost:1313/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/003-%E6%9D%AD%E5%B7%9E%E5%A4%A7%E7%A6%B9%E8%B0%B7%E5%A8%98%E5%A8%98%E5%B1%B1/</link>
       <pubDate>Tue, 26 Dec 2023 17:48:29 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/003-%E6%9D%AD%E5%B7%9E%E5%A4%A7%E7%A6%B9%E8%B0%B7%E5%A8%98%E5%A8%98%E5%B1%B1/</guid>
+      <guid>http://localhost:1313/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/003-%E6%9D%AD%E5%B7%9E%E5%A4%A7%E7%A6%B9%E8%B0%B7%E5%A8%98%E5%A8%98%E5%B1%B1/</guid>
       <description>正文 ⏰时间（一天） 12月2日 08:00 - 12月2日 21:00 ☁️天气（⛅1°-12°）: 时间⏰ 地点🌍 天气☁️ 温度🌡️ 12月2号 周六 苏州 ⛅晴转多云 1°-10°</description>
     </item>
     <item>
       <title>减肥计划</title>
-      <link>https://blog.allposs.com/docs/%E7%94%9F%E6%B4%BB/%E5%87%8F%E8%82%A5%E8%AE%A1%E5%88%92/</link>
+      <link>http://localhost:1313/docs/%E7%94%9F%E6%B4%BB/%E5%87%8F%E8%82%A5%E8%AE%A1%E5%88%92/</link>
       <pubDate>Tue, 26 Dec 2023 17:40:04 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E7%94%9F%E6%B4%BB/%E5%87%8F%E8%82%A5%E8%AE%A1%E5%88%92/</guid>
+      <guid>http://localhost:1313/docs/%E7%94%9F%E6%B4%BB/%E5%87%8F%E8%82%A5%E8%AE%A1%E5%88%92/</guid>
       <description>正文 目标 周计划 |时间⏰|地点🌍|天气☁️|温度🌡️| 周一 &amp;ndash; 周五 20:30 &amp;ndash; 21:30 跑步</description>
     </item>
     <item>
       <title>苏州穹窿山徒步</title>
-      <link>https://blog.allposs.com/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/002-%E8%8B%8F%E5%B7%9E%E7%A9%B9%E7%AA%9F%E5%B1%B1%E5%BE%92%E6%AD%A5/</link>
+      <link>http://localhost:1313/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/002-%E8%8B%8F%E5%B7%9E%E7%A9%B9%E7%AA%9F%E5%B1%B1%E5%BE%92%E6%AD%A5/</link>
       <pubDate>Tue, 28 Nov 2023 13:08:53 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/002-%E8%8B%8F%E5%B7%9E%E7%A9%B9%E7%AA%9F%E5%B1%B1%E5%BE%92%E6%AD%A5/</guid>
+      <guid>http://localhost:1313/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/002-%E8%8B%8F%E5%B7%9E%E7%A9%B9%E7%AA%9F%E5%B1%B1%E5%BE%92%E6%AD%A5/</guid>
       <description>正文 ⏰时间（一天） 12月2日 08:00 - 12月2日 21:00 ☁️天气（⛅1°-12°）: 时间⏰ 地点🌍 天气☁️ 温度🌡️ 12月2号 周六 苏州 ⛅晴转多云 1°-10°</description>
     </item>
     <item>
       <title>黄山周末二日攻略</title>
-      <link>https://blog.allposs.com/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/001-%E9%BB%84%E5%B1%B1%E5%91%A8%E6%9C%AB%E5%BE%92%E6%AD%A5%E6%94%BB%E7%95%A5/</link>
+      <link>http://localhost:1313/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/001-%E9%BB%84%E5%B1%B1%E5%91%A8%E6%9C%AB%E5%BE%92%E6%AD%A5%E6%94%BB%E7%95%A5/</link>
       <pubDate>Tue, 28 Nov 2023 09:44:01 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/001-%E9%BB%84%E5%B1%B1%E5%91%A8%E6%9C%AB%E5%BE%92%E6%AD%A5%E6%94%BB%E7%95%A5/</guid>
+      <guid>http://localhost:1313/docs/%E7%94%9F%E6%B4%BB/%E6%97%85%E6%B8%B8%E6%94%BB%E7%95%A5/001-%E9%BB%84%E5%B1%B1%E5%91%A8%E6%9C%AB%E5%BE%92%E6%AD%A5%E6%94%BB%E7%95%A5/</guid>
       <description>正文 ⏰时间（三天） 12月01日 周五 晚上 &amp;mdash; 12月03日 周日 晚上 ☁️天气（⛅0°-12°）: 时间⏰ 地点🌍 天气☁️ 温度🌡️ 周五 黄山 ⛅晴转多云 0°-</description>
     </item>
     <item>
       <title>001-netfilter详解</title>
-      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/linux%E5%86%85%E6%A0%B8%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-netfilter%E8%AF%A6%E8%A7%A3/</link>
+      <link>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/linux%E5%86%85%E6%A0%B8%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-netfilter%E8%AF%A6%E8%A7%A3/</link>
       <pubDate>Tue, 24 Oct 2023 11:43:39 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/linux%E5%86%85%E6%A0%B8%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-netfilter%E8%AF%A6%E8%A7%A3/</guid>
+      <guid>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/linux%E5%86%85%E6%A0%B8%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-netfilter%E8%AF%A6%E8%A7%A3/</guid>
       <description>简介 netfilter/iptables（简称为iptables）组成Linux平台下的包过滤防火墙，与大多数的Linux软件一样，这个包过</description>
     </item>
     <item>
       <title>AmazonLinux2 配置安装docker</title>
-      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/002-amazonlinux2-%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85docker/</link>
+      <link>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/002-amazonlinux2-%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85docker/</link>
       <pubDate>Mon, 23 Oct 2023 14:13:47 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/002-amazonlinux2-%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85docker/</guid>
+      <guid>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/002-amazonlinux2-%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85docker/</guid>
       <description>简介 环境 正文 # 安装yum扩展包 sudo yum install -y yum-utils # 使用docker官方源 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo # 安装docker-ce sudo yum install docker-ce cat &amp;gt; /etc/docker/daemon.json &amp;lt;&amp;lt; EOF { &amp;#34;builder&amp;#34;: { &amp;#34;gc&amp;#34;: { &amp;#34;defaultKeepStorage&amp;#34;: &amp;#34;20GB&amp;#34;, &amp;#34;enabled&amp;#34;: true } }, &amp;#34;experimental&amp;#34;: false,</description>
     </item>
     <item>
       <title>brew命令合集</title>
-      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/002-brew%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
+      <link>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/002-brew%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
       <pubDate>Mon, 23 Oct 2023 13:48:10 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/002-brew%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
+      <guid>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/002-brew%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
       <description>简介 环境 正文 brew安装 /usr/bin/ruby -e &amp;#34;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&amp;#34; 常用示例 # 更新 Homebrew 自己 brew update # 查看哪些安装包需要更新 brew outdated # 更新所有的包 brew upgrade # 更新指定的包 brew upgrade $FORMULA # 清理所有包的旧</description>
     </item>
     <item>
       <title>流程平台设计开发</title>
-      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/002-%E5%BC%80%E6%BA%90%E6%B5%81%E7%A8%8B%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91/</link>
+      <link>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/002-%E5%BC%80%E6%BA%90%E6%B5%81%E7%A8%8B%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91/</link>
       <pubDate>Fri, 14 Jul 2023 08:27:13 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/002-%E5%BC%80%E6%BA%90%E6%B5%81%E7%A8%8B%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91/</guid>
+      <guid>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/002-%E5%BC%80%E6%BA%90%E6%B5%81%E7%A8%8B%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91/</guid>
       <description>简介 环境 功能 1&amp;gt; 流程审批 2&amp;gt; 动态表单 3&amp;gt; 流程分支 4&amp;gt; 分支并发 5&amp;gt; 分支判断 6&amp;gt; 动态HTTP请求 7&amp;gt; 脚本任务 后端 正文 结束</description>
     </item>
     <item>
       <title>网络问题合集</title>
-      <link>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/001-%E7%BD%91%E7%BB%9C%E9%97%AE%E9%A2%98%E5%90%88%E9%9B%86/</link>
+      <link>http://localhost:1313/docs/%E7%BD%91%E7%BB%9C/001-%E7%BD%91%E7%BB%9C%E9%97%AE%E9%A2%98%E5%90%88%E9%9B%86/</link>
       <pubDate>Thu, 13 Jul 2023 09:32:08 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/001-%E7%BD%91%E7%BB%9C%E9%97%AE%E9%A2%98%E5%90%88%E9%9B%86/</guid>
+      <guid>http://localhost:1313/docs/%E7%BD%91%E7%BB%9C/001-%E7%BD%91%E7%BB%9C%E9%97%AE%E9%A2%98%E5%90%88%E9%9B%86/</guid>
       <description>简介 正文 结束</description>
     </item>
     <item>
       <title>OSI7层网络模型详解</title>
-      <link>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/002-osi7%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/</link>
+      <link>http://localhost:1313/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/002-osi7%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/</link>
       <pubDate>Sat, 08 Jul 2023 17:45:49 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/002-osi7%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/</guid>
+      <guid>http://localhost:1313/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/002-osi7%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/</guid>
       <description>简介 先上网图: OSI7层模型是open system interconnection 开放式系统互联参考模型，注意是参考模型，在实际生活中并未全部实现（现实使用的是TCP/IP4层模型</description>
     </item>
     <item>
       <title>网络协议栈名词解释</title>
-      <link>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/001-%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%A0%88%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</link>
+      <link>http://localhost:1313/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/001-%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%A0%88%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</link>
       <pubDate>Sat, 08 Jul 2023 09:22:35 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/001-%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%A0%88%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</guid>
+      <guid>http://localhost:1313/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/001-%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%A0%88%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</guid>
       <description>简介 正文 1. KeepAlive 说明: TCP的KeepAlive机制是一种保活机制，就是为了保证连接的有效性，探测连接的对端是否存活的作用，在间隔一定的时间发探</description>
     </item>
     <item>
       <title>编译自带OpenClash的OpenWrt固件</title>
-      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/openwrt/001-%E7%BC%96%E8%AF%91%E8%87%AA%E5%B8%A6openclash%E7%9A%84openwrt%E5%9B%BA%E4%BB%B6/</link>
+      <link>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/openwrt/001-%E7%BC%96%E8%AF%91%E8%87%AA%E5%B8%A6openclash%E7%9A%84openwrt%E5%9B%BA%E4%BB%B6/</link>
       <pubDate>Tue, 30 May 2023 15:51:51 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/openwrt/001-%E7%BC%96%E8%AF%91%E8%87%AA%E5%B8%A6openclash%E7%9A%84openwrt%E5%9B%BA%E4%BB%B6/</guid>
+      <guid>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/openwrt/001-%E7%BC%96%E8%AF%91%E8%87%AA%E5%B8%A6openclash%E7%9A%84openwrt%E5%9B%BA%E4%BB%B6/</guid>
       <description>简介 本文为使用编译纯净的OpenWrt固件，并集成OpenClash。使用编译环境为ubuntu 22.04.2 LTS，如果是其他操作系统可以查看open</description>
     </item>
     <item>
       <title>kubectl的debug命令实现</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%BC%80%E5%8F%91%E5%90%88%E9%9B%86/001-kubectl%E7%9A%84debug%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%BC%80%E5%8F%91%E5%90%88%E9%9B%86/001-kubectl%E7%9A%84debug%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0/</link>
       <pubDate>Sat, 27 May 2023 08:28:22 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%BC%80%E5%8F%91%E5%90%88%E9%9B%86/001-kubectl%E7%9A%84debug%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%BC%80%E5%8F%91%E5%90%88%E9%9B%86/001-kubectl%E7%9A%84debug%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0/</guid>
       <description>简介 kubectl是管理Kubernetes常用工具之一，在调试、排查问题的时候，我们一般情况使用 logs describe exec debug等子命令便可以找到问题原因</description>
     </item>
     <item>
       <title>kubernetes原理合集</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/005-kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/005-kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/</link>
       <pubDate>Fri, 19 May 2023 18:00:39 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/005-kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/005-kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/</guid>
       <description>简介 主要是对kubernetes集群安装方式的一个汇总文档，方便自己归纳总结知识。 正文 Kubernetes对象 001-service资源对象</description>
     </item>
     <item>
       <title>NFS详解</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/001-nfs%E8%AF%A6%E8%A7%A3/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/001-nfs%E8%AF%A6%E8%A7%A3/</link>
       <pubDate>Fri, 19 May 2023 16:25:47 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/001-nfs%E8%AF%A6%E8%A7%A3/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/001-nfs%E8%AF%A6%E8%A7%A3/</guid>
       <description>简介 NFS 是 Network File System 的缩写，是Sun公司于1984开发的一种分布式文件系统协议。它的核心功能就是可以通过网络，让不同的客户端，可以彼此访问共同的文</description>
     </item>
     <item>
       <title>Service资源对象详解</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-service%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-service%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</link>
       <pubDate>Thu, 18 May 2023 15:18:02 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-service%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-service%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3/</guid>
       <description>简介 Service在Kubernetes官方主页是这样描述的： Kubernetes Pod 是转瞬即逝的。 Pod 实际上拥有 生命周期。 当一个工作 Node 挂掉后, 在 Node 上运行的 Pod 也会</description>
     </item>
     <item>
       <title>kube-proxy组件详解</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/002-kube-proxy%E7%BB%84%E4%BB%B6%E8%AF%A6%E8%A7%A3/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/002-kube-proxy%E7%BB%84%E4%BB%B6%E8%AF%A6%E8%A7%A3/</link>
       <pubDate>Thu, 18 May 2023 15:00:54 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/002-kube-proxy%E7%BB%84%E4%BB%B6%E8%AF%A6%E8%A7%A3/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/002-kube-proxy%E7%BB%84%E4%BB%B6%E8%AF%A6%E8%A7%A3/</guid>
       <description>简介 环境 正文 kube-proxy kube-proxy是Kubernetes的核心组件，部署在每台kubernetes节点上，他是Service对象具体实现者，</description>
     </item>
     <item>
       <title>Golang代码片段</title>
-      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</link>
+      <link>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</link>
       <pubDate>Wed, 17 May 2023 10:33:37 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</guid>
+      <guid>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</guid>
       <description>简介 环境 正文 结束</description>
     </item>
     <item>
       <title>mardown代码片段</title>
-      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/markdown/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</link>
+      <link>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/markdown/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</link>
       <pubDate>Wed, 17 May 2023 10:29:24 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/markdown/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</guid>
+      <guid>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/markdown/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</guid>
       <description>简介 正文 vscode { &amp;#34;实践文档&amp;#34;: { &amp;#34;prefix&amp;#34;: &amp;#34;PK&amp;#34;, &amp;#34;body&amp;#34;: [ &amp;#34;---&amp;#34;, &amp;#34;title: &amp;#34;, &amp;#34;date: &amp;#34;, &amp;#34;type: docs&amp;#34;, &amp;#34;tags: []&amp;#34;, &amp;#34;---&amp;#34;, &amp;#34;# 简介&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;# 环境&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;# 正文&amp;#34;, &amp;#34;&amp;#34;, &amp;#34;# 结束&amp;</description>
     </item>
     <item>
       <title>开发环境搭建合集</title>
-      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/001-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%90%88%E9%9B%86/</link>
+      <link>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/001-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%90%88%E9%9B%86/</link>
       <pubDate>Wed, 17 May 2023 10:28:31 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/001-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%90%88%E9%9B%86/</guid>
+      <guid>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/001-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%90%88%E9%9B%86/</guid>
       <description>简介 正文 代码片段 IDE工具 vscode 配置文件 { &amp;#34;window.openFoldersInNewWindow&amp;#34;: &amp;#34;on&amp;#34;, &amp;#34;editor.fontSize&amp;#34;: 14, &amp;#34;editor.fontLigatures&amp;#34;: false, &amp;#34;editor.fontWeight&amp;#34;: &amp;#34;normal&amp;#34;, &amp;#34;editor.minimap.enabled&amp;#34;: true, &amp;#34;editor.detectIndentation&amp;#34;: false, &amp;#34;editor.wordWrap&amp;#34;: &amp;#34;on&amp;#34;, &amp;#34;editor.renderWhitespace&amp;#34;: &amp;#34;none&amp;#34;, &amp;#34;editor.snippetSuggestions&amp;#34;: &amp;#34;top&amp;#34;, &amp;#34;editor.suggestSelection&amp;#34;: &amp;#34;first&amp;#34;, &amp;#34;editor.renderLineHighlight&amp;#34;: &amp;#34;all&amp;#34;, &amp;#34;editor.quickSuggestions&amp;#34;: { &amp;#34;other&amp;#34;: true, &amp;#34;comments&amp;#34;: true, &amp;#34;strings&amp;#34;: true }, &amp;#34;editor.formatOnSave&amp;#34;: true, &amp;#34;editor.codeActionsOnSave&amp;#34;: { // 开启自动保存修复 &amp;#34;source.fixAll.eslint&amp;#34;: true, //&amp;#34;source.fixAll.markdownlint&amp;#34;: true }, // 默</description>
     </item>
     <item>
       <title>Kubernetes问题合集</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/003-kubernetes%E9%97%AE%E9%A2%98%E5%90%88%E9%9B%86/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/003-kubernetes%E9%97%AE%E9%A2%98%E5%90%88%E9%9B%86/</link>
       <pubDate>Wed, 17 May 2023 10:27:02 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/003-kubernetes%E9%97%AE%E9%A2%98%E5%90%88%E9%9B%86/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/003-kubernetes%E9%97%AE%E9%A2%98%E5%90%88%E9%9B%86/</guid>
       <description>简介 正文 1. 替换容器entrypoint执行命令 说明: 在生产上处理问题时，经常需要对异常容器进行排查，而往往异常容器会自动重启而无法进入容器，</description>
     </item>
     <item>
       <title>Kubernetes优化合集</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/004-kubernetes%E4%BC%98%E5%8C%96%E5%90%88%E9%9B%86/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/004-kubernetes%E4%BC%98%E5%8C%96%E5%90%88%E9%9B%86/</link>
       <pubDate>Wed, 17 May 2023 10:26:15 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/004-kubernetes%E4%BC%98%E5%8C%96%E5%90%88%E9%9B%86/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/004-kubernetes%E4%BC%98%E5%8C%96%E5%90%88%E9%9B%86/</guid>
       <description>简介 正文 1. 标题 说明: 处理: 结束</description>
     </item>
     <item>
       <title>kubernetes命令详解</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
       <pubDate>Mon, 15 May 2023 18:35:44 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
       <description>简介 正文 1. nsenter 说明: nsenter命令是一个可以在指定进程的命令空间下运行指定程序的命令。它位于util-linux包中。 语法: nsenter [options] [program [arguments]] 处理:</description>
     </item>
     <item>
       <title>kubernetes集群搭建合集</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/001-kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/001-kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</link>
       <pubDate>Mon, 15 May 2023 17:58:50 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/001-kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/001-kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</guid>
       <description>简介 主要是对kubernetes集群安装方式的一个汇总文档，方便自己归纳总结知识。 正文 伪集群安装 主要用于学习与开发 001-k8s三节点开发环</description>
     </item>
     <item>
       <title>K8S三节点集群搭建</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/001-k8s%E4%B8%89%E8%8A%82%E7%82%B9%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/001-k8s%E4%B8%89%E8%8A%82%E7%82%B9%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
       <pubDate>Mon, 15 May 2023 15:28:47 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/001-k8s%E4%B8%89%E8%8A%82%E7%82%B9%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/001-k8s%E4%B8%89%E8%8A%82%E7%82%B9%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
       <description>简介 由于工作的原因，需要对k8s进行二次开发，所以需要一个能统一的开发环境，而minikube并不适合深度开发，所以只能以最小集群的方式搭建</description>
     </item>
     <item>
       <title>mysql常用工具</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/mysql/001-mysql%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/mysql/001-mysql%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</link>
       <pubDate>Thu, 30 Mar 2023 11:05:18 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/mysql/001-mysql%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/mysql/001-mysql%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</guid>
       <description>简介 正文 常用语句 # 查询是否锁表 show OPEN TABLES where In_use &amp;gt; 0; # 查询到相对应的进程===然后 killid show processlist; # 当前运行的所有事务 SELECT \* FROM INFORMATION_SCHEMA.innodb_trx; # 获取建表语句 show create table rk_goods_hot_list_month; 备份 mysqldump -uadmin -h</description>
     </item>
     <item>
       <title>clickhouse集群扩缩容</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/clickhouse/002-clickhouse%E9%9B%86%E7%BE%A4%E6%89%A9%E7%BC%A9%E5%AE%B9/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/clickhouse/002-clickhouse%E9%9B%86%E7%BE%A4%E6%89%A9%E7%BC%A9%E5%AE%B9/</link>
       <pubDate>Thu, 30 Mar 2023 09:54:43 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/clickhouse/002-clickhouse%E9%9B%86%E7%BE%A4%E6%89%A9%E7%BC%A9%E5%AE%B9/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/clickhouse/002-clickhouse%E9%9B%86%E7%BE%A4%E6%89%A9%E7%BC%A9%E5%AE%B9/</guid>
       <description>简介 环境 这里使用上篇文章集群做示范: IP 地址 主机名称 CPU 内存 数据盘 172.20.0.201 zookeeper01 4 8G 100G 172.20.0.202 zookeeper02 4 8G 100G 172.20.0.203 zookeeper03 4 8G 100G 172.20.0.101 clickhouse01 8 16G 300G 172.20.0.102 clickhouse02 8 16G 300G 172.20.0.103 clickhouse03 8 16G 300G 172.20.0.104 clickhouse04 8 16G 300G 172.20.0.105 clickhouse05 8 16G</description>
     </item>
     <item>
       <title>clickhouse分片高可用集群安装</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/clickhouse/001-clickhouse%E5%88%86%E7%89%87%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/clickhouse/001-clickhouse%E5%88%86%E7%89%87%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</link>
       <pubDate>Thu, 22 Sep 2022 09:34:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/clickhouse/001-clickhouse%E5%88%86%E7%89%87%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/clickhouse/001-clickhouse%E5%88%86%E7%89%87%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</guid>
       <description>简介 环境 这里使用 aws 的 EC2 做示范： IP 地址 主机名称 CPU 内存 数据盘 172.20.0.201 zookeeper01 4 8G 100G 172.20.0.202 zookeeper02 4 8G 100G 172.20.0.203 zookeeper03 4 8G 100G 172.20.0.101 clickhouse01 8 16G 300G 172.20.0.102 clickhouse02 8 16G 300G 172.20.0.103 clickhouse03 8 16G 300G 172.20.0.104 clickhouse04 8 16G 300G 172.20.0.105 clickhouse05 8 16G 300G 172.20.0.106 clickhouse06</description>
     </item>
     <item>
       <title>nvm管理node版本</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/005-nvm%E7%AE%A1%E7%90%86node%E7%89%88%E6%9C%AC/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/005-nvm%E7%AE%A1%E7%90%86node%E7%89%88%E6%9C%AC/</link>
       <pubDate>Tue, 22 Dec 2020 09:59:17 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/005-nvm%E7%AE%A1%E7%90%86node%E7%89%88%E6%9C%AC/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/005-nvm%E7%AE%A1%E7%90%86node%E7%89%88%E6%9C%AC/</guid>
       <description>简介 通过使用nvm更好的管理npm版本，在开发项目遇到只支持lts版本或者更老版本的npm时就能使用nvm很好的解决问题。 环境 无 正文 MAC安</description>
     </item>
     <item>
       <title>MAC搭建容器开发环境</title>
-      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/001-%E6%90%AD%E5%BB%BA%E5%AE%B9%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
+      <link>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/001-%E6%90%AD%E5%BB%BA%E5%AE%B9%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
       <pubDate>Fri, 13 Nov 2020 09:44:30 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/001-%E6%90%AD%E5%BB%BA%E5%AE%B9%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
+      <guid>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/001-%E6%90%AD%E5%BB%BA%E5%AE%B9%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
       <description>简介 在工作中我们往往需要使用容器的相关环境进行测试与开发，这篇文档主要记录了我这边设置容器相关开发的方法，主要使用minikube,dock</description>
     </item>
     <item>
       <title>007-frp安装与配置</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/007-frp%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/007-frp%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Tue, 25 Aug 2020 14:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/007-frp%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/007-frp%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</guid>
       <description>简介 说明 由于本人是个上班族,所以在某些加班时刻需要把自己的文档或个人代码上传到自己家里的gitlab服务器,所以就有这篇穿透内网代理配置的文</description>
     </item>
     <item>
       <title>Linux常用命令合集</title>
-      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
+      <link>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
       <pubDate>Tue, 18 Aug 2020 14:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
+      <guid>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
       <description>简介 本文是用来记录一些自己常用到的一些 linux 命令的合集文章,方便自己查询与记录。 正文 1. pstree 将正在运行的进程显示为树。它用作 ps 命令的更直观的替代方法</description>
     </item>
     <item>
       <title>pyenv安装配置</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/006-pyenv%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/006-pyenv%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Fri, 10 Jan 2020 10:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/006-pyenv%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/006-pyenv%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</guid>
       <description>简介 由于macOS 10.15.3默认使用的python版本是Python 2.7.16,但是系统本身内嵌了Python 3.7.3,导致在管理与</description>
     </item>
     <item>
       <title>pyenv命令集</title>
-      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/003-pyenv%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
+      <link>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/003-pyenv%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
       <pubDate>Fri, 10 Jan 2020 10:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/003-pyenv%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
+      <guid>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/darwin/003-pyenv%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
       <description>简介 由于macOS 10.15.3默认使用的python版本是Python 2.7.16,但是系统本身内嵌了Python 3.7.3,导致在管理与</description>
     </item>
     <item>
       <title>CFSSL制作证书</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/004-cfssl%E5%88%B6%E4%BD%9C%E8%AF%81%E4%B9%A6/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/004-cfssl%E5%88%B6%E4%BD%9C%E8%AF%81%E4%B9%A6/</link>
       <pubDate>Wed, 08 Jan 2020 10:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/004-cfssl%E5%88%B6%E4%BD%9C%E8%AF%81%E4%B9%A6/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/004-cfssl%E5%88%B6%E4%BD%9C%E8%AF%81%E4%B9%A6/</guid>
       <description>简介 在工作中，我们经常会遇到各种证书问题，如k8s,etcd,openstack等服务时，我们往往都要使用证书，本文将使用CFSSL工具快速</description>
     </item>
     <item>
       <title>数字签名和数字证书原理</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/003-%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E5%92%8C%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%E5%8E%9F%E7%90%86/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/003-%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E5%92%8C%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%E5%8E%9F%E7%90%86/</link>
       <pubDate>Sun, 05 Jan 2020 10:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/003-%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E5%92%8C%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%E5%8E%9F%E7%90%86/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/003-%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E5%92%8C%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%E5%8E%9F%E7%90%86/</guid>
       <description>简介 说明 在工作中，我们经常会遇到各种证书问题，如k8s,etcd,openstack等服务时，我们往往都要使用证书，本文将使用CFSSL工具</description>
     </item>
     <item>
       <title>Golang开发环境搭建</title>
-      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <link>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
       <pubDate>Fri, 24 May 2019 10:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <guid>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
       <description>简介 这篇文章主要记录Golang在各个主流操作系统上的开发环境搭建。这里的IDE选择VSCode的原因是比较轻量,功能简单实用并与git结合</description>
     </item>
     <item>
       <title>008-kafka集群配置安装</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/008-kafka%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/008-kafka%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85/</link>
       <pubDate>Tue, 16 Aug 2016 14:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/008-kafka%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/008-kafka%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85/</guid>
       <description>简介 Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者规模的网站中的所有动作流数据。 这种动作（网页浏览，搜索和其他用户的行动</description>
     </item>
     <item>
       <title>Mitaka版openstack三节点安装</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/openstack/001-mitaka%E7%89%88openstack%E4%B8%89%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/openstack/001-mitaka%E7%89%88openstack%E4%B8%89%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85/</link>
       <pubDate>Fri, 17 Jun 2016 14:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/openstack/001-mitaka%E7%89%88openstack%E4%B8%89%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/openstack/001-mitaka%E7%89%88openstack%E4%B8%89%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85/</guid>
       <description>简介 Mitaka版openstack三节点安装文档。 环境 操作系统：CentOS7.1 X86_64 Yum源：163源 IP地址：略 DNS：略 主机名：ops</description>
     </item>
     <item>
       <title>CentOS7.2安装KVM</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/002-centos7.2%E5%AE%89%E8%A3%85kvm/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/002-centos7.2%E5%AE%89%E8%A3%85kvm/</link>
       <pubDate>Wed, 04 May 2016 14:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/002-centos7.2%E5%AE%89%E8%A3%85kvm/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/002-centos7.2%E5%AE%89%E8%A3%85kvm/</guid>
       <description>简介 Kernel-based Virtual Machine的简称，是一个开源的系统虚拟化模块，自Linux 2.6.20之后集成在Linux的各个主要发行版本中。它使用Linux</description>
     </item>
   </channel>

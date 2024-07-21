@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Amazon on allposs博客</title>
-    <link>https://blog.allposs.com/tags/amazon/</link>
+    <link>http://localhost:1313/tags/amazon/</link>
     <description>Recent content in Amazon on allposs博客</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <lastBuildDate>Mon, 23 Oct 2023 14:13:47 +0800</lastBuildDate>
-    <atom:link href="https://blog.allposs.com/tags/amazon/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/amazon/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AmazonLinux2 配置安装docker</title>
-      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/002-amazonlinux2-%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85docker/</link>
+      <link>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/002-amazonlinux2-%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85docker/</link>
       <pubDate>Mon, 23 Oct 2023 14:13:47 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/002-amazonlinux2-%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85docker/</guid>
+      <guid>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/002-amazonlinux2-%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85docker/</guid>
       <description>简介 环境 正文 # 安装yum扩展包 sudo yum install -y yum-utils # 使用docker官方源 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo # 安装docker-ce sudo yum install docker-ce cat &amp;gt; /etc/docker/daemon.json &amp;lt;&amp;lt; EOF { &amp;#34;builder&amp;#34;: { &amp;#34;gc&amp;#34;: { &amp;#34;defaultKeepStorage&amp;#34;: &amp;#34;20GB&amp;#34;, &amp;#34;enabled&amp;#34;: true } }, &amp;#34;experimental&amp;#34;: false,</description>
     </item>
   </channel>

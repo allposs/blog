@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>命令 on allposs博客</title>
-    <link>https://blog.allposs.com/tags/%E5%91%BD%E4%BB%A4/</link>
+    <link>http://localhost:1313/tags/%E5%91%BD%E4%BB%A4/</link>
     <description>Recent content in 命令 on allposs博客</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <lastBuildDate>Mon, 15 May 2023 18:35:44 +0800</lastBuildDate>
-    <atom:link href="https://blog.allposs.com/tags/%E5%91%BD%E4%BB%A4/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/%E5%91%BD%E4%BB%A4/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>kubernetes命令详解</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
       <pubDate>Mon, 15 May 2023 18:35:44 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
       <description>简介 正文 1. nsenter 说明: nsenter命令是一个可以在指定进程的命令空间下运行指定程序的命令。它位于util-linux包中。 语法: nsenter [options] [program [arguments]] 处理:</description>
     </item>
     <item>
       <title>Linux常用命令合集</title>
-      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
+      <link>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
       <pubDate>Tue, 18 Aug 2020 14:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
+      <guid>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
       <description>简介 本文是用来记录一些自己常用到的一些 linux 命令的合集文章,方便自己查询与记录。 正文 1. pstree 将正在运行的进程显示为树。它用作 ps 命令的更直观的替代方法</description>
     </item>
   </channel>

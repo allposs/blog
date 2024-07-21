@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>临时容器 on allposs博客</title>
-    <link>https://blog.allposs.com/tags/%E4%B8%B4%E6%97%B6%E5%AE%B9%E5%99%A8/</link>
+    <link>http://localhost:1313/tags/%E4%B8%B4%E6%97%B6%E5%AE%B9%E5%99%A8/</link>
     <description>Recent content in 临时容器 on allposs博客</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sat, 27 May 2023 08:28:22 +0800</lastBuildDate>
-    <atom:link href="https://blog.allposs.com/tags/%E4%B8%B4%E6%97%B6%E5%AE%B9%E5%99%A8/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/%E4%B8%B4%E6%97%B6%E5%AE%B9%E5%99%A8/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>kubectl的debug命令实现</title>
-      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%BC%80%E5%8F%91%E5%90%88%E9%9B%86/001-kubectl%E7%9A%84debug%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0/</link>
+      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%BC%80%E5%8F%91%E5%90%88%E9%9B%86/001-kubectl%E7%9A%84debug%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0/</link>
       <pubDate>Sat, 27 May 2023 08:28:22 +0800</pubDate>
-      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%BC%80%E5%8F%91%E5%90%88%E9%9B%86/001-kubectl%E7%9A%84debug%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0/</guid>
+      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%BC%80%E5%8F%91%E5%90%88%E9%9B%86/001-kubectl%E7%9A%84debug%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0/</guid>
       <description>简介 kubectl是管理Kubernetes常用工具之一，在调试、排查问题的时候，我们一般情况使用 logs describe exec debug等子命令便可以找到问题原因</description>
     </item>
   </channel>

@@ -2,437 +2,437 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>标签 on allposs博客</title>
-    <link>https://blog.allposs.com/tags/</link>
+    <link>http://localhost:1313/tags/</link>
     <description>Recent content in 标签 on allposs博客</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sun, 21 Jul 2024 11:45:29 +0800</lastBuildDate>
-    <atom:link href="https://blog.allposs.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Lettcode</title>
-      <link>https://blog.allposs.com/tags/lettcode/</link>
+      <link>http://localhost:1313/tags/lettcode/</link>
       <pubDate>Sun, 21 Jul 2024 11:45:29 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/lettcode/</guid>
+      <guid>http://localhost:1313/tags/lettcode/</guid>
       <description></description>
     </item>
     <item>
       <title>编程语言</title>
-      <link>https://blog.allposs.com/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</link>
+      <link>http://localhost:1313/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</link>
       <pubDate>Sun, 21 Jul 2024 11:45:29 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</guid>
+      <guid>http://localhost:1313/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</guid>
       <description></description>
     </item>
     <item>
       <title>Clang</title>
-      <link>https://blog.allposs.com/tags/clang/</link>
+      <link>http://localhost:1313/tags/clang/</link>
       <pubDate>Wed, 05 Jun 2024 10:45:17 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/clang/</guid>
+      <guid>http://localhost:1313/tags/clang/</guid>
       <description></description>
     </item>
     <item>
       <title>代码片段</title>
-      <link>https://blog.allposs.com/tags/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</link>
+      <link>http://localhost:1313/tags/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</link>
       <pubDate>Wed, 05 Jun 2024 10:45:17 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</guid>
+      <guid>http://localhost:1313/tags/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</guid>
       <description></description>
     </item>
     <item>
       <title>环境搭建</title>
-      <link>https://blog.allposs.com/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <link>http://localhost:1313/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
       <pubDate>Wed, 05 Jun 2024 10:45:07 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <guid>http://localhost:1313/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
       <description></description>
     </item>
     <item>
       <title>生活</title>
-      <link>https://blog.allposs.com/tags/%E7%94%9F%E6%B4%BB/</link>
+      <link>http://localhost:1313/tags/%E7%94%9F%E6%B4%BB/</link>
       <pubDate>Fri, 24 May 2024 10:33:48 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E7%94%9F%E6%B4%BB/</guid>
+      <guid>http://localhost:1313/tags/%E7%94%9F%E6%B4%BB/</guid>
       <description></description>
     </item>
     <item>
       <title>周庄古镇</title>
-      <link>https://blog.allposs.com/tags/%E5%91%A8%E5%BA%84%E5%8F%A4%E9%95%87/</link>
+      <link>http://localhost:1313/tags/%E5%91%A8%E5%BA%84%E5%8F%A4%E9%95%87/</link>
       <pubDate>Fri, 24 May 2024 10:33:48 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E5%91%A8%E5%BA%84%E5%8F%A4%E9%95%87/</guid>
+      <guid>http://localhost:1313/tags/%E5%91%A8%E5%BA%84%E5%8F%A4%E9%95%87/</guid>
       <description></description>
     </item>
     <item>
       <title>娘娘山</title>
-      <link>https://blog.allposs.com/tags/%E5%A8%98%E5%A8%98%E5%B1%B1/</link>
+      <link>http://localhost:1313/tags/%E5%A8%98%E5%A8%98%E5%B1%B1/</link>
       <pubDate>Tue, 26 Dec 2023 17:48:29 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E5%A8%98%E5%A8%98%E5%B1%B1/</guid>
+      <guid>http://localhost:1313/tags/%E5%A8%98%E5%A8%98%E5%B1%B1/</guid>
       <description></description>
     </item>
     <item>
       <title>运动</title>
-      <link>https://blog.allposs.com/tags/%E8%BF%90%E5%8A%A8/</link>
+      <link>http://localhost:1313/tags/%E8%BF%90%E5%8A%A8/</link>
       <pubDate>Tue, 26 Dec 2023 17:40:04 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E8%BF%90%E5%8A%A8/</guid>
+      <guid>http://localhost:1313/tags/%E8%BF%90%E5%8A%A8/</guid>
       <description></description>
     </item>
     <item>
       <title>穹窿山</title>
-      <link>https://blog.allposs.com/tags/%E7%A9%B9%E7%AA%BF%E5%B1%B1/</link>
+      <link>http://localhost:1313/tags/%E7%A9%B9%E7%AA%BF%E5%B1%B1/</link>
       <pubDate>Tue, 28 Nov 2023 13:08:53 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E7%A9%B9%E7%AA%BF%E5%B1%B1/</guid>
+      <guid>http://localhost:1313/tags/%E7%A9%B9%E7%AA%BF%E5%B1%B1/</guid>
       <description></description>
     </item>
     <item>
       <title>黄山</title>
-      <link>https://blog.allposs.com/tags/%E9%BB%84%E5%B1%B1/</link>
+      <link>http://localhost:1313/tags/%E9%BB%84%E5%B1%B1/</link>
       <pubDate>Tue, 28 Nov 2023 09:44:01 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E9%BB%84%E5%B1%B1/</guid>
+      <guid>http://localhost:1313/tags/%E9%BB%84%E5%B1%B1/</guid>
       <description></description>
     </item>
     <item>
       <title>Linux</title>
-      <link>https://blog.allposs.com/tags/linux/</link>
+      <link>http://localhost:1313/tags/linux/</link>
       <pubDate>Tue, 24 Oct 2023 11:43:39 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/linux/</guid>
+      <guid>http://localhost:1313/tags/linux/</guid>
       <description></description>
     </item>
     <item>
       <title>Netfilter</title>
-      <link>https://blog.allposs.com/tags/netfilter/</link>
+      <link>http://localhost:1313/tags/netfilter/</link>
       <pubDate>Tue, 24 Oct 2023 11:43:39 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/netfilter/</guid>
+      <guid>http://localhost:1313/tags/netfilter/</guid>
       <description></description>
     </item>
     <item>
       <title>Amazon</title>
-      <link>https://blog.allposs.com/tags/amazon/</link>
+      <link>http://localhost:1313/tags/amazon/</link>
       <pubDate>Mon, 23 Oct 2023 14:13:47 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/amazon/</guid>
+      <guid>http://localhost:1313/tags/amazon/</guid>
       <description></description>
     </item>
     <item>
       <title>Docker</title>
-      <link>https://blog.allposs.com/tags/docker/</link>
+      <link>http://localhost:1313/tags/docker/</link>
       <pubDate>Mon, 23 Oct 2023 14:13:47 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/docker/</guid>
+      <guid>http://localhost:1313/tags/docker/</guid>
       <description></description>
     </item>
     <item>
       <title>Brew</title>
-      <link>https://blog.allposs.com/tags/brew/</link>
+      <link>http://localhost:1313/tags/brew/</link>
       <pubDate>Mon, 23 Oct 2023 13:48:10 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/brew/</guid>
+      <guid>http://localhost:1313/tags/brew/</guid>
       <description></description>
     </item>
     <item>
       <title>MAC</title>
-      <link>https://blog.allposs.com/tags/mac/</link>
+      <link>http://localhost:1313/tags/mac/</link>
       <pubDate>Mon, 23 Oct 2023 13:48:10 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/mac/</guid>
+      <guid>http://localhost:1313/tags/mac/</guid>
       <description></description>
     </item>
     <item>
       <title>流程平台</title>
-      <link>https://blog.allposs.com/tags/%E6%B5%81%E7%A8%8B%E5%B9%B3%E5%8F%B0/</link>
+      <link>http://localhost:1313/tags/%E6%B5%81%E7%A8%8B%E5%B9%B3%E5%8F%B0/</link>
       <pubDate>Fri, 14 Jul 2023 08:27:13 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E6%B5%81%E7%A8%8B%E5%B9%B3%E5%8F%B0/</guid>
+      <guid>http://localhost:1313/tags/%E6%B5%81%E7%A8%8B%E5%B9%B3%E5%8F%B0/</guid>
       <description></description>
     </item>
     <item>
       <title>项目</title>
-      <link>https://blog.allposs.com/tags/%E9%A1%B9%E7%9B%AE/</link>
+      <link>http://localhost:1313/tags/%E9%A1%B9%E7%9B%AE/</link>
       <pubDate>Fri, 14 Jul 2023 08:27:13 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E9%A1%B9%E7%9B%AE/</guid>
+      <guid>http://localhost:1313/tags/%E9%A1%B9%E7%9B%AE/</guid>
       <description></description>
     </item>
     <item>
       <title>网络</title>
-      <link>https://blog.allposs.com/tags/%E7%BD%91%E7%BB%9C/</link>
+      <link>http://localhost:1313/tags/%E7%BD%91%E7%BB%9C/</link>
       <pubDate>Thu, 13 Jul 2023 09:32:08 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E7%BD%91%E7%BB%9C/</guid>
+      <guid>http://localhost:1313/tags/%E7%BD%91%E7%BB%9C/</guid>
       <description></description>
     </item>
     <item>
       <title>问题</title>
-      <link>https://blog.allposs.com/tags/%E9%97%AE%E9%A2%98/</link>
+      <link>http://localhost:1313/tags/%E9%97%AE%E9%A2%98/</link>
       <pubDate>Thu, 13 Jul 2023 09:32:08 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E9%97%AE%E9%A2%98/</guid>
+      <guid>http://localhost:1313/tags/%E9%97%AE%E9%A2%98/</guid>
       <description></description>
     </item>
     <item>
       <title>OSI7层模型</title>
-      <link>https://blog.allposs.com/tags/osi7%E5%B1%82%E6%A8%A1%E5%9E%8B/</link>
+      <link>http://localhost:1313/tags/osi7%E5%B1%82%E6%A8%A1%E5%9E%8B/</link>
       <pubDate>Sat, 08 Jul 2023 17:45:49 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/osi7%E5%B1%82%E6%A8%A1%E5%9E%8B/</guid>
+      <guid>http://localhost:1313/tags/osi7%E5%B1%82%E6%A8%A1%E5%9E%8B/</guid>
       <description></description>
     </item>
     <item>
       <title>模型</title>
-      <link>https://blog.allposs.com/tags/%E6%A8%A1%E5%9E%8B/</link>
+      <link>http://localhost:1313/tags/%E6%A8%A1%E5%9E%8B/</link>
       <pubDate>Sat, 08 Jul 2023 17:45:49 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E6%A8%A1%E5%9E%8B/</guid>
+      <guid>http://localhost:1313/tags/%E6%A8%A1%E5%9E%8B/</guid>
       <description></description>
     </item>
     <item>
       <title>TCP/IP</title>
-      <link>https://blog.allposs.com/tags/tcp/ip/</link>
+      <link>http://localhost:1313/tags/tcp/ip/</link>
       <pubDate>Sat, 08 Jul 2023 09:22:35 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/tcp/ip/</guid>
+      <guid>http://localhost:1313/tags/tcp/ip/</guid>
       <description></description>
     </item>
     <item>
       <title>Clash</title>
-      <link>https://blog.allposs.com/tags/clash/</link>
+      <link>http://localhost:1313/tags/clash/</link>
       <pubDate>Tue, 30 May 2023 15:51:51 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/clash/</guid>
+      <guid>http://localhost:1313/tags/clash/</guid>
       <description></description>
     </item>
     <item>
       <title>Openwrt</title>
-      <link>https://blog.allposs.com/tags/openwrt/</link>
+      <link>http://localhost:1313/tags/openwrt/</link>
       <pubDate>Tue, 30 May 2023 15:51:51 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/openwrt/</guid>
+      <guid>http://localhost:1313/tags/openwrt/</guid>
       <description></description>
     </item>
     <item>
       <title>编译</title>
-      <link>https://blog.allposs.com/tags/%E7%BC%96%E8%AF%91/</link>
+      <link>http://localhost:1313/tags/%E7%BC%96%E8%AF%91/</link>
       <pubDate>Tue, 30 May 2023 15:51:51 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E7%BC%96%E8%AF%91/</guid>
+      <guid>http://localhost:1313/tags/%E7%BC%96%E8%AF%91/</guid>
       <description></description>
     </item>
     <item>
       <title>Kubernete</title>
-      <link>https://blog.allposs.com/tags/kubernete/</link>
+      <link>http://localhost:1313/tags/kubernete/</link>
       <pubDate>Sat, 27 May 2023 08:28:22 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/kubernete/</guid>
+      <guid>http://localhost:1313/tags/kubernete/</guid>
       <description></description>
     </item>
     <item>
       <title>二次开发</title>
-      <link>https://blog.allposs.com/tags/%E4%BA%8C%E6%AC%A1%E5%BC%80%E5%8F%91/</link>
+      <link>http://localhost:1313/tags/%E4%BA%8C%E6%AC%A1%E5%BC%80%E5%8F%91/</link>
       <pubDate>Sat, 27 May 2023 08:28:22 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E4%BA%8C%E6%AC%A1%E5%BC%80%E5%8F%91/</guid>
+      <guid>http://localhost:1313/tags/%E4%BA%8C%E6%AC%A1%E5%BC%80%E5%8F%91/</guid>
       <description></description>
     </item>
     <item>
       <title>临时容器</title>
-      <link>https://blog.allposs.com/tags/%E4%B8%B4%E6%97%B6%E5%AE%B9%E5%99%A8/</link>
+      <link>http://localhost:1313/tags/%E4%B8%B4%E6%97%B6%E5%AE%B9%E5%99%A8/</link>
       <pubDate>Sat, 27 May 2023 08:28:22 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E4%B8%B4%E6%97%B6%E5%AE%B9%E5%99%A8/</guid>
+      <guid>http://localhost:1313/tags/%E4%B8%B4%E6%97%B6%E5%AE%B9%E5%99%A8/</guid>
       <description></description>
     </item>
     <item>
       <title>合集</title>
-      <link>https://blog.allposs.com/tags/%E5%90%88%E9%9B%86/</link>
+      <link>http://localhost:1313/tags/%E5%90%88%E9%9B%86/</link>
       <pubDate>Fri, 19 May 2023 18:00:39 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E5%90%88%E9%9B%86/</guid>
+      <guid>http://localhost:1313/tags/%E5%90%88%E9%9B%86/</guid>
       <description></description>
     </item>
     <item>
       <title>原理</title>
-      <link>https://blog.allposs.com/tags/%E5%8E%9F%E7%90%86/</link>
+      <link>http://localhost:1313/tags/%E5%8E%9F%E7%90%86/</link>
       <pubDate>Fri, 19 May 2023 18:00:39 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E5%8E%9F%E7%90%86/</guid>
+      <guid>http://localhost:1313/tags/%E5%8E%9F%E7%90%86/</guid>
       <description></description>
     </item>
     <item>
       <title>NFS</title>
-      <link>https://blog.allposs.com/tags/nfs/</link>
+      <link>http://localhost:1313/tags/nfs/</link>
       <pubDate>Fri, 19 May 2023 16:25:47 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/nfs/</guid>
+      <guid>http://localhost:1313/tags/nfs/</guid>
       <description></description>
     </item>
     <item>
       <title>Endpoint</title>
-      <link>https://blog.allposs.com/tags/endpoint/</link>
+      <link>http://localhost:1313/tags/endpoint/</link>
       <pubDate>Thu, 18 May 2023 15:18:02 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/endpoint/</guid>
+      <guid>http://localhost:1313/tags/endpoint/</guid>
       <description></description>
     </item>
     <item>
       <title>Kubernetes</title>
-      <link>https://blog.allposs.com/tags/kubernetes/</link>
+      <link>http://localhost:1313/tags/kubernetes/</link>
       <pubDate>Thu, 18 May 2023 15:18:02 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/kubernetes/</guid>
+      <guid>http://localhost:1313/tags/kubernetes/</guid>
       <description></description>
     </item>
     <item>
       <title>Service</title>
-      <link>https://blog.allposs.com/tags/service/</link>
+      <link>http://localhost:1313/tags/service/</link>
       <pubDate>Thu, 18 May 2023 15:18:02 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/service/</guid>
+      <guid>http://localhost:1313/tags/service/</guid>
       <description></description>
     </item>
     <item>
       <title>资源对象</title>
-      <link>https://blog.allposs.com/tags/%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/</link>
+      <link>http://localhost:1313/tags/%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/</link>
       <pubDate>Thu, 18 May 2023 15:18:02 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/</guid>
+      <guid>http://localhost:1313/tags/%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/</guid>
       <description></description>
     </item>
     <item>
       <title>Kube-Proxy</title>
-      <link>https://blog.allposs.com/tags/kube-proxy/</link>
+      <link>http://localhost:1313/tags/kube-proxy/</link>
       <pubDate>Thu, 18 May 2023 15:00:54 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/kube-proxy/</guid>
+      <guid>http://localhost:1313/tags/kube-proxy/</guid>
       <description></description>
     </item>
     <item>
       <title>Golang</title>
-      <link>https://blog.allposs.com/tags/golang/</link>
+      <link>http://localhost:1313/tags/golang/</link>
       <pubDate>Wed, 17 May 2023 10:33:37 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/golang/</guid>
+      <guid>http://localhost:1313/tags/golang/</guid>
       <description></description>
     </item>
     <item>
       <title>Mardown</title>
-      <link>https://blog.allposs.com/tags/mardown/</link>
+      <link>http://localhost:1313/tags/mardown/</link>
       <pubDate>Wed, 17 May 2023 10:29:24 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/mardown/</guid>
+      <guid>http://localhost:1313/tags/mardown/</guid>
       <description></description>
     </item>
     <item>
       <title>优化</title>
-      <link>https://blog.allposs.com/tags/%E4%BC%98%E5%8C%96/</link>
+      <link>http://localhost:1313/tags/%E4%BC%98%E5%8C%96/</link>
       <pubDate>Wed, 17 May 2023 10:26:15 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E4%BC%98%E5%8C%96/</guid>
+      <guid>http://localhost:1313/tags/%E4%BC%98%E5%8C%96/</guid>
       <description></description>
     </item>
     <item>
       <title>命令</title>
-      <link>https://blog.allposs.com/tags/%E5%91%BD%E4%BB%A4/</link>
+      <link>http://localhost:1313/tags/%E5%91%BD%E4%BB%A4/</link>
       <pubDate>Mon, 15 May 2023 18:35:44 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E5%91%BD%E4%BB%A4/</guid>
+      <guid>http://localhost:1313/tags/%E5%91%BD%E4%BB%A4/</guid>
       <description></description>
     </item>
     <item>
       <title>容器</title>
-      <link>https://blog.allposs.com/tags/%E5%AE%B9%E5%99%A8/</link>
+      <link>http://localhost:1313/tags/%E5%AE%B9%E5%99%A8/</link>
       <pubDate>Mon, 15 May 2023 15:28:47 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E5%AE%B9%E5%99%A8/</guid>
+      <guid>http://localhost:1313/tags/%E5%AE%B9%E5%99%A8/</guid>
       <description></description>
     </item>
     <item>
       <title>Mysql</title>
-      <link>https://blog.allposs.com/tags/mysql/</link>
+      <link>http://localhost:1313/tags/mysql/</link>
       <pubDate>Thu, 30 Mar 2023 11:05:18 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/mysql/</guid>
+      <guid>http://localhost:1313/tags/mysql/</guid>
       <description></description>
     </item>
     <item>
       <title>数据库</title>
-      <link>https://blog.allposs.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+      <link>http://localhost:1313/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
       <pubDate>Thu, 30 Mar 2023 11:05:18 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</guid>
+      <guid>http://localhost:1313/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</guid>
       <description></description>
     </item>
     <item>
       <title>Clickhouse</title>
-      <link>https://blog.allposs.com/tags/clickhouse/</link>
+      <link>http://localhost:1313/tags/clickhouse/</link>
       <pubDate>Thu, 30 Mar 2023 09:54:43 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/clickhouse/</guid>
+      <guid>http://localhost:1313/tags/clickhouse/</guid>
       <description></description>
     </item>
     <item>
       <title>Npm</title>
-      <link>https://blog.allposs.com/tags/npm/</link>
+      <link>http://localhost:1313/tags/npm/</link>
       <pubDate>Tue, 22 Dec 2020 09:59:17 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/npm/</guid>
+      <guid>http://localhost:1313/tags/npm/</guid>
       <description></description>
     </item>
     <item>
       <title>Nvm</title>
-      <link>https://blog.allposs.com/tags/nvm/</link>
+      <link>http://localhost:1313/tags/nvm/</link>
       <pubDate>Tue, 22 Dec 2020 09:59:17 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/nvm/</guid>
+      <guid>http://localhost:1313/tags/nvm/</guid>
       <description></description>
     </item>
     <item>
       <title>开发环境</title>
-      <link>https://blog.allposs.com/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
+      <link>http://localhost:1313/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
       <pubDate>Fri, 13 Nov 2020 09:44:30 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
+      <guid>http://localhost:1313/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
       <description></description>
     </item>
     <item>
       <title>Frp</title>
-      <link>https://blog.allposs.com/tags/frp/</link>
+      <link>http://localhost:1313/tags/frp/</link>
       <pubDate>Tue, 25 Aug 2020 14:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/frp/</guid>
+      <guid>http://localhost:1313/tags/frp/</guid>
       <description></description>
     </item>
     <item>
       <title>软件</title>
-      <link>https://blog.allposs.com/tags/%E8%BD%AF%E4%BB%B6/</link>
+      <link>http://localhost:1313/tags/%E8%BD%AF%E4%BB%B6/</link>
       <pubDate>Tue, 25 Aug 2020 14:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E8%BD%AF%E4%BB%B6/</guid>
+      <guid>http://localhost:1313/tags/%E8%BD%AF%E4%BB%B6/</guid>
       <description></description>
     </item>
     <item>
       <title>Pyenv</title>
-      <link>https://blog.allposs.com/tags/pyenv/</link>
+      <link>http://localhost:1313/tags/pyenv/</link>
       <pubDate>Fri, 10 Jan 2020 10:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/pyenv/</guid>
+      <guid>http://localhost:1313/tags/pyenv/</guid>
       <description></description>
     </item>
     <item>
       <title>Python</title>
-      <link>https://blog.allposs.com/tags/python/</link>
+      <link>http://localhost:1313/tags/python/</link>
       <pubDate>Fri, 10 Jan 2020 10:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/python/</guid>
+      <guid>http://localhost:1313/tags/python/</guid>
       <description></description>
     </item>
     <item>
       <title>搭建</title>
-      <link>https://blog.allposs.com/tags/%E6%90%AD%E5%BB%BA/</link>
+      <link>http://localhost:1313/tags/%E6%90%AD%E5%BB%BA/</link>
       <pubDate>Wed, 08 Jan 2020 10:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E6%90%AD%E5%BB%BA/</guid>
+      <guid>http://localhost:1313/tags/%E6%90%AD%E5%BB%BA/</guid>
       <description></description>
     </item>
     <item>
       <title>开发</title>
-      <link>https://blog.allposs.com/tags/%E5%BC%80%E5%8F%91/</link>
+      <link>http://localhost:1313/tags/%E5%BC%80%E5%8F%91/</link>
       <pubDate>Wed, 08 Jan 2020 10:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E5%BC%80%E5%8F%91/</guid>
+      <guid>http://localhost:1313/tags/%E5%BC%80%E5%8F%91/</guid>
       <description></description>
     </item>
     <item>
       <title>证书</title>
-      <link>https://blog.allposs.com/tags/%E8%AF%81%E4%B9%A6/</link>
+      <link>http://localhost:1313/tags/%E8%AF%81%E4%B9%A6/</link>
       <pubDate>Wed, 08 Jan 2020 10:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E8%AF%81%E4%B9%A6/</guid>
+      <guid>http://localhost:1313/tags/%E8%AF%81%E4%B9%A6/</guid>
       <description></description>
     </item>
     <item>
       <title>安全</title>
-      <link>https://blog.allposs.com/tags/%E5%AE%89%E5%85%A8/</link>
+      <link>http://localhost:1313/tags/%E5%AE%89%E5%85%A8/</link>
       <pubDate>Sun, 05 Jan 2020 10:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E5%AE%89%E5%85%A8/</guid>
+      <guid>http://localhost:1313/tags/%E5%AE%89%E5%85%A8/</guid>
       <description></description>
     </item>
     <item>
       <title>记录</title>
-      <link>https://blog.allposs.com/tags/%E8%AE%B0%E5%BD%95/</link>
+      <link>http://localhost:1313/tags/%E8%AE%B0%E5%BD%95/</link>
       <pubDate>Sun, 05 Jan 2020 10:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E8%AE%B0%E5%BD%95/</guid>
+      <guid>http://localhost:1313/tags/%E8%AE%B0%E5%BD%95/</guid>
       <description></description>
     </item>
     <item>
       <title>Openstack</title>
-      <link>https://blog.allposs.com/tags/openstack/</link>
+      <link>http://localhost:1313/tags/openstack/</link>
       <pubDate>Fri, 17 Jun 2016 14:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/openstack/</guid>
+      <guid>http://localhost:1313/tags/openstack/</guid>
       <description></description>
     </item>
     <item>
       <title>虚拟化</title>
-      <link>https://blog.allposs.com/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/</link>
+      <link>http://localhost:1313/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/</link>
       <pubDate>Fri, 17 Jun 2016 14:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/</guid>
+      <guid>http://localhost:1313/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/</guid>
       <description></description>
     </item>
     <item>
       <title>KVM</title>
-      <link>https://blog.allposs.com/tags/kvm/</link>
+      <link>http://localhost:1313/tags/kvm/</link>
       <pubDate>Wed, 04 May 2016 14:20:23 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/kvm/</guid>
+      <guid>http://localhost:1313/tags/kvm/</guid>
       <description></description>
     </item>
   </channel>

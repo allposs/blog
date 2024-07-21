@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>NFS on allposs博客</title>
-    <link>http://localhost:1313/tags/nfs/</link>
+    <link>https://blog.allposs.com/tags/nfs/</link>
     <description>Recent content in NFS on allposs博客</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <lastBuildDate>Fri, 19 May 2023 16:25:47 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/nfs/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.allposs.com/tags/nfs/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>NFS详解</title>
-      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/001-nfs%E8%AF%A6%E8%A7%A3/</link>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/001-nfs%E8%AF%A6%E8%A7%A3/</link>
       <pubDate>Fri, 19 May 2023 16:25:47 +0800</pubDate>
-      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/001-nfs%E8%AF%A6%E8%A7%A3/</guid>
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/001-nfs%E8%AF%A6%E8%A7%A3/</guid>
       <description>简介 NFS 是 Network File System 的缩写，是Sun公司于1984开发的一种分布式文件系统协议。它的核心功能就是可以通过网络，让不同的客户端，可以彼此访问共同的文</description>
     </item>
   </channel>

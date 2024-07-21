@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Frp on allposs博客</title>
-    <link>http://localhost:1313/tags/frp/</link>
+    <link>https://blog.allposs.com/tags/frp/</link>
     <description>Recent content in Frp on allposs博客</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <lastBuildDate>Tue, 25 Aug 2020 14:20:23 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/frp/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.allposs.com/tags/frp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>007-frp安装与配置</title>
-      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/007-frp%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</link>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/007-frp%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Tue, 25 Aug 2020 14:20:23 +0800</pubDate>
-      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/007-frp%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</guid>
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/007-frp%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</guid>
       <description>简介 说明 由于本人是个上班族,所以在某些加班时刻需要把自己的文档或个人代码上传到自己家里的gitlab服务器,所以就有这篇穿透内网代理配置的文</description>
     </item>
     <item>
       <title>008-kafka集群配置安装</title>
-      <link>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/008-kafka%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85/</link>
+      <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/008-kafka%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85/</link>
       <pubDate>Tue, 16 Aug 2016 14:20:23 +0800</pubDate>
-      <guid>http://localhost:1313/docs/%E8%BD%AF%E4%BB%B6/008-kafka%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85/</guid>
+      <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/008-kafka%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85/</guid>
       <description>简介 Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者规模的网站中的所有动作流数据。 这种动作（网页浏览，搜索和其他用户的行动</description>
     </item>
   </channel>

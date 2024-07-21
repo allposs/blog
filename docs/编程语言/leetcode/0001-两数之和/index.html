@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://blog.allposs.com//img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>0001-两数之和 - allposs博客</title>
+    <meta property="og:title" content="0001-两数之和 - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://blog.allposs.com//css/style.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com//css/fonts.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com//css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../../" aria-label="个人博客">
+                <img src="https://blog.allposs.com/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../docs/"  aria-current="page" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs/" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>0001-两数之和</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2024-07-21
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                lettcode
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                编程语言
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<p><a href="https://leetcode-cn.com/problems/two-sum/">1. 两数之和</a></p>
+<p><strong>难度: 简单</strong></p>
+<blockquote>
+<p>给定一个整数数组 <code>nums</code> 和一个整数目标值 <code>target</code>，请你在该数组中找出 <strong>和为目标值</strong> 的那 <strong>两个</strong> 整数，并返回它们的数组下标。</p>
+</blockquote>
+<blockquote>
+<p>你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。</p>
+</blockquote>
+<blockquote>
+<p>你可以按任意顺序返回答案。</p>
+</blockquote>
+<p><strong>示例 1：</strong></p>
+<pre tabindex="0"><code>输入：nums = [2,7,11,15], target = 9
+输出：[0,1]
+解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。
+</code></pre><p><strong>示例 2：</strong></p>
+<pre tabindex="0"><code>输入：nums = [3,2,4], target = 6
+输出：[1,2]
+</code></pre><p><strong>示例 3：</strong></p>
+<pre tabindex="0"><code>输入：nums = [3,3], target = 6
+输出：[0,1]
+</code></pre><p><strong>提示：</strong></p>
+<ul>
+<li><code>2 &lt;= nums.length &lt;= 10^3</code></li>
+<li><code>-10^9&lt;= nums[i] &lt;= 10^9</code></li>
+<li><code>-10^9&lt;= target &lt;= 10^9</code></li>
+<li><strong>只会存在一个有效答案</strong></li>
+</ul>
+<h1 id="环境">环境</h1>
+<p>** GO语言</p>
+<h1 id="正文">正文</h1>
+<h2 id="1-分析">1. 分析</h2>
+<p>审题：</p>
+<ul>
+<li>1.输入数据是一个数组和一个目标值，并数组里的数据相加等于目标值。</li>
+<li>2.每一个目标值都在数组里只有一个答案，且不能使用同一个元素作为答案。</li>
+<li>3.返回答案可以是无序的。</li>
+</ul>
+<p>思路：</p>
+<ul>
+<li>1.想知道第一个数就需要数组递归，这是第一个循环。</li>
+<li>2.要想知道第二个数也需要数组递归，这是第二个循环。</li>
+<li>3.然后使用if语句排除相同语句与相加不符的数据。</li>
+</ul>
+<h2 id="2-源码">2. 源码</h2>
+<ul>
+<li>Golang语言</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">twoSum</span>(<span style="color:#a6e22e">nums</span> []<span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">target</span> <span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">int</span> {
+</span></span><span style="display:flex;"><span>   	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">k</span>,<span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">nums</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">x</span>,<span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">nums</span>{
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">k</span><span style="color:#f92672">!=</span><span style="color:#a6e22e">x</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">v</span> <span style="color:#f92672">+</span><span style="color:#a6e22e">y</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">target</span> {
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">return</span> []<span style="color:#66d9ef">int</span>{<span style="color:#a6e22e">k</span>,<span style="color:#a6e22e">x</span>}
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>Python语言</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">twoSum</span>(self, nums: List[int], target: int) <span style="color:#f92672">-&gt;</span> List[int]:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(nums)):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> target<span style="color:#f92672">-</span>nums[i] <span style="color:#f92672">in</span> nums[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>:]:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> [i, nums<span style="color:#f92672">.</span>index(target<span style="color:#f92672">-</span>nums[i], i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)]
+</span></span></code></pre></div><h1 id="结束">结束</h1>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-分析">1. 分析</a></li>
+    <li><a href="#2-源码">2. 源码</a></li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer class="footer">
+    <div class="copyright">
+        
+        
+        © Powered by <a href="https://github.com/allposs/Axis-Hugo-Theme.git">Axis-Hugo-Theme</a> and <a href="https://gohugo.io">Hugo</a> | 2022 - 2024
+        
+    </div>
+</footer>
+
+  
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBF4J7F6RW"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-NBF4J7F6RW');
+        }
+      </script>
+    
+  
+
+
+
+<script async src="https://blog.allposs.com//js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+</body>
+
+</html>

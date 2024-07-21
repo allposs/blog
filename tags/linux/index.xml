@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Linux on allposs博客</title>
-    <link>http://localhost:1313/tags/linux/</link>
+    <link>https://blog.allposs.com/tags/linux/</link>
     <description>Recent content in Linux on allposs博客</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <lastBuildDate>Tue, 24 Oct 2023 11:43:39 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.allposs.com/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>001-netfilter详解</title>
-      <link>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/linux%E5%86%85%E6%A0%B8%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-netfilter%E8%AF%A6%E8%A7%A3/</link>
+      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/linux%E5%86%85%E6%A0%B8%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-netfilter%E8%AF%A6%E8%A7%A3/</link>
       <pubDate>Tue, 24 Oct 2023 11:43:39 +0800</pubDate>
-      <guid>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/linux%E5%86%85%E6%A0%B8%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-netfilter%E8%AF%A6%E8%A7%A3/</guid>
+      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/linux%E5%86%85%E6%A0%B8%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-netfilter%E8%AF%A6%E8%A7%A3/</guid>
       <description>简介 netfilter/iptables（简称为iptables）组成Linux平台下的包过滤防火墙，与大多数的Linux软件一样，这个包过</description>
     </item>
     <item>
       <title>Linux常用命令合集</title>
-      <link>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
+      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
       <pubDate>Tue, 18 Aug 2020 14:20:23 +0800</pubDate>
-      <guid>http://localhost:1313/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
+      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
       <description>简介 本文是用来记录一些自己常用到的一些 linux 命令的合集文章,方便自己查询与记录。 正文 1. pstree 将正在运行的进程显示为树。它用作 ps 命令的更直观的替代方法</description>
     </item>
   </channel>

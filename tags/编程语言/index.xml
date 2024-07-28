@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>编程语言 on allposs博客</title>
-    <link>http://localhost:1313/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</link>
+    <link>https://blog.allposs.com/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</link>
     <description>Recent content in 编程语言 on allposs博客</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sun, 21 Jul 2024 11:45:29 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.allposs.com/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>0001-两数之和</title>
-      <link>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/leetcode/0001-%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</link>
+      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/leetcode/0001-%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</link>
       <pubDate>Sun, 21 Jul 2024 11:45:29 +0800</pubDate>
-      <guid>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/leetcode/0001-%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</guid>
+      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/leetcode/0001-%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</guid>
       <description>简介 1. 两数之和 难度: 简单 给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 的那 两个 整数，并返回它们的数组下标。 你可</description>
     </item>
     <item>
       <title>0001-两数之和</title>
-      <link>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/leetcode/0002-%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/</link>
+      <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/leetcode/0002-%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/</link>
       <pubDate>Sun, 21 Jul 2024 11:45:29 +0800</pubDate>
-      <guid>http://localhost:1313/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/leetcode/0002-%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/</guid>
+      <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/leetcode/0002-%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/</guid>
       <description>简介 2. 两数相加 难度: 中等 给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。 请你将两</description>
     </item>
   </channel>

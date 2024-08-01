@@ -160,11 +160,9 @@
 <p>主要是安装编译环境的依赖包，如果是其他操作系统可以访问<a href="https://openwrt.org/zh/docs/guide-user/additional-software/imagebuilder">openwrt官网</a>查看</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo apt update
 </span></span><span style="display:flex;"><span>sudo apt upgrade
-</span></span><span style="display:flex;"><span>sudo apt install build-essential ccache ecj fastjar file g++ gawk <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>gettext git java-propose-classpath libelf-dev libncurses5-dev <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>libncursesw5-dev libssl-dev python2.7-dev python3 unzip wget <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>python3-distutils python3-setuptools python3-dev rsync subversion <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>swig time xsltproc zlib1g-dev python-is-python3
+</span></span><span style="display:flex;"><span>sudo apt install build-essential clang flex bison g++ gawk <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>python3-setuptools rsync swig unzip zlib1g-dev file wget
 </span></span></code></pre></div><h3 id="2-拉取代码">2. 拉取代码</h3>
 <p>主要是拉取源码，并切换好相应固件版本版本。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 切换到用户根目录</span>
@@ -187,8 +185,12 @@
 </span></span><span style="display:flex;"><span>export https_proxy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://127.0.0.1:7890&#34;</span>
 </span></span></code></pre></div><h3 id="3-配置参数">3. 配置参数</h3>
 <p>此步骤主要配置编译参数。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>./scripts/feeds update -a
+<p>配置第三方插件,修改源代码里的 feeds.conf.default 文件，保存着软件包订阅，格式如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>src-git Openclash https://github.com/vernesong/OpenClash
+</span></span><span style="display:flex;"><span>src-git PassWall https://github.com/xiaorouji/openwrt-passwall
+</span></span><span style="display:flex;"><span>src-git kenzo https://github.com/kenzok8/openwrt-packages
+</span></span></code></pre></div><p>下载插件与依赖</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./scripts/feeds update -a
 </span></span><span style="display:flex;"><span>./scripts/feeds install -a
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 进入交互式配置界面</span>
 </span></span><span style="display:flex;"><span>make menuconfig
@@ -213,16 +215,16 @@ Target Images -&gt; GZip images
 Target Images -&gt; Root filesystem partition size
 
 # 添加web界面
-LuCI &gt; Collections -&gt; Luci
+LuCI -&gt; Collections -&gt; Luci
 
 # 添加中文
-LuCI &gt; Modules -&gt; Translations -&gt; Chinese Simplified
+LuCI -&gt; Modules -&gt; Translations -&gt; Chinese Simplified
 
 # 添加openclash
-LuCI &gt; Applications -&gt; luci-app-openclash  
+LuCI -&gt; Applications -&gt; luci-app-openclash  
 
 # 添加兼容性依赖
-LuCI &gt; Modules -&gt; luci-compat
+LuCI -&gt; Modules -&gt; luci-compat
 
 # 添加主题
 LuCI -&gt; Themes
@@ -278,13 +280,21 @@ Base system -&gt; dnsmasq
 <li>[*] 即为编译并安装</li>
 </ul>
 </li>
+<li>
+<p>添加DockerMan</p>
+<ul>
+<li>LuCI &gt; Applications -&gt; luci-app-dockerman</li>
+<li>Utilities -&gt; dockerd</li>
+<li>Utilities -&gt; docker-compose</li>
+</ul>
+</li>
 </ul>
 <h2 id="编译">编译</h2>
 <h3 id="1-初次编译">1. 初次编译</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 下载dl库（尽量科学上网），完成后检查是否有报错,如有问题可以百度或与我联系。</span>
 </span></span><span style="display:flex;"><span>make -j8 download V<span style="color:#f92672">=</span>s
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 开始编译，预计时间在30分钟以上,最终生成固件存放位置为openwrt/bin/targets/x86/64/目录下</span>
-</span></span><span style="display:flex;"><span>make -j4 V<span style="color:#f92672">=</span>s
+</span></span><span style="display:flex;"><span>make -j8 V<span style="color:#f92672">=</span>s | tee ../compile.log
 </span></span></code></pre></div><p>PS:</p>
 <pre><code>+ -j8: 为线程数，推荐第一次使用单线程编译，否则你编译错误，连调试信息都没有，根本不知道哪里错的。
 + V=s: 为故障排除目的提供更详细的信息
@@ -320,7 +330,7 @@ Base system -&gt; dnsmasq
 <ul>
 <li>如果源码没有变化的情况下，可以使用以下命令清除缓存
 <ul>
-<li>ake clean 仅清理编译结果（bin目录）</li>
+<li>make clean 仅清理编译结果（bin目录）</li>
 <li>make dirclean 清理所有编译文件（除了.config、dl文件夹和feeds以外都清理）</li>
 <li>make distclean 清理所有编译文件以及相关依赖（完全清理干净，一键回到刚git clone下来的时候）</li>
 </ul>
@@ -336,6 +346,12 @@ Base system -&gt; dnsmasq
 <ul>
 <li>报错bash: line 1: po2lmo: command not found
 make package/feeds/luci/luci-base/compile V=99</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>报错<a href="https://github.com/openwrt/openwrt/issues/10372">issues</a>: ERROR: package/kernel/button-hotplug failed to build.
+sudo apt-get install libelf-dev</li>
 </ul>
 </blockquote>
 <h1 id="结束">结束</h1>

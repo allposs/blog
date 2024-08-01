@@ -6,8 +6,15 @@
     <description>Recent content in 文档 on allposs博客</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 21 Jul 2024 11:45:29 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 29 Jul 2024 17:49:50 +0800</lastBuildDate>
     <atom:link href="https://blog.allposs.com/docs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>001-PVE基础配置(8.2.4版本)</title>
+      <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/pve/001-pve%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE8.2.4%E7%89%88%E6%9C%AC/</link>
+      <pubDate>Mon, 29 Jul 2024 17:49:50 +0800</pubDate>
+      <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/pve/001-pve%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE8.2.4%E7%89%88%E6%9C%AC/</guid>
+      <description>简介 安装完PVE后，我们需要针对国内环境进行一些基本的配置，比如更新镜像源、处理订阅与disabled显示温度等操作。 环境 操作系统: ubuntu 22.04.2 LTS 正</description>
+    </item>
     <item>
       <title>0001-两数之和</title>
       <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/leetcode/0001-%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</link>

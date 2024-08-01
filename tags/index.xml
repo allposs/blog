@@ -6,8 +6,22 @@
     <description>Recent content in 标签 on allposs博客</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 21 Jul 2024 11:45:29 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 29 Jul 2024 17:49:50 +0800</lastBuildDate>
     <atom:link href="https://blog.allposs.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux</title>
+      <link>https://blog.allposs.com/tags/linux/</link>
+      <pubDate>Mon, 29 Jul 2024 17:49:50 +0800</pubDate>
+      <guid>https://blog.allposs.com/tags/linux/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>PVE</title>
+      <link>https://blog.allposs.com/tags/pve/</link>
+      <pubDate>Mon, 29 Jul 2024 17:49:50 +0800</pubDate>
+      <guid>https://blog.allposs.com/tags/pve/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Lettcode</title>
       <link>https://blog.allposs.com/tags/lettcode/</link>
@@ -83,13 +97,6 @@
       <link>https://blog.allposs.com/tags/%E9%BB%84%E5%B1%B1/</link>
       <pubDate>Tue, 28 Nov 2023 09:44:01 +0800</pubDate>
       <guid>https://blog.allposs.com/tags/%E9%BB%84%E5%B1%B1/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Linux</title>
-      <link>https://blog.allposs.com/tags/linux/</link>
-      <pubDate>Tue, 24 Oct 2023 11:43:39 +0800</pubDate>
-      <guid>https://blog.allposs.com/tags/linux/</guid>
       <description></description>
     </item>
     <item>

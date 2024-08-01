@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://blog.allposs.com/img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    <title>001-PVE基础配置(8.2.4版本) - allposs博客</title>
+    <meta property="og:title" content="001-PVE基础配置(8.2.4版本) - allposs博客">
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://blog.allposs.com/css/style.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/fonts.css" />
+    <link rel="stylesheet" href="https://blog.allposs.com/css/template.css" />
+</head>
+
+<body class="body">
+    
+<div class="intro-and-nav" role="banner">
+    <div>
+        <div class="intro">
+            <a class="logo" href="../../../../../" aria-label="个人博客">
+                <img src="https://blog.allposs.com/logo.jpeg" alt="">
+            </a>
+            <p class="library-desc">
+                
+                IT 爱好者
+                
+            </p>
+        </div>
+        <div>
+            <hr />
+            <nav id="patterns-nav" class="patterns" role="navigation">
+                <button id="menu-button" aria-expanded="false">
+                    菜单
+                </button>
+                
+                <ul id="patterns-list">
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../../" >
+                            首页
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../../docs/"  aria-current="page" >
+                            文档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../../tags/" >
+                            标签
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../../archives/" >
+                            归档
+                        </a>
+                    </li>
+                    
+                    <li class="pattern">
+                        
+                        
+                        
+                        <a href="../../../../../about/" >
+                            关于
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="ext">
+            <hr />
+            <ul>
+                
+                <li class="button">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com/allposs" target="_blank">Github</a>
+                </li>
+                
+                
+                <li class="text">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span class="fa">tanzj520@gmail.com</span>
+                </li>
+                
+            </ul>
+            <hr />
+        </div>
+
+    </div>
+</div>
+    <div class="content">
+        
+
+<div class="title">
+    <h1>001-PVE基础配置(8.2.4版本)</h1>
+    <div class="tags">
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                2024-07-29
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                Linux
+            </span>
+        </i>
+        
+        <i class="fa fa-tags" aria-hidden="true">
+            <span>
+                PVE
+            </span>
+        </i>
+        
+    </div>
+    <hr />
+</div>
+<div class="docs">
+    <article class="article">
+        
+        <h1 id="简介">简介</h1>
+<blockquote>
+<p>安装完PVE后，我们需要针对国内环境进行一些基本的配置，比如更新镜像源、处理订阅与disabled显示温度等操作。</p>
+</blockquote>
+<h1 id="环境">环境</h1>
+<ul>
+<li>操作系统: ubuntu 22.04.2 LTS</li>
+</ul>
+<h1 id="正文">正文</h1>
+<h2 id="1-更换-debian-源">1. 更换 Debian 源</h2>
+<blockquote>
+<p>Debian源国内可更新的镜像源有好多，比如<a href="https://mirrors.ustc.edu.cn/">官方源</a>、<a href="https://mirrors.tuna.tsinghua.edu.cn/">清华大学</a>等，这里用官方源为范例：</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 备份文件</span>
+</span></span><span style="display:flex;"><span>$ mv /etc/apt/sources.list /etc/apt/sources.list.bak
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 写入源地址</span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF &gt; /etc/apt/sources.list
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">deb https://mirrors.ustc.edu.cn/debian/ bookworm main non-free non-free-firmware contrib
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">deb-src https://mirrors.ustc.edu.cn/debian/ bookworm main non-free non-free-firmware contrib
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">deb https://mirrors.ustc.edu.cn/debian-security/ bookworm-security main
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">deb-src https://mirrors.ustc.edu.cn/debian-security/ bookworm-security main
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">deb https://mirrors.ustc.edu.cn/debian/ bookworm-updates main non-free non-free-firmware contrib
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">deb-src https://mirrors.ustc.edu.cn/debian/ bookworm-updates main non-free non-free-firmware contrib
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">deb https://mirrors.ustc.edu.cn/debian/ bookworm-backports main non-free non-free-firmware contrib
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">deb-src https://mirrors.ustc.edu.cn/debian/ bookworm-backports main non-free non-free-firmware contrib
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h2 id="2-更换-pve与ceph-源">2. 更换 PVE与Ceph 源</h2>
+<blockquote>
+<p>PVE源同样也有<a href="https://mirrors.ustc.edu.cn/">官方源</a>、<a href="https://mirrors.tuna.tsinghua.edu.cn/">清华大学</a></p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 备份文件</span>
+</span></span><span style="display:flex;"><span>$ mv /etc/apt/sources.list.d/pve-enterprise.list /etc/apt/sources.list.d/pve-enterprise.list.bak
+</span></span><span style="display:flex;"><span>$ mv /etc/apt/sources.list.d/ceph.list /etc/apt/sources.list.d/ceph.list.bak
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改pve源</span>
+</span></span><span style="display:flex;"><span>$ cat <span style="color:#e6db74">&lt;&lt;EOF &gt; /etc/apt/sources.list.d/pve-enterprise.list
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">deb https://mirrors.ustc.edu.cn/proxmox/debian bookworm pve-no-subscription
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改ceph源</span>
+</span></span><span style="display:flex;"><span>$ cat <span style="color:#e6db74">&lt;&lt;EOF &gt; /etc/apt/sources.list.d/ceph.list
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">deb https://mirrors.ustc.edu.cn/proxmox/debian/ceph-quincy bookworm no-subscription
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h2 id="3-更新lxc源">3. 更新LXC源</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 备份</span>
+</span></span><span style="display:flex;"><span>$ cp /usr/share/perl5/PVE/APLInfo.pm /usr/share/perl5/PVE/APLInfo.pm_back
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 更换为新源</span>
+</span></span><span style="display:flex;"><span>$ sed -i <span style="color:#e6db74">&#39;s|http://download.proxmox.com|https://mirrors.ustc.edu.cn/proxmox|g&#39;</span> /usr/share/perl5/PVE/APLInfo.pm
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 重启服务</span>
+</span></span><span style="display:flex;"><span>$ systemctl restart pvedaemon.service
+</span></span></code></pre></div><h3 id="4-温度展示">4. 温度展示</h3>
+<blockquote>
+<p>显示 CPU 实时频率、各核心温度、硬盘型号、寿命、温度等信息
+对于不想动手的朋友可以用脚本</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#f92672">(</span>curl -Lf -o /tmp/temp.sh https://raw.githubusercontent.com/a904055262/PVE-manager-status/main/showtempcpufreq.sh <span style="color:#f92672">||</span> curl -Lf -o /tmp/temp.sh https://mirror.ghproxy.com/https://raw.githubusercontent.com/a904055262/PVE-manager-status/main/showtempcpufreq.sh<span style="color:#f92672">)</span> <span style="color:#f92672">&amp;&amp;</span> chmod +x /tmp/temp.sh <span style="color:#f92672">&amp;&amp;</span> /tmp/temp.sh remod
+</span></span></code></pre></div><blockquote>
+<p>喜欢动手的可以按这个来</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 安装 lm-sensors 查询命令</span>
+</span></span><span style="display:flex;"><span>$ apt install lm-sensors patch
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 初始化 sensors,一路回车</span>
+</span></span><span style="display:flex;"><span>$ sensors-detect
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 给予 smartctl 权限(用于读取 NVMe 信息)</span>
+</span></span><span style="display:flex;"><span>$ chmod +s /usr/sbin/smartctl
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改 /usr/share/perl5/PVE/API2/Nodes.pm</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 在PVE::pvecfg::version_text();下一行添加</span>
+</span></span><span style="display:flex;"><span>    $res-&gt;<span style="color:#f92672">{</span>sensors_json<span style="color:#f92672">}</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`</span>sensors -j<span style="color:#e6db74">`</span>; <span style="color:#75715e"># 获取 CPU 、主板温度及风扇转速</span>
+</span></span><span style="display:flex;"><span>    $res-&gt;<span style="color:#f92672">{</span>smartctl_nvme_json<span style="color:#f92672">}</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`</span>smartctl -a -j /dev/nvme?<span style="color:#e6db74">`</span>; <span style="color:#75715e"># 读取 nvme 硬盘 S.M.A.R.T. 值，获取硬盘寿命、容量、温度等</span>
+</span></span><span style="display:flex;"><span>    $res-&gt;<span style="color:#f92672">{</span>cpusensors<span style="color:#f92672">}</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`</span>lscpu | grep MHz<span style="color:#e6db74">`</span>; <span style="color:#75715e"># 读取 CPU 频率</span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;/PVE::pvecfg::version_text();/a\
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">$res-&gt;{sensors_json} = `sensors -j`; # 获取 CPU 、主板温度及风扇转速\n\
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">$res-&gt;{smartctl_nvme_json} = `smartctl -a -j /dev/nvme?`; # 读取 nvme 硬盘 S.M.A.R.T. 值，获取硬盘寿命、容量、温度等\n\
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">$res-&gt;{cpusensors} = `lscpu | grep MHz`; # 读取 CPU 频率&#39;</span> /usr/share/perl5/PVE/API2/Nodes.pm
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>    <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        itemId: <span style="color:#e6db74">&#39;MHz&#39;</span>,
+</span></span><span style="display:flex;"><span>        colspan: 2,
+</span></span><span style="display:flex;"><span>        printBar: false,
+</span></span><span style="display:flex;"><span>        title: gettext<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;CPU频率&#39;</span><span style="color:#f92672">)</span>,
+</span></span><span style="display:flex;"><span>        textField: <span style="color:#e6db74">&#39;cpusensors&#39;</span>,
+</span></span><span style="display:flex;"><span>        renderer:function<span style="color:#f92672">(</span>value<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>                var f1 <span style="color:#f92672">=</span> value.match<span style="color:#f92672">(</span>/CPU min MHz.*?<span style="color:#f92672">([</span><span style="color:#ae81ff">\d</span><span style="color:#f92672">]</span>+<span style="color:#f92672">)</span>/<span style="color:#f92672">)[</span>1<span style="color:#f92672">]</span>;
+</span></span><span style="display:flex;"><span>                var f2 <span style="color:#f92672">=</span> value.match<span style="color:#f92672">(</span>/CPU max MHz.*?<span style="color:#f92672">([</span><span style="color:#ae81ff">\d</span><span style="color:#f92672">]</span>+<span style="color:#f92672">)</span>/<span style="color:#f92672">)[</span>1<span style="color:#f92672">]</span>;
+</span></span><span style="display:flex;"><span>                var f0 <span style="color:#f92672">=</span> value.match<span style="color:#f92672">(</span>/CPU.*scaling MHz.*?<span style="color:#f92672">([</span><span style="color:#ae81ff">\d</span><span style="color:#f92672">]</span>+<span style="color:#f92672">)</span>/<span style="color:#f92672">)[</span>1<span style="color:#f92672">]</span>;
+</span></span><span style="display:flex;"><span>                var f0 <span style="color:#f92672">=</span> f0*f2/100;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#e6db74">`</span>实时: <span style="color:#e6db74">${</span>f0<span style="color:#e6db74">}</span> MHz <span style="color:#f92672">||</span> 最小: <span style="color:#e6db74">${</span>f1<span style="color:#e6db74">}</span> MHz | 最大: <span style="color:#e6db74">${</span>f2<span style="color:#e6db74">}</span> MHz <span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        itemId: <span style="color:#e6db74">&#39;thermal&#39;</span>,
+</span></span><span style="display:flex;"><span>        colspan: 2,
+</span></span><span style="display:flex;"><span>        printBar: false,
+</span></span><span style="display:flex;"><span>        title: gettext<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;CPU温度&#39;</span><span style="color:#f92672">)</span>,
+</span></span><span style="display:flex;"><span>        textField: <span style="color:#e6db74">&#39;sensors_json&#39;</span>,
+</span></span><span style="display:flex;"><span>        renderer: <span style="color:#66d9ef">function</span><span style="color:#f92672">(</span>value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            value <span style="color:#f92672">=</span> value.replace<span style="color:#f92672">(</span>/temp<span style="color:#f92672">([</span>0-9<span style="color:#f92672">]{</span>1,<span style="color:#f92672">})</span>_input/g,<span style="color:#e6db74">&#39;input&#39;</span><span style="color:#f92672">)</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value.indexOf<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;coretemp-isa&#34;</span><span style="color:#f92672">)</span> !<span style="color:#f92672">=</span> -1 <span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                value <span style="color:#f92672">=</span> value.replace<span style="color:#f92672">(</span>/coretemp-isa-<span style="color:#f92672">(</span>.<span style="color:#f92672">{</span>4<span style="color:#f92672">})</span>/g,<span style="color:#e6db74">&#39;coretemp-isa&#39;</span><span style="color:#f92672">)</span>;
+</span></span><span style="display:flex;"><span>                value <span style="color:#f92672">=</span> JSON.parse<span style="color:#f92672">(</span>value<span style="color:#f92672">)</span>;
+</span></span><span style="display:flex;"><span>                try <span style="color:#f92672">{</span>var cpu_Intel <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;CPU: &#39;</span> + value<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;coretemp-isa&#39;</span><span style="color:#f92672">][</span><span style="color:#e6db74">&#39;Package id 0&#39;</span><span style="color:#f92672">][</span><span style="color:#e6db74">&#39;input&#39;</span><span style="color:#f92672">]</span>.toFixed<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span> + <span style="color:#e6db74">&#39;°C&#39;</span>;<span style="color:#f92672">}</span> catch<span style="color:#f92672">(</span>e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>var cpu_Intel <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;<span style="color:#f92672">}</span> 
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>cpu_Intel.length &gt; 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    try <span style="color:#f92672">{</span>var cpu0 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39; || 核心 0 : &#39;</span> + value<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;coretemp-isa&#39;</span><span style="color:#f92672">][</span><span style="color:#e6db74">&#39;Core 0&#39;</span><span style="color:#f92672">][</span><span style="color:#e6db74">&#39;input&#39;</span><span style="color:#f92672">]</span>.toFixed<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span> + <span style="color:#e6db74">&#39;°C&#39;</span>;<span style="color:#f92672">}</span> catch<span style="color:#f92672">(</span>e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>var cpu0 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;<span style="color:#f92672">}</span> 
+</span></span><span style="display:flex;"><span>                    try <span style="color:#f92672">{</span>var cpu1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39; | 核心 1 : &#39;</span> + value<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;coretemp-isa&#39;</span><span style="color:#f92672">][</span><span style="color:#e6db74">&#39;Core 1&#39;</span><span style="color:#f92672">][</span><span style="color:#e6db74">&#39;input&#39;</span><span style="color:#f92672">]</span>.toFixed<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span> + <span style="color:#e6db74">&#39;°C&#39;</span>;<span style="color:#f92672">}</span> catch<span style="color:#f92672">(</span>e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>var cpu1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;<span style="color:#f92672">}</span> 
+</span></span><span style="display:flex;"><span>                    try <span style="color:#f92672">{</span>var cpu2 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39; | 核心 2 : &#39;</span> + value<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;coretemp-isa&#39;</span><span style="color:#f92672">][</span><span style="color:#e6db74">&#39;Core 2&#39;</span><span style="color:#f92672">][</span><span style="color:#e6db74">&#39;input&#39;</span><span style="color:#f92672">]</span>.toFixed<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span> + <span style="color:#e6db74">&#39;°C&#39;</span>;<span style="color:#f92672">}</span> catch<span style="color:#f92672">(</span>e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>var cpu2 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;<span style="color:#f92672">}</span> 
+</span></span><span style="display:flex;"><span>                    try <span style="color:#f92672">{</span>var cpu3 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39; | 核心 3 : &#39;</span> + value<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;coretemp-isa&#39;</span><span style="color:#f92672">][</span><span style="color:#e6db74">&#39;Core 3&#39;</span><span style="color:#f92672">][</span><span style="color:#e6db74">&#39;input&#39;</span><span style="color:#f92672">]</span>.toFixed<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span> + <span style="color:#e6db74">&#39;°C&#39;</span>;<span style="color:#f92672">}</span> catch<span style="color:#f92672">(</span>e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>var cpu3 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;<span style="color:#f92672">}</span> 
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span>cpu_Intel<span style="color:#e6db74">}${</span>cpu0<span style="color:#e6db74">}${</span>cpu1<span style="color:#e6db74">}${</span>cpu2<span style="color:#e6db74">}${</span>cpu3<span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span> 
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#e6db74">`</span>提示: CPU 温度读取异常<span style="color:#e6db74">`</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">{</span>        
+</span></span><span style="display:flex;"><span>        itemId: <span style="color:#e6db74">&#39;nvme_ssd&#39;</span>,
+</span></span><span style="display:flex;"><span>        colspan: 2,
+</span></span><span style="display:flex;"><span>        printBar: false,
+</span></span><span style="display:flex;"><span>        title: gettext<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;NVME&#39;</span><span style="color:#f92672">)</span>,
+</span></span><span style="display:flex;"><span>        textField: <span style="color:#e6db74">&#39;smartctl_nvme_json&#39;</span>,
+</span></span><span style="display:flex;"><span>        renderer: <span style="color:#66d9ef">function</span><span style="color:#f92672">(</span>value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            value <span style="color:#f92672">=</span> JSON.parse<span style="color:#f92672">(</span>value<span style="color:#f92672">)</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>value<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;model_name&#39;</span><span style="color:#f92672">])</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                try <span style="color:#f92672">{</span>var model_name <span style="color:#f92672">=</span> value<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;model_name&#39;</span><span style="color:#f92672">]</span>;<span style="color:#f92672">}</span> catch<span style="color:#f92672">(</span>e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>var model_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;<span style="color:#f92672">}</span> 
+</span></span><span style="display:flex;"><span>                try <span style="color:#f92672">{</span>var percentage_used <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39; | 使用寿命: &#39;</span> + value<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;nvme_smart_health_information_log&#39;</span><span style="color:#f92672">][</span><span style="color:#e6db74">&#39;percentage_used&#39;</span><span style="color:#f92672">]</span>.toFixed<span style="color:#f92672">(</span>0<span style="color:#f92672">)</span> + <span style="color:#e6db74">&#39;% &#39;</span>;<span style="color:#f92672">}</span> catch<span style="color:#f92672">(</span>e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>var percentage_used <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;<span style="color:#f92672">}</span> 
+</span></span><span style="display:flex;"><span>                try <span style="color:#f92672">{</span>var data_units_read <span style="color:#f92672">=</span> value<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;nvme_smart_health_information_log&#39;</span><span style="color:#f92672">][</span><span style="color:#e6db74">&#39;data_units_read&#39;</span><span style="color:#f92672">]</span>*512/1024/1024;var data_units_read <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;(读: &#39;</span> + data_units_read.toFixed<span style="color:#f92672">(</span>2<span style="color:#f92672">)</span> + <span style="color:#e6db74">&#39;GB, &#39;</span>;<span style="color:#f92672">}</span> catch<span style="color:#f92672">(</span>e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>var data_units_read <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;<span style="color:#f92672">}</span> 
+</span></span><span style="display:flex;"><span>                try <span style="color:#f92672">{</span>var data_units_written <span style="color:#f92672">=</span> value<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;nvme_smart_health_information_log&#39;</span><span style="color:#f92672">][</span><span style="color:#e6db74">&#39;data_units_written&#39;</span><span style="color:#f92672">]</span>*512/1024/1024;var data_units_written <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;写: &#39;</span> + data_units_written.toFixed<span style="color:#f92672">(</span>2<span style="color:#f92672">)</span> + <span style="color:#e6db74">&#39;GB)&#39;</span>;<span style="color:#f92672">}</span> catch<span style="color:#f92672">(</span>e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>var data_units_written <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;<span style="color:#f92672">}</span> 
+</span></span><span style="display:flex;"><span>                try <span style="color:#f92672">{</span>var power_on_time <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39; | 通电: &#39;</span> + value<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;power_on_time&#39;</span><span style="color:#f92672">][</span><span style="color:#e6db74">&#39;hours&#39;</span><span style="color:#f92672">]</span>.toFixed<span style="color:#f92672">(</span>0<span style="color:#f92672">)</span> + <span style="color:#e6db74">&#39;小时&#39;</span>;<span style="color:#f92672">}</span> catch<span style="color:#f92672">(</span>e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>var power_on_time <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;<span style="color:#f92672">}</span> 
+</span></span><span style="display:flex;"><span>                try <span style="color:#f92672">{</span>var temperature <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39; | 温度: &#39;</span> + value<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;temperature&#39;</span><span style="color:#f92672">][</span><span style="color:#e6db74">&#39;current&#39;</span><span style="color:#f92672">]</span>.toFixed<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span> + <span style="color:#e6db74">&#39;°C&#39;</span>;<span style="color:#f92672">}</span> catch<span style="color:#f92672">(</span>e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>var temperature <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;<span style="color:#f92672">}</span> 
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span>model_name<span style="color:#e6db74">}${</span>percentage_used<span style="color:#e6db74">}${</span>data_units_read<span style="color:#e6db74">}${</span>data_units_written<span style="color:#e6db74">}${</span>power_on_time<span style="color:#e6db74">}${</span>temperature<span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span> 
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#e6db74">`</span>提示: 未安装硬盘或已直通硬盘控制器<span style="color:#e6db74">`</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>,
+</span></span></code></pre></div><h1 id="结束">结束</h1>
+
+        
+        <hr />
+        
+<section class="comments">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+        };
+        (function () {
+            var inIFrame = function () {
+                var iframe = true
+                try { iframe = window.self !== window.top } catch (e) { }
+                return iframe
+            }
+            if (inIFrame()) return
+            var disqus_js = '//allposs.disqus.com/embed.js'
+            var d = document, s = d.createElement('script')
+            s.src = disqus_js; s.async = true
+            s.setAttribute('data-timestamp', +new Date())
+            var b = false, l = function () {
+                if (b) return;
+                (d.head || d.body).appendChild(s); b = true
+            }
+            var t = d.getElementById('disqus_thread')
+            s.onerror = function (e) {
+                if (sessionStorage.getItem('failure-note')) return
+                t.innerText = '非常抱歉, 中国大陆地区读者需要翻墙才能发表评论。'
+                t.style.border = '1px dashed'
+                t.style.padding = '.5em'
+                t.style.background = 'lightyellow'
+                sessionStorage.setItem('failure-note', true)
+            }
+            
+            if (location.hash.match(/^#comment/)) return l()
+            var c = function () {
+                if (b) return
+                var rect = t.getBoundingClientRect()
+                if (rect.top < window.innerHeight && rect.bottom >= 0) l()
+            }
+            window.addEventListener('load', c)
+            d.addEventListener('scroll', c)
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+</section>
+
+    </article>
+    <aside class="aside">
+        <h2>目录</h2>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-更换-debian-源">1. 更换 Debian 源</a></li>
+    <li><a href="#2-更换-pve与ceph-源">2. 更换 PVE与Ceph 源</a></li>
+    <li><a href="#3-更新lxc源">3. 更新LXC源</a>
+      <ul>
+        <li><a href="#4-温度展示">4. 温度展示</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+    </aside>
+</div>
+
+
+    </div>
+
+    <footer class="footer">
+    <div class="copyright">
+        
+        
+        © Powered by <a href="https://github.com/allposs/Axis-Hugo-Theme.git">Axis-Hugo-Theme</a> and <a href="https://gohugo.io">Hugo</a> | 2022 - 2024
+        
+    </div>
+</footer>
+
+  
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBF4J7F6RW"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-NBF4J7F6RW');
+        }
+      </script>
+    
+  
+
+
+
+<script async src="https://blog.allposs.com/js/dom.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+</body>
+
+</html>

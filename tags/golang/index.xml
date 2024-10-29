@@ -13,14 +13,14 @@
       <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</link>
       <pubDate>Wed, 17 May 2023 10:33:37 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</guid>
-      <description>简介 环境 正文 结束</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;h1 id=&#34;环境&#34;&gt;环境&lt;/h1&gt;&#xA;&lt;h1 id=&#34;正文&#34;&gt;正文&lt;/h1&gt;&#xA;&lt;h1 id=&#34;结束&#34;&gt;结束&lt;/h1&gt;</description>
     </item>
     <item>
       <title>Golang开发环境搭建</title>
       <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
       <pubDate>Fri, 24 May 2019 10:20:23 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
-      <description>简介 这篇文章主要记录Golang在各个主流操作系统上的开发环境搭建。这里的IDE选择VSCode的原因是比较轻量,功能简单实用并与git结合</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;p&gt;这篇文章主要记录Golang在各个主流操作系统上的开发环境搭建。这里的IDE选择VSCode的原因是比较轻量,功能简单实用并与git结合比较紧密,比较适合新手入门。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

@@ -13,7 +13,7 @@
       <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/002-centos7.2%E5%AE%89%E8%A3%85kvm/</link>
       <pubDate>Wed, 04 May 2016 14:20:23 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/002-centos7.2%E5%AE%89%E8%A3%85kvm/</guid>
-      <description>简介 Kernel-based Virtual Machine的简称，是一个开源的系统虚拟化模块，自Linux 2.6.20之后集成在Linux的各个主要发行版本中。它使用Linux</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;p&gt;Kernel-based Virtual Machine的简称，是一个开源的系统虚拟化模块，自Linux 2.6.20之后集成在Linux的各个主要发行版本中。它使用Linux自身的调度器进行管理，所以相对于Xen，其核心源码很少。KVM目前已成为学术界的主流VMM之一。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

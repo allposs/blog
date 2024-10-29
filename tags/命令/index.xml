@@ -13,14 +13,14 @@
       <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
       <pubDate>Mon, 15 May 2023 18:35:44 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/002-kubernete%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
-      <description>简介 正文 1. nsenter 说明: nsenter命令是一个可以在指定进程的命令空间下运行指定程序的命令。它位于util-linux包中。 语法: nsenter [options] [program [arguments]] 处理:</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;h1 id=&#34;正文&#34;&gt;正文&lt;/h1&gt;&#xA;&lt;h2 id=&#34;1-nsenter&#34;&gt;1. nsenter&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;说明:&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;nsenter命令是一个可以在指定进程的命令空间下运行指定程序的命令。它位于util-linux包中。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;语法:&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;nsenter [options] [program [arguments]]&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;处理:&#xA;典型的用途就是进入容器的网络命令空间。相当多的容器为了轻量级，是不包含较为基础的命令的，比如说ip address，ping，telnet，ss，tcpdump等等命令，这就给调试容器网络带来相当大的困扰：只能通过docker inspect ContainerID命令获取到容器IP，以及无法测试和其他网络的连通性。这时就可以使用nsenter命令仅进入该容器的网络命名空间，使用宿主机的命令调试容器网络。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker inspect -f &lt;span style=&#34;color:#f92672&#34;&gt;{{&lt;/span&gt;.State.Pid&lt;span style=&#34;color:#f92672&#34;&gt;}}&lt;/span&gt; nginx&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;nsenter -n -t6700&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;结束&#34;&gt;结束&lt;/h1&gt;</description>
     </item>
     <item>
       <title>Linux常用命令合集</title>
       <link>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</link>
       <pubDate>Tue, 18 Aug 2020 14:20:23 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux/001-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%90%88%E9%9B%86/</guid>
-      <description>简介 本文是用来记录一些自己常用到的一些 linux 命令的合集文章,方便自己查询与记录。 正文 1. pstree 将正在运行的进程显示为树。它用作 ps 命令的更直观的替代方法</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;本文是用来记录一些自己常用到的一些 linux 命令的合集文章,方便自己查询与记录。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h1 id=&#34;正文&#34;&gt;正文&lt;/h1&gt;&#xA;&lt;h2 id=&#34;1-pstree&#34;&gt;1. pstree&lt;/h2&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;将正在运行的进程显示为树。它用作 ps 命令的更直观的替代方法。树的根是 init 或具有给定 pid 的进程。也可以将其安装在其他 Unix 系统中。在 BSD 系统中，使用创建类似的输出&lt;code&gt;ps -d&lt;/code&gt;，在 Linux &lt;code&gt;ps axjf&lt;/code&gt;中产生类似的输出&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

@@ -13,7 +13,7 @@
       <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%BC%80%E5%8F%91%E5%90%88%E9%9B%86/001-kubectl%E7%9A%84debug%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0/</link>
       <pubDate>Sat, 27 May 2023 08:28:22 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%BC%80%E5%8F%91%E5%90%88%E9%9B%86/001-kubectl%E7%9A%84debug%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0/</guid>
-      <description>简介 kubectl是管理Kubernetes常用工具之一，在调试、排查问题的时候，我们一般情况使用 logs describe exec debug等子命令便可以找到问题原因</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;p&gt;kubectl是管理Kubernetes常用工具之一，在调试、排查问题的时候，我们一般情况使用 logs describe exec debug等子命令便可以找到问题原因.其中debug子命令常用于容器崩溃(CrashLoopBackoff)或容器镜像不包含shell时使用的工具。本文将对debug子命令实现进行解读并手动实现其功能。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

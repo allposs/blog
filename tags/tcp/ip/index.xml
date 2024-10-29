@@ -13,7 +13,7 @@
       <link>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/001-%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%A0%88%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</link>
       <pubDate>Sat, 08 Jul 2023 09:22:35 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/001-%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%A0%88%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</guid>
-      <description>简介 正文 1. KeepAlive 说明: TCP的KeepAlive机制是一种保活机制，就是为了保证连接的有效性，探测连接的对端是否存活的作用，在间隔一定的时间发探</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;h1 id=&#34;正文&#34;&gt;正文&lt;/h1&gt;&#xA;&lt;h3 id=&#34;1-keepalive&#34;&gt;1. KeepAlive&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;说明:&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;TCP的KeepAlive机制是一种保活机制，就是为了保证连接的有效性，探测连接的对端是否存活的作用，在间隔一定的时间发探测包，根据回复来确认该连接是否有效。此外，KeepAlive机制还可以解决大量无用连接无法回收、占用资源的问题了（在TCP通信中客户端和服务器若长时间无数据交互情况下，若一方出现异常情况关闭连接，抑或是连接中间路由出于某种机制断开连接，而此时另一方不知道对方状态而一直维护连接，浪费系统资源的同时，也会引起下次数据交互时出错）。，都实现了KeepAlive功能。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

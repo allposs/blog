@@ -13,21 +13,21 @@
       <link>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/001-%E7%BD%91%E7%BB%9C%E9%97%AE%E9%A2%98%E5%90%88%E9%9B%86/</link>
       <pubDate>Thu, 13 Jul 2023 09:32:08 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/001-%E7%BD%91%E7%BB%9C%E9%97%AE%E9%A2%98%E5%90%88%E9%9B%86/</guid>
-      <description>简介 正文 结束</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;h1 id=&#34;正文&#34;&gt;正文&lt;/h1&gt;&#xA;&lt;h1 id=&#34;结束&#34;&gt;结束&lt;/h1&gt;</description>
     </item>
     <item>
       <title>OSI7层网络模型详解</title>
       <link>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/002-osi7%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/</link>
       <pubDate>Sat, 08 Jul 2023 17:45:49 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/002-osi7%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/</guid>
-      <description>简介 先上网图: OSI7层模型是open system interconnection 开放式系统互联参考模型，注意是参考模型，在实际生活中并未全部实现（现实使用的是TCP/IP4层模型</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;p&gt;先上网图:&#xA;&#xA;&lt;div class=&#34;post-img-view&#34;&gt;&#xA;&lt;a data-fancybox=&#34;gallery&#34; href=&#34;../../images/OSI%E4%B8%83%E5%B1%82%E6%A8%A1%E5%9E%8B%E5%9B%BE%E8%A7%A3.gif&#34;&gt;&#xA;&lt;img src=&#34;../../images/OSI%E4%B8%83%E5%B1%82%E6%A8%A1%E5%9E%8B%E5%9B%BE%E8%A7%A3.gif&#34; alt=&#34;OSI7层模型&#34;  /&gt;&#xA;&lt;/a&gt;&#xA;&lt;/div&gt;&#xA;&#xA;&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;OSI7层模型&lt;/strong&gt;是open system interconnection 开放式系统互联参考模型，注意是参考模型，在实际生活中并未全部实现（现实使用的是&lt;strong&gt;TCP/IP4层模型&lt;/strong&gt;），但是不妨碍我们通过&lt;strong&gt;OSI7层模型&lt;/strong&gt;去了解网络通讯原理。&lt;strong&gt;OSI7层模型&lt;/strong&gt;分别为如下7层:应用层（Application）、表示层（Presentation）、会话层（Session）、传输层（Transport）、网络层（Network）、数据链路层（Data Link）、物理层（Physical）。&lt;/p&gt;</description>
     </item>
     <item>
       <title>网络协议栈名词解释</title>
       <link>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/001-%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%A0%88%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</link>
       <pubDate>Sat, 08 Jul 2023 09:22:35 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/001-%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%A0%88%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</guid>
-      <description>简介 正文 1. KeepAlive 说明: TCP的KeepAlive机制是一种保活机制，就是为了保证连接的有效性，探测连接的对端是否存活的作用，在间隔一定的时间发探</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;h1 id=&#34;正文&#34;&gt;正文&lt;/h1&gt;&#xA;&lt;h3 id=&#34;1-keepalive&#34;&gt;1. KeepAlive&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;说明:&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;TCP的KeepAlive机制是一种保活机制，就是为了保证连接的有效性，探测连接的对端是否存活的作用，在间隔一定的时间发探测包，根据回复来确认该连接是否有效。此外，KeepAlive机制还可以解决大量无用连接无法回收、占用资源的问题了（在TCP通信中客户端和服务器若长时间无数据交互情况下，若一方出现异常情况关闭连接，抑或是连接中间路由出于某种机制断开连接，而此时另一方不知道对方状态而一直维护连接，浪费系统资源的同时，也会引起下次数据交互时出错）。，都实现了KeepAlive功能。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

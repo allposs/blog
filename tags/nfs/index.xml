@@ -13,7 +13,7 @@
       <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/001-nfs%E8%AF%A6%E8%A7%A3/</link>
       <pubDate>Fri, 19 May 2023 16:25:47 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/001-nfs%E8%AF%A6%E8%A7%A3/</guid>
-      <description>简介 NFS 是 Network File System 的缩写，是Sun公司于1984开发的一种分布式文件系统协议。它的核心功能就是可以通过网络，让不同的客户端，可以彼此访问共同的文</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;NFS 是 Network File System 的缩写，是Sun公司于1984开发的一种分布式文件系统协议。它的核心功能就是可以通过网络，让不同的客户端，可以彼此访问共同的文件系统 ，来实现文件的共享。像许多其他的协议，建立在开放的网络计算的远程过程调用（RPC）之上。NFS是在RFC中定义的开放标准，允许任何人实现该协议。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

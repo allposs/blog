@@ -13,14 +13,14 @@
       <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/004-cfssl%E5%88%B6%E4%BD%9C%E8%AF%81%E4%B9%A6/</link>
       <pubDate>Wed, 08 Jan 2020 10:20:23 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/004-cfssl%E5%88%B6%E4%BD%9C%E8%AF%81%E4%B9%A6/</guid>
-      <description>简介 在工作中，我们经常会遇到各种证书问题，如k8s,etcd,openstack等服务时，我们往往都要使用证书，本文将使用CFSSL工具快速</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;在工作中，我们经常会遇到各种证书问题，如k8s,etcd,openstack等服务时，我们往往都要使用证书，本文将使用CFSSL工具快速简单的配置证书。这里将生成三种证书包含客户端证书，服务端证书，双向证书。&lt;/p&gt;</description>
     </item>
     <item>
       <title>数字签名和数字证书原理</title>
       <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/003-%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E5%92%8C%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%E5%8E%9F%E7%90%86/</link>
       <pubDate>Sun, 05 Jan 2020 10:20:23 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/003-%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E5%92%8C%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%E5%8E%9F%E7%90%86/</guid>
-      <description>简介 说明 在工作中，我们经常会遇到各种证书问题，如k8s,etcd,openstack等服务时，我们往往都要使用证书，本文将使用CFSSL工具</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;h3 id=&#34;说明&#34;&gt;&lt;strong&gt;说明&lt;/strong&gt;&lt;/h3&gt;&#xA;&lt;pre&gt;&lt;code&gt;    在工作中，我们经常会遇到各种证书问题，如k8s,etcd,openstack等服务时，我们往往都要使用证书，本文将使用CFSSL工具快速简单的配置证书。这里将生成三种证书包含客户端证书，服务端证书，双向证书。&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;client certificate： 用于服务端认证客户端,例如etcdctl、etcd proxy、fleetctl、docker客户端&lt;/li&gt;&#xA;&lt;li&gt;server certificate: 服务端使用，客户端以此验证服务端身份,例如docker服务端、kube-apiserver&lt;/li&gt;&#xA;&lt;li&gt;peer certificate:   双向证书，用于etcd集群成员间通信&#xA;在证书使用场景方面，双向证书一般使用server与client证书，而单向一般使用peer证书，不做校验的就也是使用peer证书。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;引用&#34;&gt;&lt;strong&gt;引用&lt;/strong&gt;&lt;/h3&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://www.ibm.com/support/knowledgecenter/zh/SSBLQQ_9.0.1/com.ibm.rational.test.lt.doc/topics/ccertcreate.html&#34;&gt;《数字证书概述》&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

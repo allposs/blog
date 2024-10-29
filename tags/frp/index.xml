@@ -13,14 +13,14 @@
       <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/007-frp%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Tue, 25 Aug 2020 14:20:23 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/007-frp%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</guid>
-      <description>简介 说明 由于本人是个上班族,所以在某些加班时刻需要把自己的文档或个人代码上传到自己家里的gitlab服务器,所以就有这篇穿透内网代理配置的文</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;h3 id=&#34;说明&#34;&gt;&lt;strong&gt;说明&lt;/strong&gt;&lt;/h3&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;由于本人是个上班族,所以在某些加班时刻需要把自己的文档或个人代码上传到自己家里的gitlab服务器,所以就有这篇穿透内网代理配置的文档。&#xA;frp的文档是这样介绍自己的：frp 是一个专注于内网穿透的高性能的反向代理应用，支持 TCP、UDP、HTTP、HTTPS 等多种协议。可以将内网服务以安全、便捷的方式通过具有公网 IP 节点的中转暴露到公网。而我选择frp的原因是配置简单,golang开发,支持协议多.&lt;a href=&#34;https://github.com/fatedier/frp&#34;&gt;Github地址&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>008-kafka集群配置安装</title>
       <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/008-kafka%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85/</link>
       <pubDate>Tue, 16 Aug 2016 14:20:23 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/008-kafka%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85/</guid>
-      <description>简介 Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者规模的网站中的所有动作流数据。 这种动作（网页浏览，搜索和其他用户的行动</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者规模的网站中的所有动作流数据。 这种动作（网页浏览，搜索和其他用户的行动）是在现代网络上的许多社会功能的一个关键因素。 这些数据通常是由于吞吐量的要求而通过处理日志和日志聚合来解决。 对于像Hadoop的一样的日志数据和离线分析系统，但又要求实时处理的限制，这是一个可行的解决方案。Kafka的目的是通过Hadoop的并行加载机制来统一线上和离线的消息处理，也是为了通过集群机来提供实时的消费。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

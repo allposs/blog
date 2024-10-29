@@ -13,7 +13,7 @@
       <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/002-kube-proxy%E7%BB%84%E4%BB%B6%E8%AF%A6%E8%A7%A3/</link>
       <pubDate>Thu, 18 May 2023 15:00:54 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/002-kube-proxy%E7%BB%84%E4%BB%B6%E8%AF%A6%E8%A7%A3/</guid>
-      <description>简介 环境 正文 kube-proxy kube-proxy是Kubernetes的核心组件，部署在每台kubernetes节点上，他是Service对象具体实现者，</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;h1 id=&#34;环境&#34;&gt;环境&lt;/h1&gt;&#xA;&lt;h1 id=&#34;正文&#34;&gt;正文&lt;/h1&gt;&#xA;&lt;h2 id=&#34;kube-proxy&#34;&gt;kube-proxy&lt;/h2&gt;&#xA;&lt;p&gt;kube-proxy是Kubernetes的核心组件，部署在每台kubernetes节点上，他是Service对象具体实现者，它通过管理Node主机上相应规则条目从而达到类型服务通讯的效果。kube-proxy两种实现模式，一种是使用iptables，另一种则是使用IPVS，这两种组件都是基于Linux内核名为netfilter的子系统。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

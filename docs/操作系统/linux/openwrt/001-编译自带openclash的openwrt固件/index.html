@@ -163,6 +163,7 @@
 </span></span><span style="display:flex;"><span>sudo apt install build-essential clang flex bison g++ gawk <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>python3-setuptools rsync swig unzip zlib1g-dev file wget
+</span></span><span style="display:flex;"><span>sudo apt-get install -y mkisofs
 </span></span></code></pre></div><h3 id="2-拉取代码">2. 拉取代码</h3>
 <p>主要是拉取源码，并切换好相应固件版本版本。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 切换到用户根目录</span>
@@ -336,6 +337,28 @@ Base system -&gt; dnsmasq
 </ul>
 </li>
 </ul>
+<h3 id="磁盘扩容">磁盘扩容</h3>
+<ul>
+<li>EXT4固件</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>opkg update <span style="color:#75715e"># 更新</span>
+</span></span><span style="display:flex;"><span>opkg install fdisk blkid losetup resize2fs losetup <span style="color:#75715e"># 安装工具，有的话就不用执行了</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fdisk -l 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fdisk /dev/loop1
+</span></span><span style="display:flex;"><span>p
+</span></span><span style="display:flex;"><span>d
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>n
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">33792</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>n
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>losetup
+</span></span></code></pre></div><ul>
+<li>squashfs固件</li>
+</ul>
 <h2 id="pve安装">PVE安装</h2>
 <p>新建虚拟机，记住VM ID，这里以101为例；操作系统选择不使用任何介质；硬盘默认，稍后需要手动删除的；CPU、内存、网络自行配置。然后将编译好的OpenWrt固件解压(gunzip -d bin/targets/x86/64/openwrt-x86-64-generic-squashfs-combined-efi.img.gz),并把解压后的img文件通过PVE网页上传功能上传到PVE。然后登陆PVE执行以下命令</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 转换成 PVE 磁盘格式，注意其中的101替换为你的VM ID，openwrt-x86-64-generic-squashfs-combined-efi.img为你的镜像文件</span>
@@ -432,6 +455,7 @@ sudo apt-get install libelf-dev</li>
       <ul>
         <li><a href="#1-初次编译">1. 初次编译</a></li>
         <li><a href="#2-再次编译">2. 再次编译</a></li>
+        <li><a href="#磁盘扩容">磁盘扩容</a></li>
       </ul>
     </li>
     <li><a href="#pve安装">PVE安装</a>
@@ -457,8 +481,6 @@ sudo apt-get install libelf-dev</li>
     </div>
 </footer>
 
-  
-    
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-NBF4J7F6RW"></script>
       <script>
         var doNotTrack = false;
@@ -473,10 +495,6 @@ sudo apt-get install libelf-dev</li>
           gtag('config', 'G-NBF4J7F6RW');
         }
       </script>
-    
-  
-
-
 
 <script async src="https://blog.allposs.com/js/dom.js"></script>
 

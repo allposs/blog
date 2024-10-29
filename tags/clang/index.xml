@@ -13,28 +13,28 @@
       <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/clang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</link>
       <pubDate>Wed, 05 Jun 2024 10:45:17 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/clang/001-%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/</guid>
-      <description>简介 环境 正文 结束</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;h1 id=&#34;环境&#34;&gt;环境&lt;/h1&gt;&#xA;&lt;h1 id=&#34;正文&#34;&gt;正文&lt;/h1&gt;&#xA;&lt;h1 id=&#34;结束&#34;&gt;结束&lt;/h1&gt;</description>
     </item>
     <item>
       <title>Clang开发环境搭建</title>
       <link>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/clang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
       <pubDate>Wed, 05 Jun 2024 10:45:07 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/clang/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
-      <description>简介 环境 正文 结束</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;h1 id=&#34;环境&#34;&gt;环境&lt;/h1&gt;&#xA;&lt;h1 id=&#34;正文&#34;&gt;正文&lt;/h1&gt;&#xA;&lt;h1 id=&#34;结束&#34;&gt;结束&lt;/h1&gt;</description>
     </item>
     <item>
       <title>pigpio库使用</title>
       <link>https://blog.allposs.com/docs/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A0%91%E8%8E%93%E6%B4%BE/003-pigpio%E5%BA%93%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Wed, 05 Jun 2024 10:45:07 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A0%91%E8%8E%93%E6%B4%BE/003-pigpio%E5%BA%93%E4%BD%BF%E7%94%A8/</guid>
-      <description>简介 pigpio 是一个流行的用于树莓派的GPIO控制库，它支持广泛的功能，包括精确的时间控制以及同时处理多个GPIO引脚。pigpio特别适合于需要精</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;p&gt;pigpio 是一个流行的用于树莓派的GPIO控制库，它支持广泛的功能，包括精确的时间控制以及同时处理多个GPIO引脚。pigpio特别适合于需要精确PWM（脉冲宽度调制）和时序要求较高的任务，如电机控制。与wiringPi相比，pigpio提供了更高精度的控制，并且能够在后台运行守护进程（pigpiod），通过网络接口进行控制，这使得远程控制成为可能。&lt;/p&gt;</description>
     </item>
     <item>
       <title>开发环境搭建</title>
       <link>https://blog.allposs.com/docs/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A0%91%E8%8E%93%E6%B4%BE/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
       <pubDate>Wed, 05 Jun 2024 10:45:07 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E5%B5%8C%E5%85%A5%E5%BC%8F/%E6%A0%91%E8%8E%93%E6%B4%BE/002-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
-      <description>简介 环境 正文 结束</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;h1 id=&#34;环境&#34;&gt;环境&lt;/h1&gt;&#xA;&lt;h1 id=&#34;正文&#34;&gt;正文&lt;/h1&gt;&#xA;&lt;h1 id=&#34;结束&#34;&gt;结束&lt;/h1&gt;</description>
     </item>
   </channel>
 </rss>

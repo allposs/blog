@@ -13,7 +13,7 @@
       <link>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/005-kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/</link>
       <pubDate>Fri, 19 May 2023 18:00:39 +0800</pubDate>
       <guid>https://blog.allposs.com/docs/%E8%BD%AF%E4%BB%B6/kubernetes/005-kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/</guid>
-      <description>简介 主要是对kubernetes集群安装方式的一个汇总文档，方便自己归纳总结知识。 正文 Kubernetes对象 001-service资源对象</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;&#xA;&lt;pre&gt;&lt;code&gt;主要是对kubernetes集群安装方式的一个汇总文档，方便自己归纳总结知识。&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;h1 id=&#34;正文&#34;&gt;正文&lt;/h1&gt;&#xA;&lt;h2 id=&#34;kubernetes对象&#34;&gt;Kubernetes对象&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;../../docs/%E8%BD%AF%E4%BB%B6/kubernetes/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/kubernetes%E5%8E%9F%E7%90%86%E5%90%88%E9%9B%86/001-service%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1%E8%AF%A6%E8%A7%A3&#34;&gt;001-service资源对象详解&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h1 id=&#34;结束&#34;&gt;结束&lt;/h1&gt;</description>
     </item>
   </channel>
 </rss>

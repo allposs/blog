@@ -164,6 +164,20 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>python3-setuptools rsync swig unzip zlib1g-dev file wget
 </span></span><span style="display:flex;"><span>sudo apt-get install -y mkisofs
+</span></span><span style="display:flex;"><span>sudo apt-get install -y tcptraceroute
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果想编译VDI/VMDK镜像则需要安装</span>
+</span></span><span style="display:flex;"><span>sudo apt install qemu-utils
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 或者直接全部安装</span>
+</span></span><span style="display:flex;"><span>sudo apt update -y
+</span></span><span style="display:flex;"><span>sudo apt full-upgrade -y
+</span></span><span style="display:flex;"><span>sudo apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gettext gcc-multilib g++-multilib <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev libgmp3-dev <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>libltdl-dev libmpc-dev libmpfr-dev libncurses-dev libncurses-dev libpython3-dev libreadline-dev <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>libssl-dev libtool llvm lrzsz genisoimage msmtp ninja-build p7zip p7zip-full patch pkgconf python3 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion swig texinfo <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 </span></span></code></pre></div><h3 id="2-拉取代码">2. 拉取代码</h3>
 <p>主要是拉取源码，并切换好相应固件版本版本。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 切换到用户根目录</span>
@@ -171,6 +185,9 @@
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 拉取OpenWrt,切换分支&lt;git clone -b v22.03.4 --single-branch --depth=1 https://github.com/openwrt/openwrt.git&gt;</span>
 </span></span><span style="display:flex;"><span>git clone https://github.com/openwrt/openwrt openwrt
 </span></span><span style="display:flex;"><span>cd openwrt <span style="color:#f92672">&amp;&amp;</span> git checkout v22.03.4 --force <span style="color:#f92672">&amp;&amp;</span> cd ../
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 或者使用[lede](https://github.com/coolsnowwolf/lede)</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/coolsnowwolf/lede lede
+</span></span><span style="display:flex;"><span>cd lede <span style="color:#f92672">&amp;&amp;</span> git checkout <span style="color:#ae81ff">20230609</span> --force <span style="color:#f92672">&amp;&amp;</span> cd ../
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 下载OpenClash</span>
 </span></span><span style="display:flex;"><span>wget https://github.com/vernesong/OpenClash/archive/master.zip
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 解压</span>
@@ -186,10 +203,18 @@
 </span></span><span style="display:flex;"><span>export https_proxy<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://127.0.0.1:7890&#34;</span>
 </span></span></code></pre></div><h3 id="3-配置参数">3. 配置参数</h3>
 <p>此步骤主要配置编译参数。</p>
-<p>配置第三方插件,修改源代码里的 feeds.conf.default 文件，保存着软件包订阅，格式如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>src-git Openclash https://github.com/vernesong/OpenClash
-</span></span><span style="display:flex;"><span>src-git PassWall https://github.com/xiaorouji/openwrt-passwall
-</span></span><span style="display:flex;"><span>src-git kenzo https://github.com/kenzok8/openwrt-packages
+<p>配置第三方插件,修改源代码里的 feeds.conf.default 文件，保存着软件包订阅，执行如下命令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;1i src-git kenzo https://github.com/kenzok8/openwrt-packages&#39;</span> feeds.conf.default
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;2i src-git Openclash https://github.com/vernesong/OpenClash&#39;</span> feeds.conf.default
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;2i src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git&#39;</span> feeds.conf.default
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># sed -i &#39;2i src-git istore https://github.com/linkease/istore;main&#39; feeds.conf.default</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># sed -i &#39;2i src-git small https://github.com/kenzok8/small&#39; feeds.conf.default</span>
+</span></span></code></pre></div><p>修改固件初始参数</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 修改默认ip</span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;s/192.168.1.1/192.168.3.1/g&#39;</span> package/base-files/files/bin/config_generate
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 替换终端为bash</span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;s/\/bin\/ash/\/bin\/bash/&#39;</span> package/base-files/files/etc/passwd
 </span></span></code></pre></div><p>下载插件与依赖</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./scripts/feeds update -a
 </span></span><span style="display:flex;"><span>./scripts/feeds install -a
@@ -290,10 +315,21 @@ Base system -&gt; dnsmasq
 </ul>
 </li>
 </ul>
+<ul>
+<li>添加luci-app-store
+<ul>
+<li>LuCI &gt; Applications -&gt; luci-app-store</li>
+<li>LuCI &gt; Libraries -&gt; luci-lib-ipkg</li>
+<li>LuCI -&gt; Modules -&gt; luci-compat</li>
+</ul>
+</li>
+</ul>
 <h2 id="编译">编译</h2>
 <h3 id="1-初次编译">1. 初次编译</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 下载dl库（尽量科学上网），完成后检查是否有报错,如有问题可以百度或与我联系。</span>
 </span></span><span style="display:flex;"><span>make -j8 download V<span style="color:#f92672">=</span>s
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 第一次编译推荐用单线程,如下</span>
+</span></span><span style="display:flex;"><span>make -j1 V<span style="color:#f92672">=</span>s | tee ../compile.log
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 开始编译，预计时间在30分钟以上,最终生成固件存放位置为openwrt/bin/targets/x86/64/目录下</span>
 </span></span><span style="display:flex;"><span>make -j8 V<span style="color:#f92672">=</span>s | tee ../compile.log
 </span></span></code></pre></div><p>PS:</p>
@@ -341,21 +377,98 @@ Base system -&gt; dnsmasq
 <ul>
 <li>EXT4固件</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>opkg update <span style="color:#75715e"># 更新</span>
-</span></span><span style="display:flex;"><span>opkg install fdisk blkid losetup resize2fs losetup <span style="color:#75715e"># 安装工具，有的话就不用执行了</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 更新</span>
+</span></span><span style="display:flex;"><span>root@OpenWrt:~# opkg update
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 安装工具，有的话就不用执行了</span>
+</span></span><span style="display:flex;"><span>root@OpenWrt:~# opkg install fdisk blkid losetup resize2fs losetup
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>fdisk -l 
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看所有磁盘情况，根据你的固件容量来确定磁盘，我这里是/dev/nvme0n1p2。</span>
+</span></span><span style="display:flex;"><span>root@OpenWrt:~# fdisk -l 
+</span></span><span style="display:flex;"><span>Device            Start        End    Sectors  Size Type
+</span></span><span style="display:flex;"><span>/dev/nvme0n1p1      <span style="color:#ae81ff">512</span>     <span style="color:#ae81ff">262655</span>     <span style="color:#ae81ff">262144</span>  128M Linux filesystem
+</span></span><span style="display:flex;"><span>/dev/nvme0n1p2   <span style="color:#ae81ff">262656</span> <span style="color:#ae81ff">3907029134</span> <span style="color:#ae81ff">3906766479</span>  1.8T Linux filesystem
+</span></span><span style="display:flex;"><span>/dev/nvme0n1p128     <span style="color:#ae81ff">34</span>        <span style="color:#ae81ff">511</span>        <span style="color:#ae81ff">478</span>  239K BIOS boot
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果是efi的固件，需要查看磁盘UUID，内容如下，需要记住/dev/nvme0n1p2的uuid</span>
+</span></span><span style="display:flex;"><span>root@OpenWrt:~# blkid
+</span></span><span style="display:flex;"><span>/dev/nvme0n1p1: SEC_TYPE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;msdos&#34;</span> LABEL_FATBOOT<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;kernel&#34;</span> LABEL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;kernel&#34;</span> UUID<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1234-ABCD&#34;</span> BLOCK_SIZE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;512&#34;</span> TYPE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;vfat&#34;</span> PARTUUID<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;d6b1a2a3-2779-6abf-11c0-d2ab38723801&#34;</span>
+</span></span><span style="display:flex;"><span>/dev/nvme0n1p2: LABEL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;rootfs&#34;</span> UUID<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ff313567-e9f1-5a5d-9895-3ba130b4a864&#34;</span> BLOCK_SIZE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;4096&#34;</span> TYPE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ext4&#34;</span> PARTUUID<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;d6b1a2a3-2779-6abf-11c0-d2ab38723802&#34;</span>
+</span></span><span style="display:flex;"><span>/dev/nvme0n1p128: PARTUUID<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;d6b1a2a3-2779-6abf-11c0-d2ab38723880&#34;</span>
+</span></span><span style="display:flex;"><span>/dev/sda2: SEC_TYPE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;msdos&#34;</span> LABEL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;EFI&#34;</span> UUID<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0F1C-07BD&#34;</span> BLOCK_SIZE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;512&#34;</span> TYPE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;vfat&#34;</span> PARTUUID<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bc6e54ce-02&#34;</span>
+</span></span><span style="display:flex;"><span>/dev/sda1: LABEL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;EasyU&#34;</span> BLOCK_SIZE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;512&#34;</span> UUID<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;40DE32A6DE32945E&#34;</span> TYPE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ntfs&#34;</span> PARTUUID<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bc6e54ce-01&#34;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>fdisk /dev/loop1
-</span></span><span style="display:flex;"><span>p
-</span></span><span style="display:flex;"><span>d
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2</span>
-</span></span><span style="display:flex;"><span>n
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">33792</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改磁盘，loop1为你的磁盘</span>
+</span></span><span style="display:flex;"><span>root@OpenWrt:~# fdisk /dev/nvme0n1p2
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看磁盘的分区情况，输入p，记住/dev/nvme0n1p2的起始扇区，这里是262656</span>
+</span></span><span style="display:flex;"><span>Command <span style="color:#f92672">(</span>m <span style="color:#66d9ef">for</span> help<span style="color:#f92672">)</span>: p
+</span></span><span style="display:flex;"><span>Disk /dev/nvme0n1: 1.82 TiB, <span style="color:#ae81ff">2000398934016</span> bytes, <span style="color:#ae81ff">3907029168</span> sectors
+</span></span><span style="display:flex;"><span>Disk model: KIOXIA-EXCERIA PRO SSD                  
+</span></span><span style="display:flex;"><span>Units: sectors of <span style="color:#ae81ff">1</span> * 512 <span style="color:#f92672">=</span> <span style="color:#ae81ff">512</span> bytes
+</span></span><span style="display:flex;"><span>Sector size <span style="color:#f92672">(</span>logical/physical<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+</span></span><span style="display:flex;"><span>I/O size <span style="color:#f92672">(</span>minimum/optimal<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+</span></span><span style="display:flex;"><span>Disklabel type: gpt
+</span></span><span style="display:flex;"><span>Disk identifier: D6B1A2A3-2779-6ABF-11C0-D2AB38723800
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>n
+</span></span><span style="display:flex;"><span>Device            Start        End    Sectors  Size Type
+</span></span><span style="display:flex;"><span>/dev/nvme0n1p1      <span style="color:#ae81ff">512</span>     <span style="color:#ae81ff">262655</span>     <span style="color:#ae81ff">262144</span>  128M Linux filesystem
+</span></span><span style="display:flex;"><span>/dev/nvme0n1p2   <span style="color:#ae81ff">262656</span> <span style="color:#ae81ff">3907029134</span> <span style="color:#ae81ff">3906766479</span>  1.8T Linux filesystem
+</span></span><span style="display:flex;"><span>/dev/nvme0n1p128     <span style="color:#ae81ff">34</span>        <span style="color:#ae81ff">511</span>        <span style="color:#ae81ff">478</span>  239K BIOS boot
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>losetup
+</span></span><span style="display:flex;"><span>Partition table entries are not in disk order.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果是efi的固件，这里也可以查看分区的uuid，输入命令i，然后再输入分区编号2即可查看。</span>
+</span></span><span style="display:flex;"><span>Command <span style="color:#f92672">(</span>m <span style="color:#66d9ef">for</span> help<span style="color:#f92672">)</span>: i
+</span></span><span style="display:flex;"><span>Partition number <span style="color:#f92672">(</span>1,2,128, default 128<span style="color:#f92672">)</span>: <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>         Device: /dev/nvme0n1p2
+</span></span><span style="display:flex;"><span>          Start: <span style="color:#ae81ff">262656</span>
+</span></span><span style="display:flex;"><span>            End: <span style="color:#ae81ff">3907029134</span>
+</span></span><span style="display:flex;"><span>        Sectors: <span style="color:#ae81ff">3906766479</span>
+</span></span><span style="display:flex;"><span>           Size: 1.8T
+</span></span><span style="display:flex;"><span>           Type: Linux filesystem
+</span></span><span style="display:flex;"><span>      Type-UUID: 0FC63DAF-8483-4772-8E79-3D69D8477DE4
+</span></span><span style="display:flex;"><span>           UUID: D6B1A2A3-2779-6ABF-11C0-D2AB38723802
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 删除分区，输入d，回车后输入分区编号，这里同样是2.</span>
+</span></span><span style="display:flex;"><span>Command <span style="color:#f92672">(</span>m <span style="color:#66d9ef">for</span> help<span style="color:#f92672">)</span>: d
+</span></span><span style="display:flex;"><span>Partition number <span style="color:#f92672">(</span>1,2,128, default 128<span style="color:#f92672">)</span>: <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Partition <span style="color:#ae81ff">2</span> has been deleted.
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 新创建分区，输入n,回车后输入要创建的分区编号2，这里与你删除的分区编号一致，回车后输入前面记住的起始扇区，然后回车输入截止扇区，直接回车为默认所有。最后提示，是否移除分区的签名，这里一定要输入n，不然镜像会出问题。</span>
+</span></span><span style="display:flex;"><span>Command <span style="color:#f92672">(</span>m <span style="color:#66d9ef">for</span> help<span style="color:#f92672">)</span>: n
+</span></span><span style="display:flex;"><span>Partition number <span style="color:#f92672">(</span>2-127, default 2<span style="color:#f92672">)</span>: <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>First sector <span style="color:#f92672">(</span>262656-3907029134, default 264192<span style="color:#f92672">)</span>: <span style="color:#ae81ff">262656</span>
+</span></span><span style="display:flex;"><span>Last sector, +/-sectors or +/-size<span style="color:#f92672">{</span>K,M,G,T,P<span style="color:#f92672">}</span> <span style="color:#f92672">(</span>262656-3907029134, default 3907029134<span style="color:#f92672">)</span>: 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Created a new partition <span style="color:#ae81ff">2</span> of type <span style="color:#e6db74">&#39;Linux filesystem&#39;</span> and of size 1.8 TiB.
+</span></span><span style="display:flex;"><span>Partition <span style="color:#75715e">#2 contains a ext4 signature.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Do you want to remove the signature? <span style="color:#f92672">[</span>Y<span style="color:#f92672">]</span>es/<span style="color:#f92672">[</span>N<span style="color:#f92672">]</span>o: n
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果是efi固件，按x进入高级菜单，然后输入u，选择分区，写入UUID，把之前记录的UUID输入进去，非efi固件忽略这一步，完成后输入r退出。</span>
+</span></span><span style="display:flex;"><span>Command <span style="color:#f92672">(</span>m <span style="color:#66d9ef">for</span> help<span style="color:#f92672">)</span>: x
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Expert command <span style="color:#f92672">(</span>m <span style="color:#66d9ef">for</span> help<span style="color:#f92672">)</span>: u
+</span></span><span style="display:flex;"><span>Partition number <span style="color:#f92672">(</span>1,2,128, default 128<span style="color:#f92672">)</span>: <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>New UUID <span style="color:#f92672">(</span>in 8-4-4-4-12 format<span style="color:#f92672">)</span>: D6B1A2A3-2779-6ABF-11C0-D2AB38723802
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Partition UUID changed from AF4F0401-CA06-6D4E-88D1-1F1AECE78E13 to D6B1A2A3-2779-6ABF-11C0-D2AB38723802.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Expert command <span style="color:#f92672">(</span>m <span style="color:#66d9ef">for</span> help<span style="color:#f92672">)</span>: r
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 最后输入w保存分区记录到磁盘</span>
+</span></span><span style="display:flex;"><span>Command <span style="color:#f92672">(</span>m <span style="color:#66d9ef">for</span> help<span style="color:#f92672">)</span>: w
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>The partition table has been altered.
+</span></span><span style="display:flex;"><span>Syncing disks.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 刷新</span>
+</span></span><span style="display:flex;"><span>root@OpenWrt:~# resize2fs -f /dev/nvme0n1p2
+</span></span><span style="display:flex;"><span>resize2fs 1.46.5 <span style="color:#f92672">(</span>30-Dec-2021<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>The filesystem is already <span style="color:#ae81ff">488345809</span> <span style="color:#f92672">(</span>4k<span style="color:#f92672">)</span> blocks long.  Nothing to <span style="color:#66d9ef">do</span>!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 重启</span>
+</span></span><span style="display:flex;"><span>reboot
 </span></span></code></pre></div><ul>
 <li>squashfs固件</li>
 </ul>
@@ -364,7 +477,10 @@ Base system -&gt; dnsmasq
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 转换成 PVE 磁盘格式，注意其中的101替换为你的VM ID，openwrt-x86-64-generic-squashfs-combined-efi.img为你的镜像文件</span>
 </span></span><span style="display:flex;"><span>qm  importdisk <span style="color:#ae81ff">101</span> /var/lib/vz/template/iso/openwrt-x86-64-generic-squashfs-combined-efi.img local-lvm
 </span></span></code></pre></div><p>转换完，在虚拟机硬件界面应该会多出一个未使用磁盘。将创建虚拟机时分配的磁盘分离删除，选择转换的OpenWrt磁盘点击编辑添加,并在选项菜单选择启动项为添加的硬盘。</p>
-<h3 id="3-常见问题">3. 常见问题</h3>
+<h2 id="主机安装">主机安装</h2>
+<p>主机的话需要准备一个U盘的PE工具（PE推荐优启通（EasyU，简称EU）<a href="https://www.itsk.com/thread/432589">EasyU</a>）和<a href="https://m0n0.ch/wall/physdiskwrite.php">phydiskwrite</a>，并把你要写入的固件镜像文件与phydiskwrite存放到U盘里。然后通过PE的命令行到的目录执行下面命令,其中-u后面为你的固件镜像名称。回车后会出现让你选择磁盘界面，你可以根据你的硬盘大小来区分你要写入的磁盘。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>phydiskwrite.exe -u openwrt-x86-64-generic-squashfs-combined-efi.img
+</span></span></code></pre></div><h3 id="3-常见问题">3. 常见问题</h3>
 <blockquote>
 <ul>
 <li>报错bash: line 1: po2lmo: command not found
@@ -377,7 +493,18 @@ make package/feeds/luci/luci-base/compile V=99</li>
 sudo apt-get install libelf-dev</li>
 </ul>
 </blockquote>
-<h1 id="结束">结束</h1>
+<blockquote>
+<ul>
+<li>报错如下：
+Finding targets
+go: ../../go.mod requires go &gt;= 1.23 (running go 1.21.13; GOTOOLCHAIN=local)</li>
+</ul>
+</blockquote>
+<p>Building targets
+go: ../../go.mod requires go &gt;= 1.23 (running go 1.21.13; GOTOOLCHAIN=local)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rm -rf feeds/packages/lang/golang
+</span></span><span style="display:flex;"><span>git clone https://github.com/sbwml/packages_lang_golang -b 23.x feeds/packages/lang/golang
+</span></span></code></pre></div><h1 id="结束">结束</h1>
 <p>PS:</p>
 <blockquote>
 <p>openclash常用信息:</p>
@@ -458,7 +585,8 @@ sudo apt-get install libelf-dev</li>
         <li><a href="#磁盘扩容">磁盘扩容</a></li>
       </ul>
     </li>
-    <li><a href="#pve安装">PVE安装</a>
+    <li><a href="#pve安装">PVE安装</a></li>
+    <li><a href="#主机安装">主机安装</a>
       <ul>
         <li><a href="#3-常见问题">3. 常见问题</a></li>
       </ul>
